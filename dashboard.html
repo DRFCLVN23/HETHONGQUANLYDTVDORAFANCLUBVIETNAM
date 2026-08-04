@@ -1,0 +1,1716 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HỆ THỐNG QUẢN LÝ DỊCH THUẬT VIÊN</title>
+    <!-- FontAwesome & Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- SweetAlert2 & FileSaver -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <style>
+      :root {
+        --bg-dark: #0a0b10;
+        --card-bg: rgba(18, 22, 36, 0.75);
+        --border-color: rgba(0, 240, 255, 0.2);
+        --primary-neon: #00f0ff;
+        --secondary-neon: #ff007f;
+        --accent-neon: #7000ff;
+        --text-main: #e2e8f0;
+        --text-muted: #94a3b8;
+        --danger-neon: #ff3366;
+        --success-neon: #00ff88;
+        --warning-neon: #ffaa00;
+        --explorer-bg: #121212;
+        --explorer-hover: #2a2a2a;
+        --explorer-border: rgba(255, 255, 255, 0.08);
+        --explorer-text: #cccccc;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", "Roboto", sans-serif;
+      }
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        background-image:
+          radial-gradient(
+            circle at 10% 20%,
+            rgba(112, 0, 255, 0.15) 0%,
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(0, 240, 255, 0.15) 0%,
+            transparent 40%
+          );
+        background-attachment: fixed;
+        overflow-x: hidden !important;
+      }
+      .sidebar {
+        width: 260px;
+        background: rgba(10, 11, 16, 0.9);
+        border-right: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(10px);
+        z-index: 100;
+      }
+      .sidebar-header {
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .nav-links {
+        list-style: none;
+        padding: 20px 0;
+        flex: 1;
+      }
+      .nav-item {
+        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s;
+        border-left: 3px solid transparent;
+        font-size: 15px;
+      }
+      .nav-item:hover,
+      .nav-item.active {
+        color: var(--primary-neon);
+        background: rgba(0, 240, 255, 0.05);
+        border-left-color: var(--primary-neon);
+      }
+      .nav-item i {
+        width: 20px;
+        text-align: center;
+      }
+      .user-profile {
+        padding: 20px;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(0, 0, 0, 0.2);
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--accent-neon);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border: 1px solid var(--primary-neon);
+      }
+      .user-details .name {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .user-details .role {
+        font-size: 12px;
+        color: var(--primary-neon);
+        text-transform: uppercase;
+      }
+      .btn-logout {
+        background: transparent;
+        border: none;
+        color: var(--danger-neon);
+        cursor: pointer;
+        font-size: 16px;
+        transition: transform 0.2s;
+      }
+      .btn-logout:hover {
+        transform: scale(1.2);
+      }
+      .main-content {
+        flex: 1;
+        padding: 30px;
+        overflow-y: auto;
+        max-height: 100vh;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+      .page-title {
+        font-family: "Orbitron", sans-serif;
+        font-size: 24px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        position: relative;
+      }
+      .page-title::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background: var(--primary-neon);
+        box-shadow: 0 0 8px var(--primary-neon);
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+      .stat-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        backdrop-filter: blur(10px);
+      }
+      .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        background: rgba(0, 240, 255, 0.1);
+        color: var(--primary-neon);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        border: 1px solid var(--primary-neon);
+      }
+      .stat-info h4 {
+        font-size: 13px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+      }
+      .stat-info .value {
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 5px;
+        color: #fff;
+      }
+      .card {
+        background: var(--explorer-bg);
+        border: 1px solid var(--explorer-border);
+        border-radius: 6px;
+        padding: 15px;
+        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--explorer-border);
+      }
+      .card-title {
+        font-family: "Segoe UI", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 13px;
+      }
+      .data-table th {
+        color: #888888;
+        font-weight: 400;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--explorer-border);
+        border-right: 1px solid var(--explorer-border);
+      }
+      .data-table th:last-child {
+        border-right: none;
+      }
+      .data-table td {
+        padding: 8px 12px;
+        color: var(--explorer-text);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        white-space: nowrap;
+      }
+      .data-table tbody tr {
+        transition: background 0.15s ease;
+        cursor: pointer;
+      }
+      .data-table tbody tr:hover {
+        background: var(--explorer-hover) !important;
+      }
+      .btn {
+        background: linear-gradient(
+          45deg,
+          var(--accent-neon),
+          var(--primary-neon)
+        );
+        border: none;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 13px;
+        width: auto;
+      }
+      .btn:hover {
+        opacity: 0.9;
+        box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+      }
+      .btn-submit {
+        background: linear-gradient(
+          45deg,
+          var(--accent-neon),
+          var(--primary-neon)
+        );
+        border: none;
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 13px;
+        width: 100%;
+      }
+      .btn-submit:hover {
+        opacity: 0.9;
+        box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+      }
+      .btn-edit {
+        background: rgba(0, 240, 255, 0.15);
+        color: var(--primary-neon);
+        border: 1px solid var(--primary-neon);
+        padding: 3px 8px;
+        font-size: 11px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-right: 4px;
+      }
+      .btn-edit:hover {
+        background: var(--primary-neon);
+        color: #000;
+      }
+      .btn-danger {
+        background: var(--danger-neon);
+        padding: 3px 8px;
+        font-size: 11px;
+        border-radius: 3px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-danger:hover {
+        opacity: 0.8;
+      }
+      .btn-disabled {
+        background: #334155 !important;
+        color: #64748b !important;
+        border: 1px solid #475569 !important;
+        cursor: not-allowed !important;
+        opacity: 0.6;
+      }
+      .badge {
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 11px;
+        display: inline-block;
+      }
+      .badge-success {
+        background: rgba(0, 255, 136, 0.15);
+        color: var(--success-neon);
+        border: 1px solid var(--success-neon);
+      }
+      .badge-warning {
+        background: rgba(255, 170, 0, 0.15);
+        color: #ffaa00;
+        border: 1px solid #ffaa00;
+      }
+      .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 22px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #333;
+        transition: 0.4s;
+        border-radius: 22px;
+        border: 1px solid var(--border-color);
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: var(--primary-neon);
+      }
+      input:checked + .slider:before {
+        transform: translateX(24px);
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .logs-container {
+        font-family: monospace;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--explorer-border);
+        padding: 12px;
+        border-radius: 6px;
+        max-height: 220px;
+        overflow-y: auto;
+      }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .modal {
+        background: #121624;
+        border: 1px solid var(--primary-neon);
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        border-radius: 8px;
+        width: 440px;
+        padding: 24px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .modal-header .title,
+      .modal-header h3 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 16px;
+        color: var(--primary-neon);
+      }
+      .modal-close,
+      .close-btn {
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+      }
+      .modal-close:hover,
+      .close-btn:hover {
+        color: #fff;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--border-color);
+        color: #fff;
+        border-radius: 4px;
+        outline: none;
+      }
+      .form-group textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: var(--primary-neon);
+      }
+      .form-group input[readonly] {
+        background: rgba(0, 240, 255, 0.05);
+        color: var(--primary-neon);
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img
+          src="Doraemon fansub.png"
+          alt="Logo"
+          style="height: 36px; width: auto; object-fit: contain"
+        />
+      </div>
+      <ul class="nav-links">
+        <li class="nav-item active" data-tab="dashboard">
+          <i class="fas fa-chart-pie"></i> Tổng quan
+        </li>
+        <li class="nav-item admin-only" data-tab="transactors">
+          <i class="fas fa-users-cog"></i> Dịch Thuật Viên
+        </li>
+        <li class="nav-item admin-only" data-tab="salary">
+          <i class="fas fa-file-invoice-dollar"></i> Quản lý Lương
+        </li>
+        <li class="nav-item" data-tab="assignments">
+          <i class="fas fa-tasks"></i> Phân công Task
+        </li>
+        <li class="nav-item" data-tab="documents">
+          <i class="fas fa-folder-open"></i> Kho Tài Liệu
+        </li>
+        <li class="nav-item admin-only" data-tab="settings">
+          <i class="fas fa-sliders-h"></i> Cài đặt hệ thống
+        </li>
+      </ul>
+      <div class="user-profile">
+        <div class="user-info">
+          <div class="avatar" id="userAvatar">A</div>
+          <div class="user-details">
+            <div class="name" id="userNameDisplay">Admin</div>
+            <div class="role" id="userRoleDisplay">ADMINISTRATOR</div>
+          </div>
+        </div>
+        <button class="btn-logout" id="logoutBtn" title="Đăng xuất">
+          <i class="fas fa-power-off"></i>
+        </button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="header">
+        <h1 class="page-title" id="pageTitle">TỔNG QUAN HỆ THỐNG</h1>
+      </header>
+
+      <!-- SECTION: TỔNG QUAN -->
+      <section id="tab-dashboard" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+            <div class="stat-info">
+              <h4>DTV Hoạt động</h4>
+              <div class="value" id="statActiveTrans">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-spinner"></i></div>
+            <div class="stat-info">
+              <h4>Task Đang làm</h4>
+              <div class="value" id="statPendingTasks">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-info">
+              <h4>Task Hoàn thành</h4>
+              <div class="value" id="statDoneTasks">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-coins"></i></div>
+            <div class="stat-info">
+              <h4>Tổng Chi Lương</h4>
+              <div class="value" id="statTotalSalary">0 đ</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-stream"></i> Hoạt động gần đây
+            </h3>
+          </div>
+          <div id="recentActivityList" class="logs-container">
+            <p style="color: var(--text-muted)">Đang tải hoạt động...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: DỊCH THUẬT VIÊN -->
+      <section id="tab-transactors" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-folder" style="color: #ffe066"></i> Danh sách
+              Dịch Thuật Viên
+            </h3>
+            <button class="btn" id="openAddTransactorModal">
+              <i class="fas fa-plus"></i> Thêm DTV
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 35%">Tên</th>
+                <th style="width: 30%">Email</th>
+                <th style="width: 15%">Loại</th>
+                <th style="width: 10%">Trạng thái</th>
+                <th style="width: 10%">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="transactorsTableBody">
+              <tr>
+                <td
+                  colspan="5"
+                  style="text-align: center; color: var(--text-muted)"
+                >
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: QUẢN LÝ LƯƠNG -->
+      <section id="tab-salary" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-folder" style="color: #ffe066"></i> Bảng tính
+              Lương DTV
+            </h3>
+            <div style="display: flex; gap: 10px">
+              <button
+                class="btn"
+                onclick="alert('Chức năng đang phát triển!')"
+                style="
+                  background: linear-gradient(45deg, #00f0ff, #7000ff);
+                  color: #fff;
+                  font-weight: 600;
+                "
+              >
+                <i class="fas fa-file-word"></i> Xuất Bảng Lương
+              </button>
+              <button class="btn" id="openAddSalaryModal">
+                <i class="fas fa-calculator"></i> Tính Lương Tháng
+              </button>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 25%">Tiêu đề / DTV</th>
+                <th style="width: 15%">Email</th>
+                <th style="width: 12%">Lương cơ bản</th>
+                <th style="width: 12%">Phụ cấp</th>
+                <th style="width: 12%">Thưởng</th>
+                <th style="width: 12%">Khấu hao</th>
+                <th style="width: 12%">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="salaryTableBody">
+              <tr>
+                <td
+                  colspan="7"
+                  style="text-align: center; color: var(--text-muted)"
+                >
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: PHÂN CÔNG TASK -->
+      <section id="tab-assignments" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-folder" style="color: #ffe066"></i> Danh sách
+              Nhiệm vụ (Tasks)
+            </h3>
+            <button class="btn" id="openAddTaskModal">
+              <i class="fas fa-plus"></i> Phân công Task
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 30%">Dự án / Nhiệm vụ</th>
+                <th style="width: 20%">Người thực hiện</th>
+                <th style="width: 15%">Deadline</th>
+                <th style="width: 15%">Trạng thái</th>
+                <th style="width: 20%">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="assignmentsTableBody">
+              <tr>
+                <td
+                  colspan="5"
+                  style="text-align: center; color: var(--text-muted)"
+                >
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: KHO TÀI LIỆU -->
+      <section id="tab-documents" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-folder" style="color: #ffe066"></i> Quản lý Tài
+              liệu & Subtitle
+            </h3>
+            <button class="btn" id="openUploadDocModal">
+              <i class="fas fa-upload"></i> Tải lên File
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 45%">Tên tài liệu</th>
+                <th style="width: 20%">Người ký / Tạo</th>
+                <th style="width: 20%">Ngày tạo</th>
+                <th style="width: 15%">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="documentsTableBody">
+              <tr>
+                <td
+                  colspan="4"
+                  style="text-align: center; color: var(--text-muted)"
+                >
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: CÀI ĐẶT -->
+      <section id="tab-settings" class="tab-content">
+        <div class="setting-item">
+          <div>
+            <h4>Chế độ Bảo trì (Maintenance Mode)</h4>
+            <p style="font-size: 12px; color: var(--text-muted)">
+              Khi bật, tất cả tài khoản DTV sẽ bị hạn chế truy cập hệ thống.
+            </p>
+          </div>
+          <label class="switch"
+            ><input
+              type="checkbox"
+              id="maintenanceToggle"
+              onchange="window.toggleMaintenanceMode(this)" /><span
+              class="slider round"
+            ></span
+          ></label>
+        </div>
+        <div class="card">
+          <h3 class="card-title">
+            <i class="fas fa-database"></i> Tải Dữ liệu Backup
+          </h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin: 10px 0">
+            Xuất toàn bộ cơ sở dữ liệu hệ thống ra file `.json`.
+          </p>
+          <button class="btn" id="downloadBackupBtn">
+            <i class="fas fa-download"></i> Tải Backup (.json)
+          </button>
+        </div>
+        <div class="card" style="border-color: var(--warning-neon)">
+          <h3 class="card-title" style="color: var(--warning-neon)">
+            <i class="fas fa-undo-alt"></i> Khôi phục dữ liệu từ Backup
+          </h3>
+          <p style="font-size: 13px; color: var(--text-muted); margin: 10px 0">
+            Nếu dữ liệu trên web bị mất, hãy đặt file
+            <strong>Backup.json</strong> vào cùng thư mục và bấm nút dưới đây để
+            đẩy dữ liệu lên Firebase.
+          </p>
+          <button
+            class="btn"
+            onclick="restoreBackup()"
+            style="background: linear-gradient(45deg, #ffaa00, #ff007f)"
+          >
+            <i class="fas fa-cloud-upload-alt"></i> Khôi phục (Restore)
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="modalTransactor">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Thêm Dịch Thuật Viên</h3>
+          <i class="fas fa-times modal-close" onclick="closeModals()"></i>
+        </div>
+        <div class="form-group">
+          <label>Tên DTV</label
+          ><input
+            type="text"
+            id="addTransName"
+            placeholder="VD: Nguyễn Văn A"
+          />
+        </div>
+        <div class="form-group">
+          <label>Email</label
+          ><input
+            type="email"
+            id="addTransEmail"
+            placeholder="vd: dtv@gmail.com"
+          />
+        </div>
+        <div class="form-group">
+          <label>Mật Khẩu</label
+          ><input
+            type="password"
+            id="addTransPass"
+            placeholder="Mật khẩu đăng nhập cho DTV"
+          />
+        </div>
+        <div class="form-group">
+          <label>Chức danh</label
+          ><input type="text" id="addTransRole" value="dtv" />
+        </div>
+        <div class="form-group">
+          <label>Ghi chú</label
+          ><textarea
+            id="addTransNote"
+            placeholder="VD: DTV mới, cần theo dõi..."
+          ></textarea>
+        </div>
+        <button class="btn-submit" id="saveTransactorBtn">Lưu DTV</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalEditTransactor">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Chỉnh sửa Dịch Thuật Viên</h3>
+          <i class="fas fa-times modal-close" onclick="closeModals()"></i>
+        </div>
+        <input type="hidden" id="editTransId" />
+        <div class="form-group">
+          <label>Tên DTV</label><input type="text" id="editTransName" />
+        </div>
+        <div class="form-group">
+          <label>Email</label><input type="email" id="editTransEmail" />
+        </div>
+        <div class="form-group">
+          <label>Mật Khẩu</label
+          ><input
+            type="password"
+            id="editTransPass"
+            placeholder="Nhập mật khẩu mới"
+          />
+        </div>
+        <div class="form-group">
+          <label>Chức danh</label><input type="text" id="editTransRole" />
+        </div>
+        <button class="btn-submit" id="updateTransactorBtn">
+          <i class="fas fa-save"></i> Cập Nhật DTV
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalSalary">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="title">Thêm Bảng Lương DTV</h2>
+          <span class="close-btn" onclick="closeModals()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Tiêu đề (Tên DTV)</label
+            ><input type="text" id="ten-dtv" placeholder="VD: Lương tháng 8" />
+          </div>
+          <div class="form-group">
+            <label>Email DTV</label
+            ><input
+              type="email"
+              id="salary-email"
+              placeholder="dtv@gmail.com"
+            />
+          </div>
+          <div class="form-group">
+            <label>LƯƠNG CƠ BẢN (VNĐ)</label
+            ><input type="number" id="luong-tap" placeholder="VD: 500000" />
+          </div>
+          <div class="form-group">
+            <label>PHỤ CẤP (VNĐ)</label
+            ><input type="number" id="phu-cap" placeholder="VD: 100000" />
+          </div>
+          <div class="form-group">
+            <label>THƯỞNG (VNĐ)</label
+            ><input type="number" id="thuong-tap" placeholder="VD: 50000" />
+          </div>
+          <div class="form-group">
+            <label>KHẤU HAO (VNĐ)</label
+            ><input type="number" id="khau-hao" placeholder="VD: 20000" />
+          </div>
+          <button type="submit" class="btn-submit" id="saveSalaryBtn">
+            Lưu Bảng Lương
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalTask">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Tạo Nhiệm Vụ Mới</h3>
+          <span class="close-btn" onclick="closeModals()">&times;</span>
+        </div>
+        <div class="form-group">
+          <label>TÊN DỰ ÁN / NHIỆM VỤ</label
+          ><input
+            type="text"
+            id="taskTitleInput"
+            placeholder="VD: Dịch Tập 1"
+          />
+        </div>
+        <div class="form-group">
+          <label>NGƯỜI THỰC HIỆN (Email DTV)</label
+          ><input
+            type="email"
+            id="taskAssigneeInput"
+            placeholder="dtv@gmail.com"
+          />
+        </div>
+        <div class="form-group">
+          <label>HẠN CHÓT</label><input type="date" id="taskDeadlineInput" />
+        </div>
+        <button type="submit" class="btn-submit" id="saveTaskBtn">
+          Tạo Task
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalDoc">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Thêm Tài Liệu</h3>
+          <i class="fas fa-times modal-close" onclick="closeModals()"></i>
+        </div>
+        <div class="form-group">
+          <label>Tên Tài Liệu (Tiêu đề)</label
+          ><input
+            type="text"
+            id="addDocName"
+            placeholder="VD: Quy chế hoạt động"
+          />
+        </div>
+        <div class="form-group">
+          <label>Link Tải (URL)</label
+          ><input type="text" id="addDocUrl" placeholder="https://..." />
+        </div>
+        <button class="btn-submit" id="saveDocBtn">Đăng Tài Liệu</button>
+      </div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+          "firebase/analytics": "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js",
+          "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
+          "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import { initializeApp } from "firebase/app";
+      import { getAnalytics } from "firebase/analytics";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        orderBy,
+        limit,
+        doc,
+        addDoc,
+        updateDoc,
+        deleteDoc,
+        getDoc,
+        setDoc,
+        onSnapshot,
+      } from "firebase/firestore";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+        createUserWithEmailAndPassword,
+        deleteUser,
+      } from "firebase/auth";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAxMuHOdj8a8c3lDpZG_k8fFUV6tCVkH8w",
+        authDomain: "hethongquanlyadichthuatvien.firebaseapp.com",
+        databaseURL:
+          "https://hethongquanlyadichthuatvien-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "hethongquanlyadichthuatvien",
+        storageBucket: "hethongquanlyadichthuatvien.firebasestorage.app",
+        messagingSenderId: "78223981328",
+        appId: "1:78223981328:web:8667950575d90be2420395",
+        measurementId: "G-X6CQJ1PTY9",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // QUAN TRỌNG: Đẩy các biến ra ngoài window
+      window.db = db;
+      window.doc = doc;
+      window.collection = collection;
+      window.deleteDoc = deleteDoc;
+      window.addDoc = addDoc;
+      window.setDoc = setDoc;
+      window.getDoc = getDoc;
+      window.auth = auth;
+      window.deleteUser = deleteUser;
+
+      window.closeModals = () => {
+        document
+          .querySelectorAll(".modal-overlay")
+          .forEach((m) => (m.style.display = "none"));
+        const addTransName = document.getElementById("addTransName");
+        const addTransEmail = document.getElementById("addTransEmail");
+        const addTransPass = document.getElementById("addTransPass");
+        const addTransRole = document.getElementById("addTransRole");
+        const addTransNote = document.getElementById("addTransNote");
+        if (addTransName) addTransName.value = "";
+        if (addTransEmail) addTransEmail.value = "";
+        if (addTransPass) addTransPass.value = "";
+        if (addTransRole) addTransRole.value = "dtv";
+        if (addTransNote) addTransNote.value = "";
+      };
+      document.getElementById("openAddTransactorModal").onclick = () =>
+        (document.getElementById("modalTransactor").style.display = "flex");
+      document.getElementById("openAddSalaryModal").onclick = () =>
+        (document.getElementById("modalSalary").style.display = "flex");
+      document.getElementById("openAddTaskModal").onclick = () =>
+        (document.getElementById("modalTask").style.display = "flex");
+      document.getElementById("openUploadDocModal").onclick = () =>
+        (document.getElementById("modalDoc").style.display = "flex");
+
+      async function loadMaintenanceStatus() {
+        const toggleInput = document.getElementById("maintenanceToggle");
+        if (!toggleInput) return;
+        try {
+          const docRef = doc(db, "system_settings", "maintenance");
+          const docSnap = await getDoc(docRef);
+          toggleInput.checked = docSnap.exists()
+            ? docSnap.data().isMaintenance
+            : false;
+        } catch (error) {
+          console.error("Lỗi nạp bảo trì:", error);
+        }
+      }
+
+      window.toggleMaintenanceMode = async function (element) {
+        const isON = element.checked;
+        try {
+          await setDoc(
+            doc(db, "system_settings", "maintenance"),
+            { isMaintenance: isON, updatedAt: new Date().toISOString() },
+            { merge: true },
+          );
+          logActivity(isON ? "Bật chế độ Bảo trì" : "Tắt chế độ Bảo trì");
+          if (typeof Swal !== "undefined")
+            Swal.fire({
+              icon: isON ? "warning" : "success",
+              title: isON ? "🔴 ĐÃ BẬT!" : "🟢 ĐÃ TẮT!",
+              confirmColor: "#00f0ff",
+            });
+        } catch (err) {
+          console.error("Lỗi cập nhật bảo trì:", err);
+          element.checked = !isON;
+        }
+      };
+
+      // --- HÀM QUYỀN SỬA LỖI ---
+      function checkAndApplyRole(role, userEmail, userName) {
+        // Admin mặc định nếu role là admin hoặc email có chứa bqt
+        let isDTV = true;
+        if (role && role.toLowerCase() === "admin") isDTV = false;
+        if (userEmail && userEmail.toLowerCase().includes("bqt")) isDTV = false;
+
+        window.currentUserIsDTV = isDTV;
+        const roleDisplay = document.getElementById("userRoleDisplay");
+        const nameDisplay = document.getElementById("userNameDisplay");
+        const avatarDisplay = document.getElementById("userAvatar");
+
+        if (roleDisplay)
+          roleDisplay.innerText = window.currentUserIsDTV
+            ? "DỊCH THUẬT VIÊN"
+            : "ADMINISTRATOR";
+        if (nameDisplay)
+          nameDisplay.innerText =
+            userName || (window.currentUserIsDTV ? "DTV" : "Admin");
+        if (avatarDisplay)
+          avatarDisplay.innerText = (userName || userEmail || "A")
+            .charAt(0)
+            .toUpperCase();
+
+        const navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach((item) => {
+          const tab = item.getAttribute("data-tab");
+          if (
+            window.currentUserIsDTV &&
+            (tab === "transactors" || tab === "settings" || tab === "salary")
+          ) {
+            item.style.display = "none";
+          } else {
+            item.style.display = "flex";
+          }
+        });
+
+        const adminBtns = document.querySelectorAll(
+          "#openAddTransactorModal, #openAddSalaryModal, #openAddTaskModal, #openUploadDocModal",
+        );
+        adminBtns.forEach((btn) => {
+          if (btn)
+            btn.style.display = window.currentUserIsDTV
+              ? "none"
+              : "inline-flex";
+        });
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          window.location.href = "index.html";
+          return;
+        }
+        let userRole = "admin";
+        let userName = user.displayName || user.email.split("@")[0];
+        try {
+          const transSnap = await getDocs(collection(db, "Transactors"));
+          transSnap.forEach((docSnap) => {
+            const d = docSnap.data();
+            if (d.email && d.email.toLowerCase() === user.email.toLowerCase()) {
+              if (d.role) userRole = d.role;
+              if (d.name) userName = d.name;
+            }
+          });
+          const isDTV =
+            (userRole && userRole.toLowerCase() === "dtv") ||
+            (!userRole && !user.email.includes("bqt"));
+          if (isDTV) {
+            const maintSnap = await getDoc(
+              doc(db, "system_settings", "maintenance"),
+            );
+            if (maintSnap.exists() && maintSnap.data().isMaintenance === true) {
+              await signOut(auth);
+              Swal.fire({
+                icon: "warning",
+                title: "🔴 BẢO TRÌ",
+                text: "Hệ thống đang bảo trì!",
+              });
+              window.location.href = "index.html";
+              return;
+            }
+          }
+          checkAndApplyRole(userRole, user.email, userName);
+          loadDashboardData();
+          loadMaintenanceStatus();
+        } catch (e) {
+          console.error("Lỗi kiểm tra quyền:", e);
+        }
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        signOut(auth).then(() => {
+          window.location.href = "index.html";
+        });
+      });
+
+      async function logActivity(action, target = "") {
+        try {
+          await addDoc(collection(db, "activities"), {
+            actorEmail: auth.currentUser?.email || "Admin",
+            action: action,
+            target: target,
+            timestamp: new Date().toISOString(),
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      async function loadDashboardData() {
+        try {
+          const transSnap = await getDocs(collection(db, "Transactors"));
+          document.getElementById("statActiveTrans").innerText =
+            transSnap.size || 0;
+          const taskSnap = await getDocs(collection(db, "assignments"));
+          let pending = 0,
+            done = 0;
+          taskSnap.forEach((docSnap) => {
+            const d = docSnap.data();
+            const st = d.status || d.trangThai || d.state || "";
+            if (st === "Hoàn thành" || st === "completed") done++;
+            else pending++;
+          });
+          document.getElementById("statPendingTasks").innerText = pending;
+          document.getElementById("statDoneTasks").innerText = done;
+          const salarySnap = await getDocs(collection(db, "salary_records"));
+          let totalSalary = 0;
+          salarySnap.forEach((docSnap) => {
+            const d = docSnap.data();
+            totalSalary +=
+              (d.baseSalary || 0) +
+              (d.allowance || 0) +
+              (d.bonus || 0) -
+              (d.deduction || 0);
+          });
+          document.getElementById("statTotalSalary").innerText =
+            totalSalary.toLocaleString("vi-VN") + " đ";
+          const q = query(
+            collection(db, "activities"),
+            orderBy("timestamp", "desc"),
+            limit(8),
+          );
+          const actSnap = await getDocs(q);
+          const recentList = document.getElementById("recentActivityList");
+          if (actSnap.empty) {
+            recentList.innerHTML =
+              '<p style="color:var(--text-muted); font-size:13px;">Chưa có hoạt động nào.</p>';
+            return;
+          }
+          let html = "";
+          actSnap.forEach((docSnap) => {
+            const d = docSnap.data();
+            const time = d.timestamp
+              ? new Date(d.timestamp).toLocaleString("vi-VN")
+              : "Mới đây";
+            html += `<div style="padding: 6px 0; border-bottom: 1px dashed rgba(0,240,255,0.15); font-size: 13px;"><span style="color: var(--primary-neon);">[${time}]</span> <strong style="color: #fff;">${d.actorEmail}</strong>: ${d.action} ${d.target ? `- ${d.target}` : ""}</div>`;
+          });
+          recentList.innerHTML = html;
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+
+      // --- HÀM XÓA MỚI: XÓA CẢ AUTH VÀ FIRESTORE ---
+      window.deleteItem = async (colName, id) => {
+        if (!confirm("Bạn có chắc muốn xóa mục này vĩnh viễn?")) return;
+
+        try {
+          // 1. Xóa Firestore
+          await deleteDoc(doc(db, colName, id));
+
+          // 2. Nếu xóa DTV, xóa luôn tài khoản Auth
+          if (colName === "Transactors") {
+            try {
+              const docSnap = await getDoc(doc(db, colName, id));
+              if (docSnap.exists()) {
+                const emailToDelete = docSnap.data().email;
+                // Vì Client-side không có quyền admin SDK, mình dùng API REST để xóa
+                const user = auth.currentUser;
+                if (user) {
+                  const idToken = await user.getIdToken();
+                  const deleteUrl = `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${firebaseConfig.apiKey}`;
+                  await fetch(deleteUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ idToken: idToken }),
+                  });
+                  console.log(`✅ Đã xóa tài khoản Auth: ${emailToDelete}`);
+                }
+              }
+            } catch (authErr) {
+              console.warn(
+                "Không thể xóa tài khoản Auth (Do thiếu Admin SDK):",
+                authErr,
+              );
+            }
+          }
+
+          logActivity("Xóa mục khỏi hệ thống", colName);
+          alert("✅ Đã xóa thành công!");
+        } catch (error) {
+          console.error("❌ Lỗi khi xóa:", error);
+          alert("❌ Lỗi khi xóa mục: " + error.message);
+        }
+      };
+
+      // --- CÁC HÀM LẮNG NGHE REALTIME (Dùng OnSnapshot) ---
+      function listenTransactors() {
+        const tbody = document.getElementById("transactorsTableBody");
+        return onSnapshot(collection(db, "Transactors"), (snapshot) => {
+          if (snapshot.empty) {
+            tbody.innerHTML =
+              '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Chưa có DTV nào.</td></tr>';
+            return;
+          }
+          let html = "";
+          snapshot.forEach((docSnap) => {
+            const d = docSnap.data();
+            const name = d.name || d.ten || d.user || "N/A";
+            const email = d.email || "N/A";
+            const role = d.role || "dtv";
+            const note = d.note || "";
+            const isKhaiAccount =
+              name.toLowerCase().includes("nguyễn tuấn khải") ||
+              email.toLowerCase().includes("bqtnguyentuankhai");
+            let deleteBtnHtml = `<button class="btn-danger" onclick="deleteItem('Transactors', '${docSnap.id}')">Xóa</button>`;
+            if (isKhaiAccount)
+              deleteBtnHtml = `<button class="btn-danger btn-disabled" disabled><i class="fas fa-lock"></i> Đã Khóa</button>`;
+            const noteHtml = note
+              ? `<br><span style="font-size:11px; color:var(--text-muted);"><i class="fas fa-sticky-note"></i> ${note}</span>`
+              : "";
+            html += `<tr><td><div class="file-item-name"><i class="fas fa-user-circle" style="color: #00f0ff;"></i><span>${name}</span>${noteHtml}</div></td><td>${email}</td><td>${role}</td><td><span class="badge badge-success">Hoạt động</span></td><td><button class="btn-edit" onclick="alert('Chức năng sửa đang phát triển!')"><i class="fas fa-edit"></i> Sửa</button> ${deleteBtnHtml}</td></tr>`;
+          });
+          tbody.innerHTML = html;
+        });
+      }
+
+      function listenSalary() {
+        const tbody = document.getElementById("salaryTableBody");
+        return onSnapshot(collection(db, "salary_records"), (snapshot) => {
+          if (snapshot.empty) {
+            tbody.innerHTML =
+              '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Chưa có dữ liệu lương nào.</td></tr>';
+            return;
+          }
+          let html = "";
+          snapshot.forEach((docSnap) => {
+            const d = docSnap.data();
+            const title = d.title || "Không có tiêu đề";
+            const dtvName = d.dtvName || "N/A";
+            const email = d.email || d.dtvCode || "N/A";
+            const baseSalary = d.baseSalary || 0;
+            const allowance = d.allowance || 0;
+            const bonus = d.bonus || 0;
+            const deduction = d.deduction || 0;
+            html += `<tr>
+                        <td><div class="file-item-name"><i class="fas fa-user-check" style="color: #00f0ff;"></i><span style="font-weight:bold;">${title}</span><br><span style="font-size:11px; color:var(--text-muted);">${dtvName}</span></div></td>
+                        <td>${email}</td>
+                        <td>${baseSalary.toLocaleString("vi-VN")} đ</td>
+                        <td>${allowance.toLocaleString("vi-VN")} đ</td>
+                        <td>${bonus.toLocaleString("vi-VN")} đ</td>
+                        <td style="color:var(--danger-neon);">-${deduction.toLocaleString("vi-VN")} đ</td>
+                        <td><button class="btn-danger" onclick="deleteItem('salary_records', '${docSnap.id}')">Xóa</button></td>
+                    </tr>`;
+          });
+          tbody.innerHTML = html;
+        });
+      }
+
+      function listenAssignments() {
+        const tbody = document.getElementById("assignmentsTableBody");
+        return onSnapshot(collection(db, "assignments"), (snapshot) => {
+          if (snapshot.empty) {
+            tbody.innerHTML =
+              '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Chưa có nhiệm vụ nào.</td></tr>';
+            return;
+          }
+          let html = "";
+          snapshot.forEach((docSnap) => {
+            const d = docSnap.data();
+            const project = d.project || "N/A";
+            const dtvName = d.dtvName || "Chưa phân công";
+            const deadline = d.deadline || "N/A";
+            const status = d.status || "pending";
+            const desc = d.desc || "";
+            let statusBadge = `<span class="badge badge-warning">Chờ xử lý</span>`;
+            if (status === "completed")
+              statusBadge = `<span class="badge badge-success">Hoàn thành</span>`;
+            if (status === "processing")
+              statusBadge = `<span class="badge badge-warning">Đang làm</span>`;
+            if (status === "overdue")
+              statusBadge = `<span class="badge" style="background:rgba(255,51,102,0.15);color:#ff3366;border:1px solid #ff3366;">Quá hạn</span>`;
+            const descHtml = desc
+              ? `<br><span style="font-size:11px; color:var(--text-muted);"><i class="fas fa-info-circle"></i> ${desc.substring(0, 30)}...</span>`
+              : "";
+            html += `<tr>
+                        <td><div class="file-item-name"><i class="fas fa-tasks" style="color: #ffaa00;"></i><span>${project}</span>${descHtml}</div></td>
+                        <td>${dtvName}</td>
+                        <td>${deadline}</td>
+                        <td>${statusBadge}</td>
+                        <td><button class="btn-danger" onclick="deleteItem('assignments', '${docSnap.id}')">Xóa</button></td>
+                    </tr>`;
+          });
+          tbody.innerHTML = html;
+        });
+      }
+
+      function listenDocuments() {
+        const tbody = document.getElementById("documentsTableBody");
+        return onSnapshot(collection(db, "documents"), (snapshot) => {
+          if (snapshot.empty) {
+            tbody.innerHTML =
+              '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Chưa có tài liệu nào.</td></tr>';
+            return;
+          }
+          let html = "";
+          snapshot.forEach((docSnap) => {
+            const d = docSnap.data();
+            const tieuDe = d.tieuDe || d.fileName || "Không tên";
+            const nguoiKy = d.nguoiKy || "Admin";
+            const ngayTao = d.createdAt || d.ngayBanHanh || "N/A";
+            const fileUrl = d.fileUrl || "#";
+            html += `<tr>
+                        <td><div class="file-item-name"><i class="fas fa-file-alt" style="color: #00f0ff;"></i><span>${tieuDe}</span></div></td>
+                        <td>${nguoiKy}</td>
+                        <td>${ngayTao}</td>
+                        <td>
+                            <button class="btn-edit" onclick="window.open('${fileUrl}', '_blank')"><i class="fas fa-download"></i> Mở</button>
+                            <button class="btn-danger" onclick="deleteItem('documents', '${docSnap.id}')">Xóa</button>
+                        </td>
+                    </tr>`;
+          });
+          tbody.innerHTML = html;
+        });
+      }
+
+      // --- LOGIC CHUYỂN TAB ---
+      let currentUnsubscribe = null;
+      const navItems = document.querySelectorAll(".nav-item");
+      const tabContents = document.querySelectorAll(".tab-content");
+      const pageTitle = document.getElementById("pageTitle");
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          navItems.forEach((i) => i.classList.remove("active"));
+          tabContents.forEach((c) => c.classList.remove("active"));
+          item.classList.add("active");
+          const targetTab = item.getAttribute("data-tab");
+          document.getElementById(`tab-${targetTab}`).classList.add("active");
+          pageTitle.innerText = item.innerText.toUpperCase();
+
+          if (currentUnsubscribe) {
+            currentUnsubscribe();
+            currentUnsubscribe = null;
+          }
+
+          if (targetTab === "transactors") {
+            currentUnsubscribe = listenTransactors();
+          } else if (targetTab === "salary") {
+            currentUnsubscribe = listenSalary();
+          } else if (targetTab === "assignments") {
+            currentUnsubscribe = listenAssignments();
+          } else if (targetTab === "documents") {
+            currentUnsubscribe = listenDocuments();
+          } else if (targetTab === "dashboard") {
+            loadDashboardData();
+          }
+        });
+      });
+
+      // --- CÁC NÚT LƯU DỮ LIỆU ---
+
+      document.getElementById("saveTransactorBtn").onclick = async () => {
+        const name = document.getElementById("addTransName").value.trim();
+        const email = document.getElementById("addTransEmail").value.trim();
+        const password = document.getElementById("addTransPass").value;
+        const role = document.getElementById("addTransRole").value.trim();
+        const note = document.getElementById("addTransNote").value.trim();
+        if (!name || !email || !password)
+          return Swal.fire({
+            icon: "warning",
+            title: "Thiếu thông tin",
+            text: "Vui lòng điền đầy đủ!",
+          });
+
+        try {
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password,
+          );
+          const uid = userCredential.user.uid;
+          await setDoc(doc(db, "Transactors", uid), {
+            uid,
+            name,
+            email,
+            password,
+            role,
+            note,
+            status: "Active",
+            createdAt: new Date().toISOString(),
+          });
+          logActivity("Thêm DTV mới", note ? `${name} - ${note}` : name);
+          closeModals();
+          Swal.fire({
+            icon: "success",
+            title: "Thành công!",
+            text: "✅ Đã thêm DTV thành công!",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        } catch (error) {
+          if (error.code === "auth/email-already-in-use") {
+            Swal.fire({
+              icon: "error",
+              title: "Email đã tồn tại!",
+              text: "Email này đã có người dùng. Hãy xóa tài khoản cũ trên Firebase Console.",
+              confirmButtonColor: "#ff3366",
+            });
+          } else if (error.code === "auth/weak-password") {
+            Swal.fire({
+              icon: "error",
+              title: "Mật khẩu yếu",
+              text: "Cần ít nhất 6 ký tự!",
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Lỗi hệ thống",
+              text: error.message,
+            });
+          }
+        }
+      };
+
+      document.getElementById("saveSalaryBtn").onclick = async () => {
+        const title = document.getElementById("ten-dtv").value.trim();
+        const email = document.getElementById("salary-email").value.trim();
+        const baseSalary =
+          Number(document.getElementById("luong-tap").value) || 0;
+        const allowance = Number(document.getElementById("phu-cap").value) || 0;
+        const bonus = Number(document.getElementById("thuong-tap").value) || 0;
+        const deduction =
+          Number(document.getElementById("khau-hao").value) || 0;
+        if (!title) return alert("Vui lòng nhập tiêu đề!");
+        try {
+          await addDoc(collection(db, "salary_records"), {
+            title,
+            email,
+            baseSalary,
+            allowance,
+            bonus,
+            deduction,
+            dtvName: title,
+            createdAt: new Date().toISOString(),
+          });
+          logActivity("Tạo bảng lương mới", title);
+          closeModals();
+          alert("✅ Đã lưu bảng lương!");
+        } catch (error) {
+          console.error("Lỗi tạo lương:", error);
+          alert("❌ Lỗi: " + error.message);
+        }
+      };
+
+      document.getElementById("saveTaskBtn").onclick = async () => {
+        const project = document.getElementById("taskTitleInput").value.trim();
+        const dtvCode = document
+          .getElementById("taskAssigneeInput")
+          .value.trim();
+        const deadline = document.getElementById("taskDeadlineInput").value;
+        if (!project) return alert("Vui lòng nhập tên dự án!");
+        try {
+          await addDoc(collection(db, "assignments"), {
+            project,
+            dtvCode,
+            dtvName: dtvCode,
+            deadline: deadline || "Chưa đặt",
+            status: "pending",
+            createdAt: new Date().toISOString(),
+          });
+          logActivity("Phân công Task mới", project);
+          closeModals();
+          alert("✅ Đã phân công task!");
+        } catch (error) {
+          console.error("Lỗi tạo task:", error);
+          alert("❌ Lỗi: " + error.message);
+        }
+      };
+
+      document.getElementById("saveDocBtn").onclick = async () => {
+        const tieuDe = document.getElementById("addDocName").value.trim();
+        const fileUrl = document.getElementById("addDocUrl").value.trim();
+        if (!tieuDe) return alert("Vui lòng nhập tên tài liệu!");
+        if (!fileUrl) return alert("Vui lòng nhập Link tải!");
+        try {
+          await addDoc(collection(db, "documents"), {
+            tieuDe,
+            fileUrl,
+            nguoiKy: auth.currentUser?.email || "Admin",
+            createdAt: new Date().toLocaleDateString("vi-VN"),
+          });
+          logActivity("Tải lên tài liệu mới", tieuDe);
+          closeModals();
+          alert("✅ Đã đăng tài liệu!");
+        } catch (error) {
+          console.error("Lỗi tải tài liệu:", error);
+          alert("❌ Lỗi: " + error.message);
+        }
+      };
+
+      document.getElementById("downloadBackupBtn").onclick = async () => {
+        try {
+          const collectionsToBackup = [
+            "Transactors",
+            "salary_records",
+            "assignments",
+            "documents",
+            "activities",
+            "system_settings",
+          ];
+          const backupData = {
+            exportDate: new Date().toISOString(),
+            exportedBy: auth.currentUser?.email || "Admin",
+            data: {},
+          };
+          for (const colName of collectionsToBackup) {
+            const snap = await getDocs(collection(db, colName));
+            backupData.data[colName] = [];
+            snap.forEach((docSnap) => {
+              backupData.data[colName].push({
+                id: docSnap.id,
+                ...docSnap.data(),
+              });
+            });
+          }
+          const jsonString = JSON.stringify(backupData, null, 2);
+          saveAs(
+            new Blob([jsonString], { type: "application/json" }),
+            `Backup_${new Date().toISOString().slice(0, 10)}.json`,
+          );
+          logActivity("Xuất file backup hệ thống (.json)");
+          alert("✅ Đã xuất file backup thành công!");
+        } catch (error) {
+          console.error("Lỗi backup:", error);
+          alert("❌ Lỗi khi xuất file backup!");
+        }
+      };
+
+      // === CÔNG CỤ KHÔI PHỤC BACKUP (Restore) ===
+      window.restoreBackup = async function () {
+        const confirmed = confirm(
+          "⚠️ CẢNH BÁO: Hành động này sẽ ghi đè dữ liệu hiện tại bằng dữ liệu trong file Backup.json. Bạn có chắc chắn muốn tiếp tục?",
+        );
+        if (!confirmed) return;
+        try {
+          const response = await fetch("Backup.json");
+          if (!response.ok)
+            throw new Error(
+              "Không tìm thấy file Backup.json. Vui lòng đặt file vào cùng thư mục với dashboard.html",
+            );
+          const backupData = await response.json();
+          console.log("📦 Đã tải file backup:", backupData.exportDate);
+
+          for (const colName of Object.keys(backupData.data)) {
+            if (
+              backupData.data[colName] &&
+              backupData.data[colName].length > 0
+            ) {
+              console.log(`🔄 Đang khôi phục ${colName}...`);
+              for (const item of backupData.data[colName]) {
+                const { id, ...data } = item;
+                if (id) await setDoc(doc(db, colName, id), data);
+                else await addDoc(collection(db, colName), data);
+              }
+            }
+          }
+          alert(
+            "🎉 Khôi phục dữ liệu thành công! Vui lòng F5 (Refresh) lại trang để thấy dữ liệu.",
+          );
+          location.reload();
+        } catch (error) {
+          console.error("❌ LỖI KHI KHÔI PHỤC:", error);
+          alert("Lỗi khôi phục: " + error.message);
+        }
+      };
+
+      // Mở tab mặc định khi tải lại trang
+      setTimeout(() => {
+        document.querySelector(".nav-item.active")?.click();
+      }, 500);
+    </script>
+  </body>
+</html>
