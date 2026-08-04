@@ -1031,6 +1031,8 @@
         signOut,
         createUserWithEmailAndPassword,
         deleteUser,
+        updateEmail,
+        updatePassword,
       } from "firebase/auth";
 
       const firebaseConfig = {
@@ -1075,6 +1077,17 @@
         if (addTransPass) addTransPass.value = "";
         if (addTransRole) addTransRole.value = "dtv";
         if (addTransNote) addTransNote.value = "";
+        // Reset modal sửa DTV
+        const editTransId = document.getElementById("editTransId");
+        const editTransName = document.getElementById("editTransName");
+        const editTransEmail = document.getElementById("editTransEmail");
+        const editTransPass = document.getElementById("editTransPass");
+        const editTransRole = document.getElementById("editTransRole");
+        if (editTransId) editTransId.value = "";
+        if (editTransName) editTransName.value = "";
+        if (editTransEmail) editTransEmail.value = "";
+        if (editTransPass) editTransPass.value = "";
+        if (editTransRole) editTransRole.value = "dtv";
       };
       document.getElementById("openAddTransactorModal").onclick = () =>
         (document.getElementById("modalTransactor").style.display = "flex");
@@ -1351,7 +1364,7 @@
             const noteHtml = note
               ? `<br><span style="font-size:11px; color:var(--text-muted);"><i class="fas fa-sticky-note"></i> ${note}</span>`
               : "";
-            html += `<tr><td><div class="file-item-name"><i class="fas fa-user-circle" style="color: #00f0ff;"></i><span>${name}</span>${noteHtml}</div></td><td>${email}</td><td>${role}</td><td><span class="badge badge-success">Hoạt động</span></td><td><button class="btn-edit" onclick="alert('Chức năng sửa đang phát triển!')"><i class="fas fa-edit"></i> Sửa</button> ${deleteBtnHtml}</td></tr>`;
+            html += `<tr><td><div class="file-item-name"><i class="fas fa-user-circle" style="color: #00f0ff;"></i><span>${name}</span>${noteHtml}</div></td><td>${email}</td><td>${role}</td><td><span class="badge badge-success">Hoạt động</span></td><td><button class="btn-edit" onclick="openEditTransactor('${docSnap.id}')"><i class="fas fa-edit"></i> Sửa</button> ${deleteBtnHtml}</td></tr>`;
           });
           tbody.innerHTML = html;
         });
@@ -1704,6 +1717,142 @@
         } catch (error) {
           console.error("❌ LỖI KHI KHÔI PHỤC:", error);
           alert("Lỗi khôi phục: " + error.message);
+        }
+      };
+
+      // === THAO TÁC SỬA DTV (ADMIN) ===
+      // Mở modal chỉnh sửa và điền sẵn dữ liệu hiện tại của DTV
+      window.openEditTransactor = async function (id) {
+        try {
+          const docSnap = await getDoc(doc(db, "Transactors", id));
+          if (!docSnap.exists()) {
+            Swal.fire({
+              icon: "error",
+              title: "Không tìm thấy",
+              text: "DTV này không tồn tại hoặc đã bị xóa.",
+            });
+            return;
+          }
+          const d = docSnap.data();
+
+          document.getElementById("editTransId").value = id;
+          document.getElementById("editTransName").value = d.name || "";
+          document.getElementById("editTransEmail").value = d.email || "";
+          document.getElementById("editTransPass").value = ""; // không điền sẵn mật khẩu
+          document.getElementById("editTransRole").value = d.role || "dtv";
+
+          document.getElementById("modalEditTransactor").style.display =
+            "flex";
+        } catch (error) {
+          console.error("Lỗi mở modal sửa:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi hệ thống",
+            text: error.message,
+          });
+        }
+      };
+
+      // Lưu thay đổi khi admin bấm "Cập Nhật DTV"
+      document.getElementById("updateTransactorBtn").onclick = async () => {
+        const id = document.getElementById("editTransId").value;
+        const name = document.getElementById("editTransName").value.trim();
+        const email = document.getElementById("editTransEmail").value.trim();
+        const password = document.getElementById("editTransPass").value;
+        const role = document.getElementById("editTransRole").value.trim();
+
+        if (!id) return;
+        if (!name || !email) {
+          return Swal.fire({
+            icon: "warning",
+            title: "Thiếu thông tin",
+            text: "Tên và Email không được để trống.",
+          });
+        }
+
+        try {
+          const docSnap = await getDoc(doc(db, "Transactors", id));
+          if (!docSnap.exists()) {
+            return Swal.fire({
+              icon: "error",
+              title: "Không tìm thấy",
+              text: "DTV này không còn tồn tại.",
+            });
+          }
+          const oldData = docSnap.data();
+
+          // 1. Cập nhật Firestore
+          await updateDoc(doc(db, "Transactors", id), {
+            name,
+            email,
+            role,
+            updatedAt: new Date().toISOString(),
+          });
+
+          // 2. Cập nhật tài khoản Auth (nếu đổi email)
+          if (oldData.email && oldData.email !== email) {
+            try {
+              const user = auth.currentUser;
+              if (user && user.uid === id) {
+                await updateEmail(user, email);
+              } else {
+                // Nếu admin đang sửa DTV khác, không thể đổi email Auth trực tiếp
+                // (Firebase chỉ cho đổi email của user đang đăng nhập).
+                console.warn(
+                  "Không thể đổi email Auth của DTV khác khi đang đăng nhập bằng tài khoản admin.",
+                );
+              }
+            } catch (authErr) {
+              console.error("Lỗi đổi email Auth:", authErr);
+              Swal.fire({
+                icon: "warning",
+                title: "Đã lưu Firestore",
+                text:
+                  "Đã cập nhật dữ liệu, nhưng không đổi được email đăng nhập: " +
+                  authErr.message,
+              });
+            }
+          }
+
+          // 3. Đổi mật khẩu Auth (nếu admin nhập mật khẩu mới)
+          if (password) {
+            try {
+              const user = auth.currentUser;
+              if (user && user.uid === id) {
+                await updatePassword(user, password);
+              } else {
+                console.warn(
+                  "Không thể đổi mật khẩu Auth của DTV khác khi đang đăng nhập bằng tài khoản admin.",
+                );
+              }
+            } catch (authErr) {
+              console.error("Lỗi đổi mật khẩu Auth:", authErr);
+              Swal.fire({
+                icon: "warning",
+                title: "Đã lưu Firestore",
+                text:
+                  "Đã cập nhật dữ liệu, nhưng không đổi được mật khẩu đăng nhập: " +
+                  authErr.message,
+              });
+            }
+          }
+
+          logActivity("Sửa thông tin DTV", name);
+          closeModals();
+          Swal.fire({
+            icon: "success",
+            title: "Thành công!",
+            text: "✅ Đã cập nhật thông tin DTV!",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        } catch (error) {
+          console.error("Lỗi cập nhật DTV:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi hệ thống",
+            text: error.message,
+          });
         }
       };
 
