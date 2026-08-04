@@ -135,16 +135,30 @@
         async function checkMaintenanceAndRole(user) {
             try {
                 let userRole = 'dtv';
+                let userStatus = 'active';
+                let userName = '';
                 const transSnap = await getDocs(collection(db, "Transactors"));
                 transSnap.forEach(docSnap => {
                     const d = docSnap.data();
                     if (d.email && d.email.toLowerCase() === user.email.toLowerCase()) {
                         if (d.role) userRole = d.role;
+                        if (d.status) userStatus = d.status;
+                        if (d.name) userName = d.name;
                     }
                 });
                 console.log("🔐 Role hiện tại của user:", userRole);
+                console.log("📋 Trạng thái user:", userStatus);
 
                 const isDTV = (userRole && userRole.toLowerCase() === 'dtv') || (!userRole && !user.email.includes('bqt'));
+
+                // 🛑 KIỂM TRA: Nếu là DTV nhưng không phải "Hoạt động" thì chặn
+                if (isDTV && userStatus && userStatus.toLowerCase() !== 'active' && userStatus.toLowerCase() !== 'hoạt động') {
+                    await signOut(auth);
+                    errorMessage.style.display = 'block';
+                    errorMessage.innerText = '⛔ TÀI KHOẢN CỦA BẠN HIỆN KHÔNG HOẠT ĐỘNG! Vui lòng liên hệ Ban Quản Trị để được hỗ trợ.';
+                    return false;
+                }
+
                 const maintRef = doc(db, "system_settings", "maintenance");
                 const maintSnap = await getDoc(maintRef);
                 const isMaintenance = maintSnap.exists() && maintSnap.data().isMaintenance === true;
