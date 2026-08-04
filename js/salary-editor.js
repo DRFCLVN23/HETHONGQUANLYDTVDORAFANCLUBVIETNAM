@@ -27,14 +27,14 @@ const salaryTableBody = document.getElementById('salaryTableBody');
 // Edit salary mode
 editSalaryBtn?.addEventListener('click', () => {
     if (!currentUser) {
-        alert('Vui lòng đăng nhập để thực hiện thao tác này');
+        showToast('Vui lòng đăng nhập để thực hiện thao tác này', 'warning');
         return;
     }
     
     // Check if user is admin (simple check - you can implement proper role check)
     const isAdmin = confirm('Bạn có quyền Admin? Nhấn OK để tiếp tục');
     if (!isAdmin) {
-        alert('Chỉ Admin mới có quyền chỉnh sửa bảng lương');
+        showToast('Chỉ Admin mới có quyền chỉnh sửa bảng lương', 'error');
         return;
     }
     
@@ -78,7 +78,7 @@ editSalaryBtn?.addEventListener('click', () => {
         });
     });
     
-    alert('Đã bật chế độ chỉnh sửa bảng lương. Sửa các ô và nhấn "Lưu thay đổi".');
+    showToast('Đã bật chế độ chỉnh sửa bảng lương. Sửa các ô và nhấn "Lưu thay đổi".', 'info');
 });
 
 // Calculate total for a row
@@ -195,7 +195,7 @@ saveSalaryBtn?.addEventListener('click', async () => {
             updatedCount: updates.length
         });
         
-        alert(`Lưu bảng lương thành công! Đã cập nhật ${updates.length} DTV.`);
+        showToast(`Lưu bảng lương thành công! Đã cập nhật ${updates.length} DTV.`, 'success');
         
         // Refresh and exit edit mode
         isEditingSalary = false;
@@ -213,7 +213,7 @@ saveSalaryBtn?.addEventListener('click', async () => {
         
     } catch (error) {
         console.error('Error saving salary:', error);
-        alert('Lỗi khi lưu bảng lương: ' + error.message);
+        showToast('Lỗi khi lưu bảng lương: ' + error.message, 'error');
     }
 });
 
