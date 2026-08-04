@@ -18,6 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
       :root {
@@ -665,7 +666,7 @@
             <div style="display: flex; gap: 10px">
               <button
                 class="btn"
-                onclick="alert('Chức năng đang phát triển!')"
+                onclick="exportSalaryToExcel()"
                 style="
                   background: linear-gradient(45deg, #00f0ff, #7000ff);
                   color: #fff;
@@ -1720,8 +1721,103 @@
         }
       };
 
+      // === XUẤT BẢNG LƯƠNG RA FILE EXCEL ===
+      window.exportSalaryToExcel = async function () {
+        try {
+          const snapshot = await getDocs(collection(db, "salary_records"));
+          if (snapshot.empty) {
+            return Swal.fire({
+              icon: "info",
+              title: "Không có dữ liệu",
+              text: "Chưa có bảng lương nào để xuất.",
+            });
+          }
+
+          const rows = [
+            [
+              "STT",
+              "Tiêu đề",
+              "Tên DTV",
+              "Email",
+              "Lương cơ bản",
+              "Phụ cấp",
+              "Thưởng",
+              "Khấu hao",
+              "Tổng",
+            ],
+          ];
+
+          let stt = 1;
+          snapshot.forEach((docSnap) => {
+            const d = docSnap.data();
+            const base = Number(d.baseSalary) || 0;
+            const allowance = Number(d.allowance) || 0;
+            const bonus = Number(d.bonus) || 0;
+            const deduction = Number(d.deduction) || 0;
+            const total = base + allowance + bonus - deduction;
+
+            rows.push([
+              stt++,
+              d.title || "",
+              d.dtvName || "",
+              d.email || "",
+              base,
+              allowance,
+              bonus,
+              deduction,
+              total,
+            ]);
+          });
+
+          const wb = XLSX.utils.book_new();
+          const ws = XLSX.utils.aoa_to_sheet(rows);
+
+          ws["!cols"] = [
+            { wch: 5 },
+            { wch: 25 },
+            { wch: 20 },
+            { wch: 30 },
+            { wch: 15 },
+            { wch: 12 },
+            { wch: 10 },
+            { wch: 10 },
+            { wch: 15 },
+          ];
+
+          XLSX.utils.book_append_sheet(wb, ws, "Bảng lương");
+
+          const wbout = XLSX.write(wb, {
+            bookType: "xlsx",
+            type: "array",
+          });
+
+          saveAs(
+            new Blob([wbout], {
+              type: "application/octet-stream",
+            }),
+            `BangLuong_DTV_${new Date().toISOString().slice(0, 10)}.xlsx`,
+          );
+
+          logActivity("Xuất bảng lương ra file Excel");
+
+          Swal.fire({
+            icon: "success",
+            title: "Xuất thành công!",
+            text: "Đã tải file BangLuong_DTV.xlsx",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        } catch (error) {
+          console.error("Lỗi xuất Excel:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi xuất file",
+            text: error.message,
+          });
+        }
+      };
+
       // === THAO TÁC SỬA DTV (ADMIN) ===
-      // Mở modal chỉnh sửa và điền sẵn dữ liệu hiện tại của DTV
       window.openEditTransactor = async function (id) {
         try {
           const docSnap = await getDoc(doc(db, "Transactors", id));
