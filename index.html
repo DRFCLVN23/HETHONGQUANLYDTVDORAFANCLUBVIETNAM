@@ -31,7 +31,6 @@
             overflow: hidden;
         }
 
-        /* File protocol warning banner */
         .file-protocol-warning {
             position: fixed;
             top: 0;
@@ -97,7 +96,6 @@
             to { transform: translateY(0); }
         }
 
-        /* Animated floating particles */
         .particle {
             position: absolute;
             width: 6px;
@@ -203,7 +201,7 @@
             outline: none;
             transition: all 0.3s;
         }
-        /* Override browser autofill background color */
+        
         .form-control:-webkit-autofill,
         .form-control:-webkit-autofill:hover,
         .form-control:-webkit-autofill:focus,
@@ -215,7 +213,6 @@
             background: transparent !important;
         }
 
-        /* Password toggle button */
         .toggle-password {
             background: none;
             border: none;
@@ -300,7 +297,7 @@
     </style>
 </head>
 <body>
-    <!-- File protocol warning banner -->
+    
     <div id="fileProtocolWarning" class="file-protocol-warning">
         <i class="fas fa-exclamation-triangle"></i>
         <div class="warning-content">
@@ -316,7 +313,6 @@
         </button>
     </div>
 
-    <!-- Floating particles background -->
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
@@ -373,7 +369,7 @@
     </script>
 
     <script>
-        // Detect file:// protocol and show warning
+        
         if (window.location.protocol === 'file:') {
             document.getElementById('fileProtocolWarning').classList.add('show');
         }
@@ -407,7 +403,6 @@
         const loginBtn = document.getElementById('loginBtn');
         const togglePassword = document.getElementById('togglePassword');
 
-        // Password show/hide toggle
         togglePassword.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
@@ -434,7 +429,6 @@
 
                 const isDTV = (userRole && userRole.toLowerCase() === 'dtv') || (!userRole && !user.email.includes('bqt'));
 
-                // 🛑 KIỂM TRA: Nếu là DTV nhưng không phải "Hoạt động" thì chặn
                 if (isDTV && userStatus && userStatus.toLowerCase() !== 'active' && userStatus.toLowerCase() !== 'hoạt động') {
                     await signOut(auth);
                     errorMessage.style.display = 'block';
@@ -456,7 +450,7 @@
                 return true;
             } catch (err) {
                 console.error("❌ LỖI CHI TIẾT KHI KIỂM TRA:", err);
-                // Nếu lỗi do quyền Firestore, vẫn cho phép truy cập để không bị chặn oan
+                
                 return true;
             }
         }

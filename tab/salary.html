@@ -1,0 +1,51 @@
+<section id="tab-salary" class="tab-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-folder" style="color: #ffe066"></i>
+              <span id="salaryTitle">Bảng tính Lương DTV</span>
+            </h3>
+            <div style="display: flex; gap: 10px">
+              <button
+                class="btn"
+                id="exportSalaryBtn"
+                onclick="exportSalaryToExcel()"
+                style="
+                  background: linear-gradient(45deg, #00f0ff, #7000ff);
+                  color: #fff;
+                  font-weight: 600;
+                "
+              >
+                <i class="fas fa-file-word"></i> Xuất Bảng Lương
+              </button>
+              <button class="btn" id="openAddSalaryModal">
+                <i class="fas fa-calculator"></i> Tính Lương Tháng
+              </button>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 18%">Họ và tên</th>
+                <th style="width: 12%">Vị trí</th>
+                <th style="width: 14%">Email</th>
+                <th style="width: 12%">Lương tập</th>
+                <th style="width: 10%">Phụ cấp</th>
+                <th style="width: 10%">Thưởng</th>
+                <th style="width: 10%">Khấu hao</th>
+                <th class="admin-only-column" style="width: 14%">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="salaryTableBody">
+              <tr>
+                <td
+                  colspan="8"
+                  style="text-align: center; color: var(--text-muted)"
+                >
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>

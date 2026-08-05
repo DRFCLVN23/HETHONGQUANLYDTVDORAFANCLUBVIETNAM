@@ -1,0 +1,1204 @@
+{
+  "exportDate": "2026-08-05T01:49:50.803Z",
+  "exportedBy": "bqtnguyentuankhai@doraemonfansubvn.com",
+  "data": {
+    "Transactors": [
+      {
+        "id": "Cfo2ooSrj2VyvTl1FTOsMQ3S4U33",
+        "status": "active",
+        "email": "1@doraemonfansubvn.com",
+        "createdAt": "2026-08-04T13:22:38.716Z",
+        "note": "",
+        "password": "123456",
+        "name": "1@doraemonfansubvn.com",
+        "role": "dtv",
+        "uid": "Cfo2ooSrj2VyvTl1FTOsMQ3S4U33"
+      },
+      {
+        "id": "F7YT6U6WaBz7yZKTDbf9",
+        "email": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "name": "Nguyễn Đức Giao Ước",
+        "role": "dtv",
+        "uid": "R3us2yZbTGSluSY7jIVjYqG7DOv2"
+      },
+      {
+        "id": "MGnFM9Zw2q1gVWXFxXKv",
+        "email": "phamanhtuan2013@doraemonfansubvn.com",
+        "uid": "9AITTv9g1XTVHwch6fBo9YshXWl2",
+        "role": "dtv",
+        "name": "Phạm Anh Tuấn"
+      },
+      {
+        "id": "V4fJFml7naegk6PCKHkwb0hm3Z22",
+        "status": "active",
+        "note": "",
+        "name": "themdichthuat1@doraemonfansubvn.com",
+        "uid": "V4fJFml7naegk6PCKHkwb0hm3Z22",
+        "createdAt": "2026-08-04T10:03:30.935Z",
+        "updatedAt": "2026-08-04T12:36:35.236Z",
+        "role": "dtv",
+        "password": "themdichthuat@doraemonfansubvn.com",
+        "email": "themdichthuat@doraemonfansubvn.com"
+      },
+      {
+        "id": "WybYApdU1zUXmvbPr0hclg3J2Nb2",
+        "status": "Active",
+        "email": "themdichthuat@doraemonfansubvn.com",
+        "createdAt": "2026-08-04T09:15:55.861Z",
+        "name": "test thêm dịch thuật",
+        "uid": "WybYApdU1zUXmvbPr0hclg3J2Nb2",
+        "password": "Dora123",
+        "role": "dtv"
+      },
+      {
+        "id": "dL4353htYQMGWXSu8E8EXXNgdlf1",
+        "createdAt": "2026-08-04T09:36:52.066Z",
+        "name": "Trương Định Trọng Đạt",
+        "role": "dtv",
+        "email": "TruongDinhTrongDat2009@doraemonfansubvn.com",
+        "password": "TruongDinhTrongDat2009",
+        "status": "Active",
+        "uid": "dL4353htYQMGWXSu8E8EXXNgdlf1"
+      },
+      {
+        "id": "u5p7XEIVDzgfVZhKKHJe",
+        "role": "admin",
+        "email": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "uid": "1eZngAcjXcVc5bkBeSKhHrBuVgP2",
+        "name": "Nguyễn Tuấn Khải"
+      }
+    ],
+    "salary_records": [
+      {
+        "id": "1pwlMMfKkXJxqVzGkHHJ",
+        "title": "Lương 3 tập",
+        "email": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "deduction": 0,
+        "allowance": 0,
+        "dtvCode": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "dtvName": "Nguyễn Đức Giao Ước",
+        "createdAt": "2026-08-03T18:33:37.422Z",
+        "bonus": 0,
+        "baseSalary": 75000,
+        "itemCode": "F7YT6U"
+      },
+      {
+        "id": "dJZh8Hiwg0CxWRPbxcYY",
+        "bonus": 0,
+        "dtvCode": "phamanhtuan2013@doraemonfansubvn.com",
+        "dtvName": "Phạm Anh Tuấn",
+        "createdAt": "2026-08-03T18:34:05.670Z",
+        "baseSalary": 25000,
+        "deduction": 0,
+        "allowance": 0,
+        "email": "phamanhtuan2013@doraemonfansubvn.com",
+        "itemCode": "MGnFM9",
+        "title": "Lương 1 tập"
+      }
+    ],
+    "assignments": [
+      {
+        "id": "0tplZffGdpoVe8L716Lr",
+        "dtvCode": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "dtvName": "Nguyễn Đức Giao Ước",
+        "createdAt": "2026-07-31T05:38:33.810Z",
+        "desc": "VĂN BẢN : https://transfer.it/t/PEt847wnTbxZ\nPHIM THÔ : https://turbovidhls.com/t/6a6c4bd7edf7f",
+        "deadline": "2026-08-01",
+        "status": "completed",
+        "project": "DỊCH PHIM THEO YC"
+      },
+      {
+        "id": "jvWTZuxdPCXHI72Yo7BF",
+        "project": "Dịch phim theo yc",
+        "desc": "",
+        "status": "completed",
+        "createdAt": "2026-08-01T05:16:27.442Z",
+        "deadline": "2026-08-04",
+        "dtvCode": "phamanhtuan2013@doraemonfansubvn.com",
+        "dtvName": "Phạm Anh Tuấn"
+      }
+    ],
+    "documents": [
+      {
+        "id": "52MfCMjyZnHY5jLM8SdU",
+        "nguoiKy": "ADMIN",
+        "createdAt": "2026-07-31T07:16:37.286Z",
+        "fileUrl": "https://docs.google.com/document/d/13FtSlOoBsf-eysome6ClQie4xvhRbvRN/edit?usp=sharing&ouid=104200024582070260475&rtpof=true&sd=true",
+        "fileName": "VĂN BẢN QUY CHẾ",
+        "noiDung": "ĐÍNH KÈM VĂN BẢN",
+        "soVanBan": "01/QCDT-BQTFP",
+        "ngayBanHanh": "2026-07-21",
+        "tieuDe": "QUY CHẾ DỊCH THUẬT PHỤ ĐỀ",
+        "loai": "Quy chế"
+      }
+    ],
+    "activities": [
+      {
+        "id": "00fDNs6s80shqZ374jbN",
+        "actorName": "N/A",
+        "extra": "",
+        "targetEmail": "DTVTruongDinhTrongDat@doraemonfansubvn.com",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Trương Đinh Trọng Đạt",
+        "action": "Cập nhật thành viên",
+        "timestamp": "2026-08-04T07:49:04.950Z"
+      },
+      {
+        "id": "05i1TMXBy5uNkc2Epabg",
+        "action": "Bật chế độ Bảo trì",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "timestamp": "2026-08-03T06:56:06.977Z"
+      },
+      {
+        "id": "0FLHwaFDorEhpsUn5FCh",
+        "action": "Thêm DTV mới",
+        "target": "test",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T14:50:07.115Z"
+      },
+      {
+        "id": "0oWGg42ZVoXePL3jfZtQ",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "Transactors",
+        "timestamp": "2026-08-03T15:18:07.962Z",
+        "action": "Xóa mục khỏi hệ thống"
+      },
+      {
+        "id": "1pICYpzutGTZq0DXjfky",
+        "target": "",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Tắt chế độ Bảo trì",
+        "timestamp": "2026-08-04T09:10:17.367Z"
+      },
+      {
+        "id": "1qfpIc8OD1KGsxBPr0gN",
+        "actorName": "N/A",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "extra": "",
+        "action": "Xóa bảng lương",
+        "timestamp": "2026-08-01T04:59:45.443Z"
+      },
+      {
+        "id": "2StHeHLXAfUIzixHKRsT",
+        "target": "TruongDinhTrongDat2009",
+        "actorEmail": "truongdinhtrongdat2009@doraemonfansubvn.com",
+        "timestamp": "2026-08-04T08:29:57.234Z",
+        "action": "Thêm DTV mới"
+      },
+      {
+        "id": "2nYfCvfKebxgt7QA3loh",
+        "action": "Giao công việc",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "actorName": "N/A",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "timestamp": "2026-07-31T15:57:51.744Z",
+        "extra": "Dự án: Dịch conan movie 2025"
+      },
+      {
+        "id": "39Ydnnd8p8JlHa4cBaWm",
+        "timestamp": "2026-07-31T07:31:40.578Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "action": "Thêm bảng lương",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "extra": "Lương: 0",
+        "actorName": "N/A"
+      },
+      {
+        "id": "49bfVwg3kGn4gkO6nqUG",
+        "timestamp": "2026-08-03T16:21:33.657Z",
+        "actorEmail": "test@123.com",
+        "action": "Cập nhật DTV",
+        "target": "Trương Đinh Trọng Đạt"
+      },
+      {
+        "id": "4CIpU1WfkNCyYpIIoBZy",
+        "timestamp": "2026-07-31T16:31:50.542Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "extra": "Lương: -5000",
+        "action": "Thêm bảng lương",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorName": "N/A"
+      },
+      {
+        "id": "4J3rAffvcxq1CHUJbnng",
+        "action": "Xóa bảng lương",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "timestamp": "2026-07-30T12:53:47.248Z",
+        "actorName": "N/A",
+        "extra": ""
+      },
+      {
+        "id": "4uwuSI0ukbFRghB3ndbk",
+        "actorName": "N/A",
+        "action": "Duyệt công việc",
+        "extra": "Dự án: DỊCH PHIM THEO YC",
+        "actorEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "timestamp": "2026-07-31T05:39:09.972Z",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com"
+      },
+      {
+        "id": "4zuyHOzzjIE0IM2KaMSU",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T15:30:54.461Z",
+        "action": "Thêm DTV mới",
+        "target": "Doratest"
+      },
+      {
+        "id": "5LEfaLoo0HvD3TfLtEdl",
+        "action": "Sửa công việc",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "timestamp": "2026-07-31T07:18:57.472Z",
+        "actorName": "N/A",
+        "extra": "Dự án: DỊCH PHIM THEO YC - Trạng thái: pending"
+      },
+      {
+        "id": "5kzdasTVWQIDeDx2lcy0",
+        "timestamp": "2026-08-03T16:05:47.119Z",
+        "action": "Tắt chế độ Bảo trì",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": ""
+      },
+      {
+        "id": "5yRKXfrAlpLGPCQCKDsb",
+        "timestamp": "2026-07-31T03:11:51.224Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Tuấn Khải",
+        "action": "Thêm thành viên mới",
+        "targetEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "actorName": "N/A",
+        "extra": ""
+      },
+      {
+        "id": "6iG0YLVpAgPiLBJU99JM",
+        "timestamp": "2026-08-03T16:21:04.558Z",
+        "actorName": "N/A",
+        "action": "Thêm thành viên mới",
+        "extra": "",
+        "actorEmail": "doraemonfansubvietnam@doraemonfansubvn.com",
+        "targetName": "Doraemon fansub Việt Nam",
+        "targetEmail": "doraemonfansubvietnam@doraemonfansubvn.com"
+      },
+      {
+        "id": "6zinJwVZkDI3ZWqy507e",
+        "action": "Cập nhật bảng lương",
+        "target": "Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T07:19:14.280Z"
+      },
+      {
+        "id": "7LdOCmxEmx000AKdMqQ0",
+        "timestamp": "2026-07-31T05:39:09.798Z",
+        "action": "Duyệt công việc",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "extra": "Dự án: DỊCH PHIM THEO YC",
+        "actorName": "N/A"
+      },
+      {
+        "id": "7VVko8aD2ySsdwjsQ4OY",
+        "timestamp": "2026-08-03T07:15:39.782Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Xóa mục khỏi hệ thống",
+        "target": "salary_records"
+      },
+      {
+        "id": "7Z3rW4MqwhWXO7ZARiOy",
+        "action": "Xuất file backup hệ thống (.json)",
+        "target": "",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T14:52:16.080Z"
+      },
+      {
+        "id": "8eYzyIo2N9h3ixOpNy1e",
+        "action": "Xuất file backup hệ thống (.json)",
+        "target": "",
+        "timestamp": "2026-08-04T17:58:04.107Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "9J8mf19TTPMPWiuGlGZw",
+        "action": "Xuất bảng lương ra file Excel",
+        "target": "",
+        "timestamp": "2026-08-04T12:12:40.008Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "9iKBqzU4BTRNWNP4HXFk",
+        "action": "Xóa mục khỏi hệ thống",
+        "target": "salary_records",
+        "timestamp": "2026-08-03T07:15:36.959Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "AKxP21IzlQ2I6d6BvaXb",
+        "action": "Xóa mục khỏi hệ thống",
+        "target": "salary_records",
+        "timestamp": "2026-08-03T07:15:33.081Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "AQ0o896292ryOsvU42Nj",
+        "actorEmail": "themdichthuat@doraemonfansubvn.com",
+        "timestamp": "2026-08-04T10:03:31.428Z",
+        "target": "themdichthuat1@doraemonfansubvn.com",
+        "action": "Thêm DTV mới"
+      },
+      {
+        "id": "Ahkqj2hgrO0vnh91W6zn",
+        "action": "Thêm DTV mới",
+        "target": "OK",
+        "timestamp": "2026-08-03T16:15:59.164Z",
+        "actorEmail": "test@123.com"
+      },
+      {
+        "id": "BVhCwdYU4kQxG1Zp8Lop",
+        "action": "Xóa bảng lương",
+        "timestamp": "2026-08-01T05:17:02.381Z",
+        "targetEmail": "phamanhtuan2013@doraemonfansubvn.com",
+        "extra": "",
+        "actorName": "N/A",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Phạm Anh Tuấn"
+      },
+      {
+        "id": "BljJpEqBwrOqVFVEIbuI",
+        "timestamp": "2026-08-03T11:36:49.566Z",
+        "action": "Tắt chế độ Bảo trì",
+        "target": "",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "CGEP15SSjZxTku867mfD",
+        "timestamp": "2026-08-04T12:36:35.618Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "themdichthuat1@doraemonfansubvn.com",
+        "action": "Sửa thông tin DTV"
+      },
+      {
+        "id": "EJi9zvpf5uBkqH7b1xmx",
+        "actorName": "N/A",
+        "extra": "",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "action": "Xóa bảng lương",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-07-31T07:31:48.949Z"
+      },
+      {
+        "id": "FFlvMubmQ8iv1XtZmIyF",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Xóa mục khỏi hệ thống",
+        "timestamp": "2026-08-04T09:15:26.947Z",
+        "target": "Transactors"
+      },
+      {
+        "id": "FYRkYLopqZTcDpgb4hqa",
+        "action": "Thêm DTV mới",
+        "timestamp": "2026-08-03T14:54:31.652Z",
+        "target": "testweb",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "FaY9EO0YnAlze0xLBekq",
+        "targetName": "Doraemon fansub Việt Nam",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetEmail": "doraemonfansubvietnam@doraemonfansubvn.com",
+        "extra": "",
+        "actorName": "N/A",
+        "timestamp": "2026-08-03T16:22:35.254Z",
+        "action": "Xóa thành viên"
+      },
+      {
+        "id": "H92fX0G2EQE1AHvnVwge",
+        "extra": "",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "timestamp": "2026-07-31T03:27:39.551Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "action": "Xóa bảng lương",
+        "actorName": "N/A"
+      },
+      {
+        "id": "HmKT7mtr1UXER5zCiIjZ",
+        "extra": "Bảo trì: false",
+        "timestamp": "2026-08-03T05:10:55.700Z",
+        "targetEmail": "",
+        "actorName": "N/A",
+        "action": "Đổi trạng thái bảo trì",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": ""
+      },
+      {
+        "id": "IYy1FukNHYUbmUKSnad1",
+        "action": "Bật chế độ Bảo trì",
+        "target": "",
+        "timestamp": "2026-08-03T11:36:30.569Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "IvZsGGsJoImPw3STFtNe",
+        "target": "Phạm Anh Tuấn",
+        "timestamp": "2026-08-03T07:18:05.054Z",
+        "action": "Tạo bảng lương mới",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "JzjHyK0Ka9PpzYPlNcEP",
+        "actorName": "N/A",
+        "extra": "",
+        "targetName": "Trương Đinh Trọng Đạt",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-04T07:47:14.238Z",
+        "targetEmail": "DTVTruongDinhTrongDat@doraemonfansubvn.com",
+        "action": "Cập nhật thành viên"
+      },
+      {
+        "id": "KD55Hvpu7wXX1E3liLXe",
+        "action": "Thêm DTV mới",
+        "timestamp": "2026-08-03T14:57:00.094Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "TESTWEB"
+      },
+      {
+        "id": "LLGORH9Em87jqLW4ARCL",
+        "action": "Xóa mục khỏi hệ thống",
+        "target": "salary_records",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T07:20:55.856Z"
+      },
+      {
+        "id": "M49ICPtTWnsbIviQXV8M",
+        "timestamp": "2026-08-03T11:35:10.092Z",
+        "target": "",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Tắt chế độ Bảo trì"
+      },
+      {
+        "id": "N235xDM3pXFbt3G664MY",
+        "timestamp": "2026-08-03T14:49:24.995Z",
+        "action": "Xóa mục khỏi hệ thống",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "Transactors"
+      },
+      {
+        "id": "NCR54NOXTtPe5vAxv1yn",
+        "actorEmail": "truongdinhtrongdat2009@doraemonfansubvn.com",
+        "timestamp": "2026-08-04T22:56:21.712Z",
+        "target": "",
+        "action": "Xuất bảng lương ra file Word"
+      },
+      {
+        "id": "NbI4CBrhz4jrUoHDBuJ3",
+        "action": "Xuất file backup hệ thống (.json)",
+        "target": "",
+        "timestamp": "2026-08-04T17:28:55.539Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "O0ZuiUXIBV9ES1aTtB2Z",
+        "target": "salary_records",
+        "action": "Xóa mục khỏi hệ thống",
+        "timestamp": "2026-08-03T07:15:29.250Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "O4fYKP5uo0YV8A4hfWzG",
+        "timestamp": "2026-08-03T16:22:37.763Z",
+        "target": "test",
+        "action": "Thêm DTV mới",
+        "actorEmail": "test@gmail.com"
+      },
+      {
+        "id": "OfUBBykXPk5cvgmwh4in",
+        "action": "Xuất file backup hệ thống (.json)",
+        "target": "",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T11:36:25.900Z"
+      },
+      {
+        "id": "PCsI48ufkolsa4pATFgd",
+        "action": "Cập nhật DTV",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T15:29:13.455Z",
+        "target": "Dora"
+      },
+      {
+        "id": "PEOhC7qZLxbSdJbN21Yw",
+        "target": "Transactors",
+        "action": "Xóa mục khỏi hệ thống",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T14:56:45.372Z"
+      },
+      {
+        "id": "PpAjy3fBTx1JAl140rqb",
+        "timestamp": "2026-08-04T12:25:06.200Z",
+        "action": "Xuất bảng lương ra file Excel",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": ""
+      },
+      {
+        "id": "PrxWum5OkMKPGWELilGI",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "extra": "Lương: 0",
+        "actorName": "N/A",
+        "action": "Thêm bảng lương",
+        "timestamp": "2026-07-31T10:13:16.018Z",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com"
+      },
+      {
+        "id": "Rh8o0nI0CfyWPB97q0cL",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T11:35:00.829Z",
+        "action": "Xuất file backup hệ thống (.json)",
+        "target": ""
+      },
+      {
+        "id": "Rkz9IBiQ2eO7wO8FZhbT",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "timestamp": "2026-08-04T12:25:41.727Z",
+        "action": "Xuất bảng lương ra file Excel"
+      },
+      {
+        "id": "SUgKQpl5eN5UpEIhF9Lk",
+        "target": "",
+        "action": "Xuất file backup hệ thống (.json)",
+        "timestamp": "2026-08-05T01:49:46.301Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "Srd2tQFxV9JQyyZsbCHz",
+        "target": "Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T07:20:25.154Z",
+        "action": "Cập nhật bảng lương"
+      },
+      {
+        "id": "TLgsL6QMgu8K45Sd2zxv",
+        "action": "Xóa thành viên",
+        "timestamp": "2026-07-31T03:13:22.191Z",
+        "extra": "",
+        "actorName": "N/A",
+        "targetEmail": "doraemonfansubvn@gmail.com",
+        "actorEmail": "doraemonfansubvn@gmail.com",
+        "targetName": "ADMIN "
+      },
+      {
+        "id": "U89TNIRV9aho4SMkMDXt",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "timestamp": "2026-08-03T08:49:43.573Z",
+        "action": "Bật chế độ Bảo trì"
+      },
+      {
+        "id": "UIEMrqfrupB1Gh6I7hhu",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T15:23:52.030Z",
+        "action": "Bật chế độ Bảo trì",
+        "target": ""
+      },
+      {
+        "id": "UJjt5I3vtUkSbdqO7tR6",
+        "action": "Xóa mục khỏi hệ thống",
+        "target": "Transactors",
+        "timestamp": "2026-08-04T09:30:51.246Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "Urv0XtYyOriOLX319Kct",
+        "timestamp": "2026-08-04T13:03:50.069Z",
+        "target": "",
+        "action": "Xuất bảng lương ra file Word",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "VwqjyDa1S7aYdodnbE1m",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Doratest",
+        "targetEmail": "Doratest@doraemonfansubvn.com",
+        "actorName": "N/A",
+        "action": "Xóa thành viên",
+        "timestamp": "2026-08-03T16:20:11.977Z",
+        "extra": ""
+      },
+      {
+        "id": "X1dhp8fA15ug5lYuYqPQ",
+        "actorName": "N/A",
+        "action": "Tải Backup Dữ Liệu",
+        "targetEmail": "",
+        "extra": "",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "",
+        "timestamp": "2026-08-02T17:07:35.123Z"
+      },
+      {
+        "id": "XqmqJsyu4EoLWubr5jLl",
+        "action": "Thêm bảng lương",
+        "actorName": "N/A",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "doraemonfansubvn@gmail.com",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "extra": "Lương: 25000",
+        "timestamp": "2026-07-30T12:54:59.053Z"
+      },
+      {
+        "id": "YBJ4HDkNipfgXaL8ZVuV",
+        "action": "Thêm DTV mới",
+        "target": "Trương Định Trọng Đạt",
+        "timestamp": "2026-08-03T14:11:39.202Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "YLyo4KPSvC7KCNJt4Gck",
+        "action": "Xóa mục khỏi hệ thống",
+        "timestamp": "2026-08-03T15:30:30.051Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "Transactors"
+      },
+      {
+        "id": "ZCs8ymNefLHzNQzMW8Gf",
+        "timestamp": "2026-07-31T08:15:35.156Z",
+        "extra": "Dự án: DỊCH PHIM THEO YC - Trạng thái: processing",
+        "action": "Sửa công việc",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorName": "N/A"
+      },
+      {
+        "id": "ZSC5YkUkCKwCeYSVXyXA",
+        "actorName": "N/A",
+        "targetEmail": "phamanhtuan2013@doraemonfansubvn.com",
+        "extra": "Tiêu đề: Lương 1 tập",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Phạm Anh Tuấn",
+        "action": "Thêm bảng lương",
+        "timestamp": "2026-08-03T18:34:07.116Z"
+      },
+      {
+        "id": "ZdR41KhNat07aF4rn2dN",
+        "timestamp": "2026-08-03T07:16:35.601Z",
+        "action": "Tạo bảng lương mới",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "GIAO ƯỚC"
+      },
+      {
+        "id": "ZzQVi3r183QqG5HZ4Ihj",
+        "targetName": "Phạm Anh Tuấn",
+        "actorEmail": "phamanhtuan2013@doraemonfansubvn.com",
+        "targetEmail": "phamanhtuan2013@doraemonfansubvn.com",
+        "action": "Thêm thành viên mới",
+        "timestamp": "2026-08-01T00:48:14.413Z",
+        "extra": "",
+        "actorName": "N/A"
+      },
+      {
+        "id": "a2oNtr0PwBaH4ROhSj4u",
+        "target": "",
+        "action": "Xuất bảng lương ra file Word",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-04T12:54:14.769Z"
+      },
+      {
+        "id": "a4StC4svS6OQIgFx9pBD",
+        "action": "Duyệt công việc",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorName": "N/A",
+        "timestamp": "2026-07-31T05:44:59.531Z",
+        "extra": "Dự án: DỊCH PHIM THEO YC"
+      },
+      {
+        "id": "a6DLvBEY7sOEuVY6HyPS",
+        "target": "Trương Định Trọng Đạt",
+        "action": "Thêm DTV mới",
+        "timestamp": "2026-08-04T09:36:52.645Z",
+        "actorEmail": "truongdinhtrongdat2009@doraemonfansubvn.com"
+      },
+      {
+        "id": "aA3XNisoOxMSoPVAZKFC",
+        "timestamp": "2026-08-01T05:16:29.048Z",
+        "action": "Giao công việc",
+        "targetEmail": "phamanhtuan2013@doraemonfansubvn.com",
+        "targetName": "Phạm Anh Tuấn",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "extra": "Dự án: Dịch phim theo yc",
+        "actorName": "N/A"
+      },
+      {
+        "id": "aBPOvvN5AzSGl35I1XS3",
+        "action": "Thêm DTV mới",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "TESTWEB",
+        "timestamp": "2026-08-03T15:04:47.194Z"
+      },
+      {
+        "id": "aGhA4sXMLZ6A7nhiW5mi",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorName": "N/A",
+        "action": "Xóa bảng lương",
+        "extra": "",
+        "timestamp": "2026-07-31T10:13:01.982Z",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com"
+      },
+      {
+        "id": "aOJdwvQYelj8B5dNdaoo",
+        "actorName": "N/A",
+        "extra": "Dự án: DỊCH PHIM THEO YC",
+        "action": "Giao công việc",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "timestamp": "2026-07-31T05:38:36.207Z"
+      },
+      {
+        "id": "aaYatClNHQ1qwuDSfKnq",
+        "actorName": "N/A",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "extra": "Dự án: DỊCH PHIM THEO YC - Trạng thái: completed",
+        "action": "Sửa công việc",
+        "timestamp": "2026-08-01T15:21:55.898Z"
+      },
+      {
+        "id": "b1VSH2dnQTPOgByDpeIY",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T18:33:39.147Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "action": "Thêm bảng lương",
+        "extra": "Tiêu đề: Lương 3 tập",
+        "actorName": "N/A"
+      },
+      {
+        "id": "ecuX5TSPD6Wcp9qNKmCL",
+        "actorName": "N/A",
+        "extra": "Dự án: Dịch phim theo yc - Trạng thái: completed",
+        "targetEmail": "phamanhtuan2013@doraemonfansubvn.com",
+        "timestamp": "2026-08-02T03:03:27.195Z",
+        "targetName": "Phạm Anh Tuấn",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Sửa công việc"
+      },
+      {
+        "id": "fGnJL2lvamje18U1eZQj",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Bật chế độ Bảo trì",
+        "timestamp": "2026-08-04T09:10:15.129Z",
+        "target": ""
+      },
+      {
+        "id": "fisnoOz8wxBk4TCpPfSd",
+        "timestamp": "2026-08-01T06:53:11.288Z",
+        "extra": "Dự án: DỊCH PHIM THEO YC - Trạng thái: overdue",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorName": "N/A",
+        "action": "Sửa công việc"
+      },
+      {
+        "id": "gQbkl8bpttSk1CKaIPrl",
+        "action": "Cập nhật bảng lương",
+        "target": "Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T07:18:29.290Z"
+      },
+      {
+        "id": "hWelXaiDp55wUbPx7faz",
+        "timestamp": "2026-08-03T07:19:43.232Z",
+        "target": "Phạm Anh Tuấn",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Cập nhật bảng lương"
+      },
+      {
+        "id": "hfBX7cvqg5V8HmsnO9ms",
+        "target": "salary_records",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Xóa mục khỏi hệ thống",
+        "timestamp": "2026-08-03T07:15:24.046Z"
+      },
+      {
+        "id": "iL7RbmLr72NgtBLb9iZG",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Xuất bảng lương ra file Word",
+        "timestamp": "2026-08-04T12:51:05.067Z",
+        "target": ""
+      },
+      {
+        "id": "iQChdpPl0FgfCwmTd9oa",
+        "timestamp": "2026-08-03T16:17:36.414Z",
+        "target": "Transactors",
+        "actorEmail": "test@123.com",
+        "action": "Xóa mục khỏi hệ thống"
+      },
+      {
+        "id": "iVso9J0HqCyg7JX2gw5f",
+        "timestamp": "2026-07-31T07:31:46.244Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "extra": "",
+        "action": "Xóa bảng lương",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorName": "N/A"
+      },
+      {
+        "id": "j8Xo1p0Jg7DDKB39rKt1",
+        "action": "Thêm DTV mới",
+        "target": "TEST",
+        "timestamp": "2026-08-03T14:40:42.194Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "kWhJu6iZC4H5hKIVOGdl",
+        "timestamp": "2026-08-01T04:06:26.583Z",
+        "extra": "Lương: 0",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorName": "N/A",
+        "action": "Thêm bảng lương"
+      },
+      {
+        "id": "kYjH2quEGRhKRAWDElgv",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "",
+        "extra": "Bảo trì: false",
+        "actorName": "N/A",
+        "timestamp": "2026-08-04T07:53:00.542Z",
+        "targetEmail": "",
+        "action": "Đổi trạng thái bảo trì"
+      },
+      {
+        "id": "l2lLQzRP4LZihnRf1YGo",
+        "extra": "Bảo trì: false",
+        "actorName": "N/A",
+        "action": "Đổi trạng thái bảo trì",
+        "timestamp": "2026-08-04T07:49:27.515Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "",
+        "targetEmail": ""
+      },
+      {
+        "id": "l79S4FPA1GyLYdqlY2Ru",
+        "timestamp": "2026-08-03T15:04:00.253Z",
+        "target": "Transactors",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Xóa mục khỏi hệ thống"
+      },
+      {
+        "id": "lcuKEn2DnjM9201aGUoc",
+        "timestamp": "2026-08-03T15:19:07.113Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "Dora",
+        "action": "Thêm DTV mới"
+      },
+      {
+        "id": "mER3cBwC3ivQNzV38DHB",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorName": "N/A",
+        "action": "Thêm bảng lương",
+        "timestamp": "2026-07-31T03:26:43.244Z",
+        "extra": "Lương: -2000"
+      },
+      {
+        "id": "mg3uA00yi7jtxAW9H9RM",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "",
+        "actorName": "N/A",
+        "action": "Đổi trạng thái bảo trì",
+        "extra": "Bảo trì: true",
+        "timestamp": "2026-08-03T16:10:46.606Z",
+        "targetEmail": ""
+      },
+      {
+        "id": "moxISzeoGmjcTm1TQabb",
+        "action": "Xuất file backup hệ thống (.json)",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "timestamp": "2026-08-03T11:52:46.566Z"
+      },
+      {
+        "id": "n2Towf88iO8WXm1elefE",
+        "target": "",
+        "action": "Bật chế độ Bảo trì",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T06:57:28.722Z"
+      },
+      {
+        "id": "nCrTURMqzvNjWIUfVk3I",
+        "target": "",
+        "action": "Xuất bảng lương ra file Word",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-04T17:59:35.087Z"
+      },
+      {
+        "id": "nJzW4esf4Rxfh7SY5Z1V",
+        "timestamp": "2026-07-31T10:12:50.168Z",
+        "extra": "Lương: 0",
+        "actorName": "N/A",
+        "action": "Thêm bảng lương",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com"
+      },
+      {
+        "id": "nTgTz0QoOfzE1VZIdbjz",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "action": "Sửa công việc",
+        "actorName": "N/A",
+        "extra": "Dự án: DỊCH PHIM THEO YC - Trạng thái: pending",
+        "timestamp": "2026-07-31T05:59:12.464Z"
+      },
+      {
+        "id": "nwPJdmU50HLfdMbf1KdE",
+        "action": "Tắt chế độ Bảo trì",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "timestamp": "2026-08-03T06:56:05.302Z"
+      },
+      {
+        "id": "nymbpNFj8aOX4SUqUiJl",
+        "targetEmail": "",
+        "actorName": "N/A",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "",
+        "action": "Đổi trạng thái bảo trì",
+        "extra": "Bảo trì: true",
+        "timestamp": "2026-08-04T07:53:05.674Z"
+      },
+      {
+        "id": "o5wt3kS90rXHENLKKbwC",
+        "timestamp": "2026-08-01T04:06:51.373Z",
+        "extra": "",
+        "actorName": "N/A",
+        "action": "Xóa bảng lương",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com"
+      },
+      {
+        "id": "o8buV3TSIlS9DQzRmnrP",
+        "action": "Xuất bảng lương ra file Word",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "timestamp": "2026-08-04T23:44:49.040Z"
+      },
+      {
+        "id": "oK4iunDPJygfwABPytBf",
+        "timestamp": "2026-08-03T07:19:04.147Z",
+        "action": "Xóa mục khỏi hệ thống",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "salary_records"
+      },
+      {
+        "id": "okszpzgd17JvjOC5vYQ7",
+        "action": "Xuất bảng lương ra file Word",
+        "timestamp": "2026-08-04T12:55:48.433Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": ""
+      },
+      {
+        "id": "ovrPrDP3vvTy2mYiXz8T",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorName": "N/A",
+        "extra": "Dự án: DỊCH PHIM THEO YC",
+        "actorEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "action": "Duyệt công việc",
+        "timestamp": "2026-07-31T05:39:10.141Z"
+      },
+      {
+        "id": "pbiCFoCMeh5xuNwVviME",
+        "timestamp": "2026-08-04T08:20:42.919Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Trương Đinh Trọng Đạt",
+        "action": "Xóa thành viên",
+        "targetEmail": "DTVTruongDinhTrongDat@doraemonfansubvn.com",
+        "extra": "",
+        "actorName": "N/A"
+      },
+      {
+        "id": "qZNlf3OArhCNEWuFLqzZ",
+        "actorName": "N/A",
+        "extra": "Dự án: DỊCH PHIM THEO YC",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-07-31T05:41:31.070Z",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "action": "Duyệt công việc"
+      },
+      {
+        "id": "r7ETTFQo33falRKiKD2A",
+        "extra": "Lương: 25000",
+        "timestamp": "2026-08-01T05:16:52.062Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetName": "Phạm Anh Tuấn",
+        "actorName": "N/A",
+        "targetEmail": "phamanhtuan2013@doraemonfansubvn.com",
+        "action": "Thêm bảng lương"
+      },
+      {
+        "id": "rPo7t9cfDt6PSKPqRYsz",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "action": "Xuất bảng lương ra file Excel",
+        "timestamp": "2026-08-04T12:12:35.981Z"
+      },
+      {
+        "id": "rUpe8q3mzKkOvAmgXkXI",
+        "target": "1@doraemonfansubvn.com",
+        "action": "Thêm DTV mới",
+        "timestamp": "2026-08-04T13:22:39.030Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "rrRfdsnMgcsamDziwlpf",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T07:16:55.780Z",
+        "target": "GIAO ƯỚC",
+        "action": "Cập nhật bảng lương"
+      },
+      {
+        "id": "t4vSMSH991Jq678DtHzV",
+        "action": "Đổi trạng thái bảo trì",
+        "targetName": "",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "targetEmail": "",
+        "actorName": "N/A",
+        "timestamp": "2026-08-04T07:51:26.719Z",
+        "extra": "Bảo trì: true"
+      },
+      {
+        "id": "trlhSkKaMlaSLsk3JS9P",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T07:18:55.345Z",
+        "action": "Tạo bảng lương mới",
+        "target": "Giao Ước"
+      },
+      {
+        "id": "v7IqcgMoSRX4AClRnbvE",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Thêm bảng lương",
+        "actorName": "N/A",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "timestamp": "2026-08-01T04:59:34.218Z",
+        "extra": "Lương: 0"
+      },
+      {
+        "id": "vTALaWjYRvC95KkSV3ax",
+        "action": "Tắt chế độ Bảo trì",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "target": "",
+        "timestamp": "2026-08-03T06:56:08.930Z"
+      },
+      {
+        "id": "w0tbxuxIsEiJqa1Ne4cf",
+        "target": "",
+        "action": "Tắt chế độ Bảo trì",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T09:02:43.227Z"
+      },
+      {
+        "id": "wSVfYn6IxOLQ5fezoNLD",
+        "actorName": "N/A",
+        "actorEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "extra": "Dự án: DỊCH PHIM THEO YC",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "timestamp": "2026-07-31T05:39:09.428Z",
+        "action": "Duyệt công việc"
+      },
+      {
+        "id": "wrquJ7ELjsKmZtGsIo3z",
+        "action": "Tạo bảng lương mới",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-08-03T07:20:51.724Z",
+        "target": "Giao Ước"
+      },
+      {
+        "id": "x4YxFp11ZcqIPgjxpyAj",
+        "action": "Duyệt công việc",
+        "timestamp": "2026-07-31T05:39:06.977Z",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "actorName": "N/A",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "extra": "Dự án: DỊCH PHIM THEO YC"
+      },
+      {
+        "id": "xk7SDNHJAGpMWHXCIiCC",
+        "action": "Xóa mục khỏi hệ thống",
+        "timestamp": "2026-08-03T14:54:19.091Z",
+        "target": "Transactors",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "xl6bj8jR8mLifXkbJRoa",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Tắt chế độ Bảo trì",
+        "target": "",
+        "timestamp": "2026-08-03T07:06:49.155Z"
+      },
+      {
+        "id": "y5pT5UMt470t5AF6SgN8",
+        "targetName": "Nguyễn Đức Giao Ước",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "timestamp": "2026-07-31T07:31:41.696Z",
+        "action": "Thêm bảng lương",
+        "targetEmail": "nguyenducgiaouoc2009@doraemonfansubvn.com",
+        "extra": "Lương: 0",
+        "actorName": "N/A"
+      },
+      {
+        "id": "y6lQKrVALQ0qakqRbZeK",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com",
+        "action": "Bật chế độ Bảo trì",
+        "timestamp": "2026-08-03T11:35:05.957Z",
+        "target": ""
+      },
+      {
+        "id": "y7C0HL0zCqvpWFlC59kG",
+        "action": "Bật chế độ Bảo trì",
+        "target": "",
+        "timestamp": "2026-08-03T06:51:43.046Z",
+        "actorEmail": "bqtnguyentuankhai@doraemonfansubvn.com"
+      },
+      {
+        "id": "yj91ZdR4wx2d7XposNrW",
+        "timestamp": "2026-08-04T09:15:56.399Z",
+        "target": "test thêm dịch thuật",
+        "action": "Thêm DTV mới",
+        "actorEmail": "themdichthuat@doraemonfansubvn.com"
+      }
+    ],
+    "system_settings": [
+      {
+        "id": "maintenance",
+        "isMaintenance": false,
+        "updatedAt": "2026-08-04T09:10:17.194Z"
+      }
+    ]
+  }
+}

@@ -1,12 +1,12 @@
-// Global handler to suppress unhandled promise rejections from blocked analytics/tracking scripts
-// (e.g., ad-blockers or browser policies blocking google-analytics.com / googletagmanager.com)
+
+
 window.addEventListener('unhandledrejection', function(event) {
-  // Suppress if rejection reason is undefined (common pattern when analytics fetch is blocked)
+  
   if (event.reason === undefined || event.reason === null) {
     event.preventDefault();
     return;
   }
-  // Suppress if rejection is related to analytics/GA network requests
+  
   if (event.reason && typeof event.reason.message === 'string') {
     const msg = event.reason.message.toLowerCase();
     if (msg.includes('google-analytics') || 
@@ -18,7 +18,7 @@ window.addEventListener('unhandledrejection', function(event) {
       return;
     }
   }
-  // Suppress fetch errors from analytics endpoints
+  
   if (event.req && event.req.url && (
       event.req.url.includes('google-analytics') || 
       event.req.url.includes('google.com/g/collect'))) {
@@ -26,7 +26,6 @@ window.addEventListener('unhandledrejection', function(event) {
   }
 });
 
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 import { 
@@ -52,7 +51,6 @@ import {
     Timestamp
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAxMuHOdj8a8c3lDpZG_k8fFUV6tCVkH8w",
   authDomain: "hethongquanlyadichthuatvien.firebaseapp.com",
@@ -63,10 +61,8 @@ const firebaseConfig = {
   measurementId: "G-X6CQJ1PTY9"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// Wrap analytics in try-catch to prevent unhandled promise rejection
-// when GA requests are blocked by ad-blocker/browser extension
+
 let analytics;
 try {
   analytics = getAnalytics(app);

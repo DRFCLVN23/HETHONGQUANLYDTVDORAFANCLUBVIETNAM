@@ -1,0 +1,139 @@
+<section id="tab-dashboard" class="tab-content active">
+
+        <div class="welcome-banner">
+          <div class="welcome-banner-content">
+            <h2>Xin chào, <span id="welcomeUserName">Nguyễn Tuấn Khải</span>! 👋</h2>
+            <p>Chúc bạn một ngày làm việc hiệu quả.</p>
+          </div>
+          <div class="welcome-banner-status">
+            <div class="status-item">
+              <span class="dot-green"></span>
+              System Status: All Green
+            </div>
+            <div class="status-item">
+              <i class="fas fa-cloud-sun"></i>
+              <span id="welcomeWeather">Đang tải...</span>
+            </div>
+            <div class="live-clock" id="dashboardClock">--:--:--</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+            <div class="stat-info">
+              <h4>DTV Hoạt động</h4>
+              <div class="value" id="statActiveTrans">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-spinner"></i></div>
+            <div class="stat-info">
+              <h4>Task Đang làm</h4>
+              <div class="value" id="statPendingTasks">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-info">
+              <h4>Task Hoàn thành</h4>
+              <div class="value" id="statDoneTasks">0</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-coins"></i></div>
+            <div class="stat-info">
+              <h4>Tổng Chi Lương</h4>
+              <div class="value" id="statTotalSalary">0 đ</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-widgets">
+          
+          <div class="left-column" style="display:flex; flex-direction:column; gap:20px;">
+
+            <div class="widget-card">
+              <div class="widget-header">
+                <div class="widget-title">
+                  <i class="fas fa-chart-line"></i> Tiến độ Task & Lương
+                </div>
+                <span class="widget-badge">Tháng này</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="dashboardChart"></canvas>
+              </div>
+            </div>
+
+            <div class="widget-card">
+              <div class="widget-header">
+                <div class="widget-title">
+                  <i class="fas fa-clipboard-list"></i> Task cần xử lý gấp
+                </div>
+                <span class="widget-badge" id="pendingTaskCount">0</span>
+              </div>
+              <ul class="task-checklist" id="taskChecklist">
+                <li style="color:var(--text-muted); font-size:13px; padding:12px 0;">Đang tải...</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="right-column" style="display:flex; flex-direction:column; gap:20px;">
+
+            <div class="widget-card admin-quick-actions" id="quickActionsWidget" style="display:none;">
+              <div class="widget-header">
+                <div class="widget-title">
+                  <i class="fas fa-bolt"></i> Thao tác nhanh
+                </div>
+              </div>
+              <div class="quick-actions-grid">
+                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); document.getElementById('openAddTransactorModal')?.click();">
+                  <i class="fas fa-user-plus"></i>
+                  <span class="qa-label">+ Thêm DTV mới</span>
+                </a>
+                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); document.getElementById('openAddTaskModal')?.click();">
+                  <i class="fas fa-tasks"></i>
+                  <span class="qa-label">+ Phân công Task</span>
+                </a>
+                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); window.exportSalaryToExcel();">
+                  <i class="fas fa-file-export"></i>
+                  <span class="qa-label">📤 Xuất bảng lương</span>
+                </a>
+                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); document.getElementById('openUploadDocModal')?.click();">
+                  <i class="fas fa-folder-open"></i>
+                  <span class="qa-label">📁 Tải tài liệu</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="widget-card">
+              <div class="widget-header">
+                <div class="widget-title">
+                  <i class="fas fa-calendar-alt"></i> Lịch công việc
+                </div>
+                <span class="widget-badge" id="deadlineCount">0</span>
+              </div>
+              <ul class="deadline-list" id="deadlineList">
+                <li style="color:var(--text-muted); font-size:13px; padding:12px 0;">Đang tải...</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="widget-card" style="margin-top:0;">
+          <div class="widget-header">
+            <div class="widget-title">
+              <i class="fas fa-stream"></i> Hoạt động gần đây
+            </div>
+          </div>
+          <ul class="activity-feed" id="recentActivityList">
+            <li class="activity-empty">
+              <i class="fas fa-inbox"></i>
+              <p>Đang tải hoạt động...</p>
+            </li>
+          </ul>
+        </div>
+
+      </section>

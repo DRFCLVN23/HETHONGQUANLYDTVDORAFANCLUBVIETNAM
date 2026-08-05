@@ -1,0 +1,44 @@
+<section id="tab-settings" class="tab-content">
+  <div class="setting-item">
+    <div>
+      <h4>Chế độ Bảo trì</h4>
+      <p style="font-size:12px;color:var(--text-muted)">Khi bật, tài khoản DTV sẽ tạm thời không thể truy cập hệ thống.</p>
+    </div>
+    <label class="switch"><input type="checkbox" id="maintenanceToggle" onchange="window.toggleMaintenanceMode(this)"><span class="slider round"></span></label>
+  </div>
+  <div class="card backup-card">
+    <div class="card-header">
+      <h3 class="card-title"><i class="fas fa-database"></i> Sao lưu và khôi phục dữ liệu</h3>
+    </div>
+    <div class="backup-actions">
+      <button class="btn" id="downloadBackupBtn"><i class="fas fa-download"></i> Xuất file backup</button>
+      <button class="btn backup-restore-open" type="button" onclick="openBackupRestoreModal()"><i class="fas fa-file-import"></i> Nhập file JSON</button>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modalBackupRestore">
+    <div class="modal backup-modal">
+      <div class="modal-header">
+        <h3>Nhập file backup JSON</h3>
+        <button class="backup-close" type="button" onclick="closeBackupRestoreModal()" aria-label="Đóng"><i class="fas fa-times"></i></button>
+      </div>
+      <input id="backupFileInput" type="file" accept="application/json,.json" hidden>
+      <div id="backupDropZone" class="backup-drop-zone" tabindex="0">
+        <i class="fas fa-cloud-arrow-up"></i>
+        <strong>Kéo file JSON vào đây</strong>
+        <span>hoặc bấm để chọn file</span>
+      </div>
+      <div class="backup-file-line"><i class="fas fa-file-code"></i><span id="backupFileName">Chưa chọn file</span></div>
+      <div id="backupPreview" class="backup-preview">
+        <div class="backup-preview-head"><strong>Dữ liệu trong file</strong><span id="backupMeta"></span></div>
+        <div class="backup-table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Collection</th><th>Số bản ghi</th></tr></thead>
+            <tbody id="backupPreviewBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="backupRestoreProgress" class="backup-progress"><span></span></div>
+      <button id="confirmRestoreBackupBtn" class="btn-submit" type="button" onclick="restoreBackup()" disabled><i class="fas fa-rotate-left"></i> Khôi phục dữ liệu</button>
+    </div>
+  </div>
+</section>

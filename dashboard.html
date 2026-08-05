@@ -2,9 +2,9 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>HỆ THỐNG QUẢN LÝ DỊCH THUẬT VIÊN</title>
-    <!-- FontAwesome & Fonts -->
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -14,7 +14,6 @@
       rel="stylesheet"
     />
 
-    <!-- SweetAlert2 & FileSaver -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -40,7 +39,7 @@
         --explorer-border: rgba(255, 255, 255, 0.08);
         --explorer-text: #cccccc;
       }
-      /* File protocol warning banner */
+      
       .file-protocol-warning {
         position: fixed;
         top: 0;
@@ -136,7 +135,6 @@
         overflow-x: hidden !important;
       }
 
-      /* Scrollbar styling */
       ::-webkit-scrollbar {
         width: 6px;
       }
@@ -151,7 +149,6 @@
         background: var(--primary-neon);
       }
 
-      /* Sidebar - Collapsible */
       .sidebar {
         width: 260px;
         min-width: 260px;
@@ -190,7 +187,6 @@
         margin: 0 auto;
       }
 
-      /* Hamburger toggle button */
       .sidebar-toggle {
         position: absolute;
         top: 10px;
@@ -686,7 +682,6 @@
         font-weight: bold;
       }
 
-      /* ========== PROFILE TAB - MODERN CYBERPUNK / DARK GLASSMORPHISM ========== */
       .profile-grid {
         display: grid;
         grid-template-columns: 320px 1fr;
@@ -709,7 +704,6 @@
         box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 242, 255, 0.1);
       }
 
-      /* LEFT COLUMN - Avatar Card */
       .profile-card-left {
         display: flex;
         flex-direction: column;
@@ -834,7 +828,6 @@
         50% { opacity: 0.5; }
       }
 
-      /* RIGHT COLUMN - Form */
       .profile-card-right {
         display: flex;
         flex-direction: column;
@@ -946,7 +939,6 @@
         opacity: 1;
       }
 
-      /* Password toggle eye button */
       .profile-pw-toggle {
         position: absolute;
         right: 8px;
@@ -963,7 +955,6 @@
         color: #00f0ff;
       }
 
-      /* Save button row */
       .profile-save-row {
         display: flex;
         justify-content: flex-end;
@@ -997,7 +988,6 @@
         font-size: 15px;
       }
 
-      /* Responsive */
       @media (max-width: 900px) {
         .profile-grid {
           grid-template-columns: 1fr;
@@ -1019,9 +1009,6 @@
         }
       }
 
-      /* ========== MODERN CYBERPUNK DASHBOARD ========== */
-
-      /* Welcome Banner */
       .welcome-banner {
         background: rgba(15, 23, 42, 0.75);
         backdrop-filter: blur(12px);
@@ -1115,7 +1102,6 @@
         border: 1px solid rgba(0, 242, 255, 0.1);
       }
 
-      /* Glassmorphism Stats Cards */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1211,7 +1197,6 @@
         color: #ff3366;
       }
 
-      /* Dashboard Widgets Grid */
       .dashboard-widgets {
         display: grid;
         grid-template-columns: 1.6fr 1fr;
@@ -1224,7 +1209,6 @@
         }
       }
 
-      /* Widget Base */
       .widget-card {
         background: rgba(15, 23, 42, 0.75);
         backdrop-filter: blur(12px);
@@ -1269,14 +1253,12 @@
         border: 1px solid rgba(0, 242, 255, 0.2);
       }
 
-      /* Chart Container */
       .chart-container {
         position: relative;
         width: 100%;
         height: 220px;
       }
 
-      /* Quick Task Checklist */
       .task-checklist {
         list-style: none;
         padding: 0;
@@ -1372,7 +1354,6 @@
         border: 1px solid rgba(0, 255, 136, 0.3);
       }
 
-      /* Quick Actions */
       .quick-actions-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1417,7 +1398,6 @@
         line-height: 1.3;
       }
 
-      /* Upcoming Deadlines / Timeline */
       .deadline-list {
         list-style: none;
         padding: 0;
@@ -1500,7 +1480,6 @@
         border: 1px solid rgba(0, 242, 255, 0.08);
       }
 
-      /* Activity Feed - Timeline Style */
       .activity-feed {
         padding: 0;
         margin: 0;
@@ -1602,7 +1581,6 @@
         font-size: 10px;
       }
 
-      /* Activity Empty State */
       .activity-empty {
         text-align: center;
         padding: 30px 20px;
@@ -1617,7 +1595,6 @@
         font-size: 13px;
       }
 
-      /* Responsive for Dashboard */
       @media (max-width: 768px) {
         .welcome-banner {
           flex-direction: column;
@@ -1633,9 +1610,85 @@
         }
       }
     </style>
+  
+    <style>
+      :root{--motion-fast:180ms;--motion-medium:320ms;--motion-slow:620ms;--motion-scan:2.3s;--motion-ease:cubic-bezier(.22,1,.36,1)}
+      html{scroll-behavior:smooth}
+      .main-content{scroll-behavior:smooth}
+      .sidebar,.card,.stat-card,.profile-card,.modal,.login-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+      .sidebar{transition:width var(--motion-medium) var(--motion-ease),min-width var(--motion-medium) var(--motion-ease)!important}
+      .sidebar-toggle{transition:transform var(--motion-fast) ease,background-color var(--motion-fast) ease,color var(--motion-fast) ease,box-shadow var(--motion-fast) ease!important}
+      .sidebar-toggle:active{transform:scale(.9)}
+      .nav-item{transition:color var(--motion-fast) ease,background-color var(--motion-fast) ease,border-color var(--motion-fast) ease,padding var(--motion-medium) var(--motion-ease)!important;animation:navEnter 520ms var(--motion-ease) both}
+      .nav-item:nth-child(2){animation-delay:45ms}
+      .nav-item:nth-child(3){animation-delay:90ms}
+      .nav-item:nth-child(4){animation-delay:135ms}
+      .nav-item:nth-child(5){animation-delay:180ms}
+      .nav-item:nth-child(6){animation-delay:225ms}
+      .nav-item:nth-child(7){animation-delay:270ms}
+      .tab-content{position:relative;isolation:isolate}
+      .tab-content.active{animation:tabEnter 520ms var(--motion-ease) both!important;overflow:clip}
+      .tab-content.active::after{content:"";position:absolute;z-index:20;left:0;right:0;top:-120px;height:110px;pointer-events:none;opacity:0;background:linear-gradient(180deg,transparent 0%,rgba(0,240,255,.025) 20%,rgba(0,240,255,.2) 52%,rgba(112,0,255,.08) 72%,transparent 100%);box-shadow:0 12px 32px rgba(0,240,255,.08);animation:scanTopDown var(--motion-scan) cubic-bezier(.2,.7,.2,1) both}
+      .tab-content.active>*{position:relative;z-index:1;animation:sectionEnter 720ms var(--motion-ease) both}
+      .tab-content.active>:nth-child(2){animation-delay:110ms}
+      .tab-content.active>:nth-child(3){animation-delay:220ms}
+      .tab-content.active>:nth-child(4){animation-delay:330ms}
+      .tab-content.active>:nth-child(5){animation-delay:440ms}
+      .card,.stat-card,.widget-card,.profile-card,.welcome-banner{transition:transform var(--motion-fast) ease,border-color var(--motion-fast) ease,box-shadow var(--motion-fast) ease,background-color var(--motion-fast) ease!important}
+      .card:hover,.widget-card:hover,.profile-card:hover{transform:translateY(-1px)}
+      .stat-card:hover{transform:translateY(-2px)!important}
+      .btn,.btn-submit,.btn-edit,.btn-danger,.quick-action-btn,.backup-close,.table-page-btn,.table-page-size{transition:transform var(--motion-fast) ease,opacity var(--motion-fast) ease,box-shadow var(--motion-fast) ease,background-color var(--motion-fast) ease,color var(--motion-fast) ease,border-color var(--motion-fast) ease!important}
+      .btn:active,.btn-submit:active,.btn-edit:active,.btn-danger:active,.quick-action-btn:active,.backup-close:active,.table-page-btn:active{transform:scale(.96)}
+      .data-table tbody{content-visibility:auto;contain-intrinsic-size:420px}
+      .data-table tbody tr{animation:rowSweep 520ms var(--motion-ease) both;animation-delay:calc(var(--row-index,0) * 23ms)}
+      .modal-overlay[style*="display: flex"]{animation:overlayEnter 220ms ease-out both}
+      .modal-overlay[style*="display: flex"] .modal{animation:modalEnter 420ms var(--motion-ease) both}
+      .logs-container,.backup-table-wrap{scroll-behavior:smooth}
+      .is-dtv .admin-only-column,.is-dtv .admin-delete-action,.is-dtv .admin-edit-action,.is-dtv .admin-only-action,.is-dtv .btn-danger{display:none!important}
+      .table-pagination{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 2px 2px;color:var(--text-muted);font-size:12px;animation:paginationEnter 520ms var(--motion-ease) both}
+      .table-pagination[hidden]{display:none!important}
+      .table-pagination-left,.table-pagination-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+      .table-page-label{display:flex;align-items:center;gap:7px;white-space:nowrap}
+      .table-page-size{height:32px;min-width:70px;padding:0 28px 0 10px;border:1px solid var(--explorer-border);border-radius:6px;background:#111827;color:var(--text-main);outline:none;cursor:pointer}
+      .table-page-size:focus{border-color:var(--primary-neon);box-shadow:0 0 0 2px rgba(0,240,255,.09)}
+      .table-pagination-info{padding:7px 10px;border:1px solid var(--explorer-border);border-radius:6px;background:rgba(255,255,255,.025);white-space:nowrap}
+      .table-page-btn{min-width:32px;height:32px;padding:0 9px;border:1px solid var(--explorer-border);border-radius:6px;background:rgba(255,255,255,.025);color:var(--text-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+      .table-page-btn:hover:not(:disabled){border-color:rgba(0,240,255,.55);color:var(--primary-neon);background:rgba(0,240,255,.06)}
+      .table-page-btn.active{border-color:var(--primary-neon);color:#061017;background:var(--primary-neon);box-shadow:0 0 12px rgba(0,240,255,.2)}
+      .table-page-btn:disabled{opacity:.35;cursor:not-allowed}
+      .table-page-ellipsis{min-width:22px;text-align:center;color:#64748b}
+      .table-page-summary{white-space:nowrap;color:#94a3b8}
+      @keyframes navEnter{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+      @keyframes tabEnter{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes sectionEnter{from{opacity:0;transform:translateY(-14px);clip-path:inset(0 0 100% 0)}to{opacity:1;transform:translateY(0);clip-path:inset(0 0 0 0)}}
+      @keyframes rowSweep{from{opacity:0;transform:translateY(-8px);clip-path:inset(0 0 100% 0)}to{opacity:1;transform:translateY(0);clip-path:inset(0 0 0 0)}}
+      @keyframes scanTopDown{0%{top:-120px;opacity:0}8%{opacity:.8}86%{opacity:.48}100%{top:100%;opacity:0}}
+      @keyframes paginationEnter{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes overlayEnter{from{opacity:0}to{opacity:1}}
+      @keyframes modalEnter{from{opacity:0;transform:translateY(-12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+      .backup-card{max-width:760px}
+      .backup-actions{display:flex;gap:12px;flex-wrap:wrap}
+      .backup-restore-open{background:linear-gradient(45deg,#ffaa00,#ff007f)}
+      .backup-modal{width:min(620px,calc(100vw - 32px));padding:22px}
+      .backup-close{border:0;background:transparent;color:var(--text-muted);font-size:18px;cursor:pointer;padding:6px}
+      .backup-drop-zone{min-height:170px;border:1px dashed rgba(0,240,255,.55);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;cursor:pointer;background:rgba(0,240,255,.04);outline:none}
+      .backup-drop-zone:hover,.backup-drop-zone.dragging,.backup-drop-zone:focus{border-color:var(--primary-neon);background:rgba(0,240,255,.09)}
+      .backup-drop-zone i{font-size:34px;color:var(--primary-neon)}
+      .backup-drop-zone span{font-size:12px;color:var(--text-muted)}
+      .backup-file-line{display:flex;align-items:center;gap:9px;padding:11px 0;color:var(--text-muted);font-size:13px}
+      .backup-preview{display:none;border:1px solid var(--explorer-border);border-radius:7px;overflow:hidden;margin-bottom:14px}
+      .backup-preview-head{display:flex;justify-content:space-between;gap:12px;padding:11px 13px;background:rgba(255,255,255,.035);font-size:13px}
+      .backup-preview-head span{color:var(--text-muted)}
+      .backup-table-wrap{max-height:220px;overflow:auto}
+      .backup-progress{display:none;height:6px;background:#202433;border-radius:999px;overflow:hidden;margin:4px 0 14px}
+      .backup-progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--accent-neon),var(--primary-neon));transition:width .12s linear}
+      #confirmRestoreBackupBtn:disabled{opacity:.45;cursor:not-allowed}
+      @media (max-width:720px){.table-pagination{align-items:stretch}.table-pagination-left,.table-pagination-right{width:100%}.table-pagination-right{justify-content:flex-start}.table-page-summary{width:100%}}
+      @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+    </style>
   </head>
   <body>
-    <!-- File protocol warning banner -->
+    
     <div id="fileProtocolWarning" class="file-protocol-warning">
       <i class="fas fa-exclamation-triangle"></i>
       <div class="warning-content">
@@ -1659,7 +1712,10 @@
       </button>
     </div>
 
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="Điều hướng chính">
+      <button class="mobile-sidebar-close" id="mobileSidebarClose" type="button" aria-label="Đóng menu">
+        <i class="fas fa-times"></i>
+      </button>
       <button class="sidebar-toggle" id="sidebarToggle" title="Thu gọn sidebar">
         <i class="fas fa-chevron-left"></i>
       </button>
@@ -1707,9 +1763,13 @@
         </button>
       </div>
     </aside>
-    <main class="main-content">
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+    <main class="main-content" id="mainContent">
       <header class="header">
-        <div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Mở menu" aria-controls="sidebar" aria-expanded="false">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="header-title-wrap">
           <h1 class="page-title" id="pageTitle">TỔNG QUAN HỆ THỐNG</h1>
         </div>
         <div style="display: flex; align-items: center; gap: 16px">
@@ -1732,471 +1792,14 @@
         </div>
       </header>
 
-      <!-- ====== MODERN CYBERPUNK DASHBOARD ====== -->
-      <section id="tab-dashboard" class="tab-content active">
-
-        <!-- Welcome Banner -->
-        <div class="welcome-banner">
-          <div class="welcome-banner-content">
-            <h2>Xin chào, <span id="welcomeUserName">Nguyễn Tuấn Khải</span>! 👋</h2>
-            <p>Chúc bạn một ngày làm việc hiệu quả.</p>
-          </div>
-          <div class="welcome-banner-status">
-            <div class="status-item">
-              <span class="dot-green"></span>
-              System Status: All Green
-            </div>
-            <div class="status-item">
-              <i class="fas fa-cloud-sun"></i>
-              <span id="welcomeWeather">Đang tải...</span>
-            </div>
-            <div class="live-clock" id="dashboardClock">--:--:--</div>
-          </div>
+      <div id="tabMount" aria-live="polite">
+        <div class="card" style="text-align:center;padding:32px;color:var(--text-muted);">
+          <i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>
+          Đang tải giao diện...
         </div>
-
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
-            <div class="stat-info">
-              <h4>DTV Hoạt động</h4>
-              <div class="value" id="statActiveTrans">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-spinner"></i></div>
-            <div class="stat-info">
-              <h4>Task Đang làm</h4>
-              <div class="value" id="statPendingTasks">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-            <div class="stat-info">
-              <h4>Task Hoàn thành</h4>
-              <div class="value" id="statDoneTasks">0</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-coins"></i></div>
-            <div class="stat-info">
-              <h4>Tổng Chi Lương</h4>
-              <div class="value" id="statTotalSalary">0 đ</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Dashboard Widgets: 2-Column Grid -->
-        <div class="dashboard-widgets">
-          <!-- LEFT COLUMN (Larger) -->
-          <div class="left-column" style="display:flex; flex-direction:column; gap:20px;">
-
-            <!-- Widget 1: Chart -->
-            <div class="widget-card">
-              <div class="widget-header">
-                <div class="widget-title">
-                  <i class="fas fa-chart-line"></i> Tiến độ Task & Lương
-                </div>
-                <span class="widget-badge">Tháng này</span>
-              </div>
-              <div class="chart-container">
-                <canvas id="dashboardChart"></canvas>
-              </div>
-            </div>
-
-            <!-- Widget 2: Quick Task Checklist -->
-            <div class="widget-card">
-              <div class="widget-header">
-                <div class="widget-title">
-                  <i class="fas fa-clipboard-list"></i> Task cần xử lý gấp
-                </div>
-                <span class="widget-badge" id="pendingTaskCount">0</span>
-              </div>
-              <ul class="task-checklist" id="taskChecklist">
-                <li style="color:var(--text-muted); font-size:13px; padding:12px 0;">Đang tải...</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <!-- RIGHT COLUMN (Smaller) -->
-          <div class="right-column" style="display:flex; flex-direction:column; gap:20px;">
-
-            <!-- Widget 3: Quick Actions -->
-            <div class="widget-card">
-              <div class="widget-header">
-                <div class="widget-title">
-                  <i class="fas fa-bolt"></i> Thao tác nhanh
-                </div>
-              </div>
-              <div class="quick-actions-grid">
-                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); document.getElementById('openAddTransactorModal')?.click();">
-                  <i class="fas fa-user-plus"></i>
-                  <span class="qa-label">+ Thêm DTV mới</span>
-                </a>
-                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); document.getElementById('openAddTaskModal')?.click();">
-                  <i class="fas fa-tasks"></i>
-                  <span class="qa-label">+ Phân công Task</span>
-                </a>
-                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); window.exportSalaryToExcel();">
-                  <i class="fas fa-file-export"></i>
-                  <span class="qa-label">📤 Xuất bảng lương</span>
-                </a>
-                <a href="#" class="quick-action-btn" onclick="event.preventDefault(); document.getElementById('openUploadDocModal')?.click();">
-                  <i class="fas fa-folder-open"></i>
-                  <span class="qa-label">📁 Tải tài liệu</span>
-                </a>
-              </div>
-            </div>
-
-            <!-- Widget 4: Upcoming Deadlines -->
-            <div class="widget-card">
-              <div class="widget-header">
-                <div class="widget-title">
-                  <i class="fas fa-calendar-alt"></i> Lịch công việc
-                </div>
-                <span class="widget-badge" id="deadlineCount">0</span>
-              </div>
-              <ul class="deadline-list" id="deadlineList">
-                <li style="color:var(--text-muted); font-size:13px; padding:12px 0;">Đang tải...</li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Activity Feed (was recent activity) -->
-        <div class="widget-card" style="margin-top:0;">
-          <div class="widget-header">
-            <div class="widget-title">
-              <i class="fas fa-stream"></i> Hoạt động gần đây
-            </div>
-          </div>
-          <ul class="activity-feed" id="recentActivityList">
-            <li class="activity-empty">
-              <i class="fas fa-inbox"></i>
-              <p>Đang tải hoạt động...</p>
-            </li>
-          </ul>
-        </div>
-
-      </section>
-
-      <!-- SECTION: DỊCH THUẬT VIÊN -->
-      <section id="tab-transactors" class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-folder" style="color: #ffe066"></i> Danh sách
-              Dịch Thuật Viên
-            </h3>
-            <button class="btn" id="openAddTransactorModal">
-              <i class="fas fa-plus"></i> Thêm DTV
-            </button>
-          </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width: 35%">Tên</th>
-                <th style="width: 30%">Email</th>
-                <th style="width: 15%">Loại</th>
-                <th style="width: 10%">Trạng thái</th>
-                <th style="width: 10%">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="transactorsTableBody">
-              <tr>
-                <td
-                  colspan="5"
-                  style="text-align: center; color: var(--text-muted)"
-                >
-                  Đang tải dữ liệu...
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- SECTION: QUẢN LÝ LƯƠNG -->
-      <section id="tab-salary" class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-folder" style="color: #ffe066"></i>
-              <span id="salaryTitle">Bảng tính Lương DTV</span>
-            </h3>
-            <div style="display: flex; gap: 10px">
-              <button
-                class="btn"
-                id="exportSalaryBtn"
-                onclick="exportSalaryToExcel()"
-                style="
-                  background: linear-gradient(45deg, #00f0ff, #7000ff);
-                  color: #fff;
-                  font-weight: 600;
-                "
-              >
-                <i class="fas fa-file-word"></i> Xuất Bảng Lương
-              </button>
-              <button class="btn" id="openAddSalaryModal">
-                <i class="fas fa-calculator"></i> Tính Lương Tháng
-              </button>
-            </div>
-          </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width: 18%">Họ và tên</th>
-                <th style="width: 12%">Vị trí</th>
-                <th style="width: 14%">Email</th>
-                <th style="width: 12%">Lương tập</th>
-                <th style="width: 10%">Phụ cấp</th>
-                <th style="width: 10%">Thưởng</th>
-                <th style="width: 10%">Khấu hao</th>
-                <th style="width: 14%">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="salaryTableBody">
-              <tr>
-                <td
-                  colspan="8"
-                  style="text-align: center; color: var(--text-muted)"
-                >
-                  Đang tải dữ liệu...
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- SECTION: PHÂN CÔNG TASK -->
-      <section id="tab-assignments" class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-folder" style="color: #ffe066"></i> Danh sách
-              Nhiệm vụ (Tasks)
-            </h3>
-            <button class="btn" id="openAddTaskModal">
-              <i class="fas fa-plus"></i> Phân công Task
-            </button>
-          </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width: 30%">Dự án / Nhiệm vụ</th>
-                <th style="width: 20%">Người thực hiện</th>
-                <th style="width: 15%">Deadline</th>
-                <th style="width: 15%">Trạng thái</th>
-                <th style="width: 20%">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="assignmentsTableBody">
-              <tr>
-                <td
-                  colspan="5"
-                  style="text-align: center; color: var(--text-muted)"
-                >
-                  Đang tải dữ liệu...
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- SECTION: KHO TÀI LIỆU -->
-      <section id="tab-documents" class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-folder" style="color: #ffe066"></i> Quản lý Tài
-              liệu & Subtitle
-            </h3>
-            <button class="btn" id="openUploadDocModal">
-              <i class="fas fa-upload"></i> Tải lên File
-            </button>
-          </div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th style="width: 45%">Tên tài liệu</th>
-                <th style="width: 20%">Người ký / Tạo</th>
-                <th style="width: 20%">Ngày tạo</th>
-                <th style="width: 15%">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="documentsTableBody">
-              <tr>
-                <td
-                  colspan="4"
-                  style="text-align: center; color: var(--text-muted)"
-                >
-                  Đang tải dữ liệu...
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- SECTION: HỒ SƠ (PROFILE) -->
-      <section id="tab-profile" class="tab-content">
-        <!-- Profile 2-Column Grid -->
-        <div class="profile-grid">
-          <!-- LEFT COLUMN: Profile Header Card -->
-          <div class="profile-card profile-card-left">
-            <div class="profile-avatar-wrapper">
-              <div class="profile-avatar" id="profileAvatar">
-                <span id="profileAvatarText">A</span>
-              </div>
-              <div class="profile-avatar-ring"></div>
-              <button class="profile-avatar-btn" id="changeAvatarBtn" title="Đổi ảnh đại diện">
-                <i class="fas fa-camera"></i>
-              </button>
-              <input type="file" id="avatarInput" accept="image/*" style="display:none" />
-            </div>
-            <h2 class="profile-name" id="profileDisplayName">Admin</h2>
-            <div class="profile-role-badge" id="profileRoleBadge">
-              <i class="fas fa-shield-alt"></i>
-              <span id="profileRoleText">Quản trị viên</span>
-            </div>
-            <div class="profile-status" id="profileStatus">
-              <span class="status-dot"></span>
-              <span>Tài khoản hoạt động</span>
-            </div>
-          </div>
-
-          <!-- RIGHT COLUMN: Profile Form -->
-          <div class="profile-card profile-card-right">
-            <div class="profile-form-section">
-              <h3 class="profile-form-title">
-                <i class="fas fa-info-circle"></i> Thông tin cơ bản
-              </h3>
-              <div class="profile-form-row">
-                <div class="profile-form-group">
-                  <label><i class="fas fa-user"></i> Họ và tên</label>
-                  <div class="profile-input-wrapper">
-                    <i class="fas fa-user profile-input-icon"></i>
-                    <input type="text" id="profileName" placeholder="Nhập họ và tên" />
-                  </div>
-                </div>
-                <div class="profile-form-group">
-                  <label><i class="fas fa-envelope"></i> Email</label>
-                  <div class="profile-input-wrapper">
-                    <i class="fas fa-envelope profile-input-icon"></i>
-                    <input type="email" id="profileEmail" disabled placeholder="Email" />
-                  </div>
-                </div>
-              </div>
-              <div class="profile-form-row">
-                <div class="profile-form-group">
-                  <label><i class="fas fa-shield-alt"></i> Vai trò</label>
-                  <div class="profile-input-wrapper">
-                    <i class="fas fa-tag profile-input-icon"></i>
-                    <input type="text" id="profileRole" disabled class="profile-role-input" />
-                  </div>
-                </div>
-                <div class="profile-form-group">
-                  <label><i class="fas fa-check-circle"></i> Trạng thái</label>
-                  <div class="profile-input-wrapper">
-                    <i class="fas fa-circle profile-input-icon status-icon"></i>
-                    <input type="text" id="profileStatusField" disabled value="Hoạt động" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SECURITY SECTION -->
-            <div class="profile-form-section profile-security-section">
-              <h3 class="profile-form-title">
-                <i class="fas fa-lock"></i> Bảo mật & Mật khẩu
-              </h3>
-              <div class="profile-form-row">
-                <div class="profile-form-group">
-                  <label><i class="fas fa-key"></i> Mật khẩu hiện tại</label>
-                  <div class="profile-input-wrapper">
-                    <i class="fas fa-lock profile-input-icon"></i>
-                    <input type="password" id="profileCurrentPass" placeholder="Nhập mật khẩu hiện tại" />
-                    <button type="button" class="profile-pw-toggle" data-target="profileCurrentPass">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="profile-form-group">
-                  <label><i class="fas fa-key"></i> Mật khẩu mới</label>
-                  <div class="profile-input-wrapper">
-                    <i class="fas fa-lock-open profile-input-icon"></i>
-                    <input type="password" id="profileNewPass" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)" />
-                    <button type="button" class="profile-pw-toggle" data-target="profileNewPass">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SAVE BUTTON -->
-            <div class="profile-save-row">
-              <button class="profile-save-btn" id="saveProfileBtn">
-                <i class="fas fa-save"></i> Lưu thông tin
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="tab-settings" class="tab-content">
-        <div class="setting-item">
-          <div>
-            <h4>Chế độ Bảo trì (Maintenance Mode)</h4>
-            <p style="font-size: 12px; color: var(--text-muted)">
-              Khi bật, tất cả tài khoản DTV sẽ bị hạn chế truy cập hệ thống.
-            </p>
-          </div>
-          <label class="switch"
-            ><input
-              type="checkbox"
-              id="maintenanceToggle"
-              onchange="window.toggleMaintenanceMode(this)" /><span
-              class="slider round"
-            ></span
-          ></label>
-        </div>
-        <div class="card">
-          <h3 class="card-title">
-            <i class="fas fa-database"></i> Tải Dữ liệu Backup
-          </h3>
-          <p style="font-size: 13px; color: var(--text-muted); margin: 10px 0">
-            Xuất toàn bộ cơ sở dữ liệu hệ thống ra file `.json`.
-          </p>
-          <button class="btn" id="downloadBackupBtn">
-            <i class="fas fa-download"></i> Tải Backup (.json)
-          </button>
-        </div>
-        <div class="card" style="border-color: var(--warning-neon)">
-          <h3 class="card-title" style="color: var(--warning-neon)">
-            <i class="fas fa-undo-alt"></i> Khôi phục dữ liệu từ Backup
-          </h3>
-          <p style="font-size: 13px; color: var(--text-muted); margin: 10px 0">
-            Nếu dữ liệu trên web bị mất, hãy đặt file
-            <strong>Backup.json</strong> vào cùng thư mục và bấm nút dưới đây để
-            đẩy dữ liệu lên Firebase.
-          </p>
-          <button
-            class="btn"
-            onclick="restoreBackup()"
-            style="background: linear-gradient(45deg, #ffaa00, #ff007f)"
-          >
-            <i class="fas fa-cloud-upload-alt"></i> Khôi phục (Restore)
-          </button>
-        </div>
-      </section>
+      </div>
     </main>
 
-    <!-- MODALS -->
     <div class="modal-overlay" id="modalTransactor">
       <div class="modal">
         <div class="modal-header">
@@ -2408,7 +2011,7 @@
     </div>
 
     <script>
-      // Detect file:// protocol and show warning
+      
       if (window.location.protocol === "file:") {
         document.getElementById("fileProtocolWarning").classList.add("show");
       }
@@ -2418,1697 +2021,153 @@
       {
         "imports": {
           "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-          "firebase/analytics": "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js",
           "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
           "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
         }
       }
     </script>
 
-    <script type="module">
-      import { initializeApp } from "firebase/app";
-      import {
-        getFirestore,
-        collection,
-        getDocs,
-        query,
-        orderBy,
-        limit,
-        doc,
-        addDoc,
-        updateDoc,
-        deleteDoc,
-        getDoc,
-        setDoc,
-        onSnapshot,
-        where,
-      } from "firebase/firestore";
-      import {
-        getAuth,
-        onAuthStateChanged,
-        signOut,
-        createUserWithEmailAndPassword,
-        deleteUser,
-        updateEmail,
-        updatePassword,
-      } from "firebase/auth";
-      import { getAnalytics, isSupported, logEvent } from "firebase/analytics";
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyAxMuHOdj8a8c3lDpZG_k8fFUV6tCVkH8w",
-        authDomain: "hethongquanlyadichthuatvien.firebaseapp.com",
-        databaseURL:
-          "https://hethongquanlyadichthuatvien-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "hethongquanlyadichthuatvien",
-        storageBucket: "hethongquanlyadichthuatvien.firebasestorage.app",
-        messagingSenderId: "78223981328",
-        appId: "1:78223981328:web:8667950575d90be2420395",
-        measurementId: "G-X6CQJ1PTY9",
-      };
+    <style>
+      body.modal-open{overflow:hidden!important}
+      body>.modal-overlay{position:fixed!important;inset:0!important;width:auto!important;height:auto!important;min-width:100vw;min-height:100vh;padding:24px;overflow:auto;overscroll-behavior:contain;align-items:center;justify-content:center;background:rgba(0,0,0,.76);z-index:10000}
+      body>.modal-overlay .modal{position:relative;margin:auto;max-width:calc(100vw - 32px);max-height:calc(100vh - 48px);overflow:auto;transform-origin:center center}
+      body>.modal-overlay .backup-modal{width:min(620px,calc(100vw - 32px));max-height:calc(100vh - 48px)}
+      @media (max-width:640px){body>.modal-overlay{padding:12px;align-items:flex-start}body>.modal-overlay .modal{margin:12px auto;max-width:100%;max-height:calc(100vh - 24px)}}
+    </style>
 
-      const app = initializeApp(firebaseConfig);
-      // Only initialize analytics if supported (prevents unhandled rejections
-      // when GA requests are blocked by ad-blocker/browser extension)
-      let analytics;
-      isSupported()
-        .then((supported) => {
-          if (supported) {
-            analytics = getAnalytics(app);
-          } else {
-            console.warn("Analytics not supported in this environment");
-          }
-        })
-        .catch((e) => {
-          console.warn("Analytics initialization failed (likely blocked):", e);
-        });
-      const db = getFirestore(app);
-      const auth = getAuth(app);
 
-      // Sidebar toggle
-      const sidebar = document.getElementById("sidebar");
-      const sidebarToggle = document.getElementById("sidebarToggle");
-      sidebarToggle.addEventListener("click", () => {
-        sidebar.classList.toggle("collapsed");
-        sidebarToggle.querySelector("i").className = sidebar.classList.contains(
-          "collapsed",
-        )
-          ? "fas fa-chevron-right"
-          : "fas fa-chevron-left";
-        sidebarToggle.title = sidebar.classList.contains("collapsed")
-          ? "Mở rộng sidebar"
-          : "Thu gọn sidebar";
-      });
-
-      // Tab switching logic
-      document.querySelectorAll(".nav-item").forEach((item) => {
-        item.addEventListener("click", () => {
-          const tab = item.getAttribute("data-tab");
-          if (!tab) return;
-
-          // Remove active class from all nav items and tab contents
-          document.querySelectorAll(".nav-item").forEach((n) => n.classList.remove("active"));
-          document.querySelectorAll(".tab-content").forEach((t) => t.classList.remove("active"));
-
-          // Add active class to clicked nav item
-          item.classList.add("active");
-
-          // Show corresponding tab content
-          const targetTab = document.getElementById("tab-" + tab);
-          if (targetTab) targetTab.classList.add("active");
-        });
-      });
-
-      // Real-time clock
-      function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, "0");
-        const minutes = String(now.getMinutes()).padStart(2, "0");
-        const seconds = String(now.getSeconds()).padStart(2, "0");
-        document.getElementById("clockDisplay").textContent =
-          `${hours}:${minutes}:${seconds}`;
+    <style>
+      .mobile-menu-btn,.mobile-sidebar-close,.sidebar-backdrop{display:none}
+      @media (max-width:820px){
+        html,body{width:100%;min-width:0;min-height:100%;overflow-x:hidden}
+        body{display:block;min-height:100dvh;background-attachment:scroll}
+        body.mobile-nav-open{overflow:hidden;touch-action:none}
+        .sidebar{position:fixed!important;inset:0 auto 0 0;width:min(86vw,320px)!important;min-width:0!important;height:100dvh;max-height:100dvh;transform:translateX(-105%);transition:transform 280ms var(--motion-ease)!important;z-index:10020;box-shadow:18px 0 50px rgba(0,0,0,.55);overflow:hidden}
+        .sidebar.mobile-open{transform:translateX(0)}
+        .sidebar.collapsed{width:min(86vw,320px)!important;min-width:0!important}
+        .sidebar.collapsed .sidebar-header h3,.sidebar.collapsed .nav-item span,.sidebar.collapsed .user-details,.sidebar.collapsed .btn-logout{display:block}
+        .sidebar.collapsed .nav-item{justify-content:flex-start;padding:13px 16px}
+        .sidebar.collapsed .nav-item i{font-size:18px}
+        .sidebar.collapsed .user-profile{justify-content:space-between;padding:12px 14px}
+        .sidebar.collapsed .user-info{justify-content:flex-start;margin:0}
+        .sidebar-toggle{display:none!important}
+        .mobile-sidebar-close{display:flex;position:absolute;top:13px;right:12px;width:40px;height:40px;border:1px solid var(--border-color);border-radius:10px;background:#111827;color:var(--primary-neon);align-items:center;justify-content:center;z-index:3;font-size:17px;cursor:pointer}
+        .sidebar-header{min-height:70px;padding:14px 56px 14px 18px;justify-content:flex-start}
+        .sidebar-header img{height:40px!important;max-width:150px}
+        .nav-links{padding:10px 8px 92px;overflow-y:auto;overscroll-behavior:contain}
+        .nav-item{min-height:50px;padding:13px 16px;margin:3px 0;border-left:0;border-radius:10px;gap:14px;font-size:15px;overflow:visible}
+        .nav-item:hover,.nav-item.active{border-left-color:transparent}
+        .nav-item.active{box-shadow:inset 3px 0 0 var(--primary-neon)}
+        .nav-item i{width:22px;font-size:17px}
+        .user-profile{position:absolute;left:0;right:0;bottom:0;min-height:68px;padding:12px 14px;background:#080b12;border-top:1px solid var(--border-color)}
+        .user-details .name{max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .btn-logout{width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+        .sidebar-backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.66);opacity:0;pointer-events:none;transition:opacity 220ms ease;z-index:10010}
+        body.mobile-nav-open .sidebar-backdrop{opacity:1;pointer-events:auto}
+        .main-content{width:100%;min-width:0;max-height:none;min-height:100dvh;padding:0 12px 28px;overflow:visible}
+        .header{position:sticky;top:0;z-index:1000;display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:64px;margin:0 -12px 14px;padding:10px 12px;background:rgba(8,10,17,.97);border-bottom:1px solid rgba(0,240,255,.14);box-shadow:0 6px 20px rgba(0,0,0,.24)}
+        .mobile-menu-btn{display:flex;width:42px;height:42px;border:1px solid var(--border-color);border-radius:11px;background:#111827;color:var(--primary-neon);align-items:center;justify-content:center;font-size:17px;cursor:pointer}
+        .mobile-menu-btn:active,.mobile-sidebar-close:active{transform:scale(.94)}
+        .header-title-wrap{min-width:0}
+        .page-title{max-width:100%;font-size:clamp(15px,4.3vw,19px);line-height:1.22;letter-spacing:.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .page-title::after{width:34px;bottom:-6px}
+        #realtimeClock{min-width:68px;padding:7px 8px!important;font-size:11px!important;letter-spacing:.4px!important;text-align:center}
+        #realtimeClock i{display:none}
+        #tabMount,.tab-content{width:100%;min-width:0}
+        .tab-content.active{overflow:visible}
+        .tab-content.active::after{height:76px}
+        .welcome-banner{padding:16px;margin-bottom:12px;border-radius:12px;gap:12px}
+        .welcome-banner::before{display:none}
+        .welcome-banner h2{font-size:18px;line-height:1.35;overflow-wrap:anywhere}
+        .welcome-banner p{font-size:12px;margin-top:4px}
+        .welcome-banner-status{display:grid;width:100%;grid-template-columns:1fr 1fr;gap:8px}
+        .welcome-banner-status .status-item,.welcome-banner-status .live-clock{min-width:0;min-height:38px;padding:8px 9px;justify-content:center;text-align:center;font-size:10px;line-height:1.3}
+        .welcome-banner-status .live-clock{font-size:12px}
+        .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+        .stat-card{min-width:0;min-height:88px;padding:13px 11px;gap:10px;border-radius:12px}
+        .stat-icon{width:42px;height:42px;min-width:42px;font-size:18px}
+        .stat-card .stat-info{min-width:0}
+        .stat-card .stat-info h4{font-size:9px;line-height:1.3;letter-spacing:.25px;overflow-wrap:anywhere}
+        .stat-card .stat-info .value{font-size:21px;overflow-wrap:anywhere}
+        .dashboard-widgets{grid-template-columns:1fr;gap:12px;margin-bottom:12px}
+        .left-column,.right-column{gap:12px!important;min-width:0}
+        .card,.widget-card,.profile-card{min-width:0;padding:14px;border-radius:12px;margin-bottom:12px}
+        .widget-header{margin-bottom:12px;padding-bottom:10px;gap:8px}
+        .widget-title{font-size:14px;line-height:1.35}
+        .widget-badge{flex-shrink:0}
+        .chart-container{height:220px;min-height:220px}
+        .quick-actions-grid{grid-template-columns:1fr;gap:9px}
+        .quick-action-btn{min-height:48px;padding:12px 14px}
+        .task-checklist-item,.deadline-item,.activity-feed-item{padding:12px 4px}
+        .activity-feed-item{align-items:flex-start;gap:10px}
+        .activity-feed-content{min-width:0}
+        .activity-feed-content .feed-actor,.activity-feed-content .feed-action,.activity-feed-content .feed-target{overflow-wrap:anywhere}
+        .card-header{flex-direction:column;align-items:stretch;gap:11px;margin-bottom:12px}
+        .card-header .card-title{font-size:14px;line-height:1.4}
+        .card-header>.btn,.card-header>div{width:100%}
+        .card-header>div{display:grid!important;grid-template-columns:1fr;gap:8px!important}
+        .card-header .btn{width:100%;min-height:44px;padding:10px 12px}
+        .data-table{display:block;width:100%;border:0}
+        .data-table thead{display:none}
+        .data-table tbody{display:block;width:100%;contain:none;content-visibility:visible}
+        .data-table tbody tr{display:block;width:100%;margin:0 0 10px;padding:7px 12px;background:rgba(15,23,42,.72);border:1px solid rgba(0,240,255,.12);border-radius:11px;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+        .data-table tbody tr:last-child{margin-bottom:0}
+        .data-table tbody td{display:grid;grid-template-columns:minmax(96px,38%) minmax(0,1fr);align-items:start;gap:10px;width:100%;padding:9px 0!important;border:0;border-bottom:1px dashed rgba(255,255,255,.07);white-space:normal!important;text-align:right;overflow-wrap:anywhere;color:var(--text-main)}
+        .data-table tbody td::before{content:attr(data-label);font-size:10px;font-weight:600;line-height:1.35;letter-spacing:.35px;text-transform:uppercase;color:var(--text-muted);text-align:left}
+        .data-table tbody td:last-child{border-bottom:0}
+        .data-table tbody td[colspan]{display:block!important;padding:24px 8px!important;text-align:center!important;border:0}
+        .data-table tbody td[colspan]::before{display:none}
+        .data-table tbody td .badge{justify-self:end}
+        .data-table tbody td .btn-edit,.data-table tbody td .btn-danger,.data-table tbody td a.btn-edit{min-width:40px;height:38px;display:inline-flex;align-items:center;justify-content:center;margin:0 0 0 5px}
+        .table-pagination{gap:10px;padding-top:10px;align-items:stretch}
+        .table-pagination-left,.table-pagination-right{width:100%}
+        .table-pagination-left{display:grid;grid-template-columns:1fr auto;gap:8px}
+        .table-page-label{min-height:40px;padding:0 10px;border:1px solid var(--explorer-border);border-radius:8px;background:#111827}
+        .table-page-size{height:38px;min-width:72px}
+        .table-pagination-info{display:flex;align-items:center;justify-content:center;min-height:40px}
+        .table-pagination-right{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding:2px 0 5px;scrollbar-width:none}
+        .table-pagination-right::-webkit-scrollbar{display:none}
+        .table-page-btn{min-width:40px;height:40px;flex:0 0 auto}
+        .table-page-summary{display:flex;align-items:center;min-height:40px;padding:0 6px;flex:0 0 auto}
+        .profile-grid{grid-template-columns:1fr;gap:12px}
+        .profile-card-left,.profile-card-right{padding:18px 14px}
+        .profile-form-row{grid-template-columns:1fr;gap:12px}
+        .profile-form-section{padding-bottom:16px;margin-bottom:16px}
+        .profile-save-row{justify-content:stretch}
+        .profile-save-btn{width:100%;min-height:46px;justify-content:center}
+        .setting-item{flex-direction:column;align-items:flex-start;gap:14px;padding:15px}
+        .setting-item .switch{align-self:flex-end}
+        .backup-actions{display:grid;grid-template-columns:1fr;gap:9px;width:100%}
+        .backup-actions .btn{width:100%;min-height:44px}
+        .logs-container{max-height:280px}
+        body>.modal-overlay{padding:0!important;align-items:flex-end!important;justify-content:center!important}
+        body>.modal-overlay .modal{width:100%!important;max-width:100%!important;max-height:92dvh!important;margin:0!important;padding:18px 16px calc(18px + env(safe-area-inset-bottom))!important;border-radius:18px 18px 0 0!important;overscroll-behavior:contain}
+        body>.modal-overlay .backup-modal{width:100%!important;max-height:92dvh!important}
+        .modal-header{position:sticky;top:-18px;z-index:2;margin:-18px -16px 16px;padding:16px;background:#121624;border-bottom:1px solid rgba(0,240,255,.12)}
+        .form-group input,.form-group select,.form-group textarea,.profile-form-group input{min-height:46px;font-size:16px}
+        .btn-submit{min-height:46px}
+        .backup-drop-zone{min-height:145px;padding:16px;text-align:center}
+        .backup-table-wrap{max-height:200px}
+        .file-protocol-warning{padding:12px;gap:10px}
       }
-      updateClock();
-      setInterval(updateClock, 1000);
-
-      // QUAN TRỌNG: Đẩy các biến ra ngoài window
-      window.db = db;
-      window.doc = doc;
-      window.collection = collection;
-      window.deleteDoc = deleteDoc;
-      window.addDoc = addDoc;
-      window.setDoc = setDoc;
-      window.getDoc = getDoc;
-      window.auth = auth;
-      window.deleteUser = deleteUser;
-
-      window.closeModals = () => {
-        document
-          .querySelectorAll(".modal-overlay")
-          .forEach((m) => (m.style.display = "none"));
-        const addTransName = document.getElementById("addTransName");
-        const addTransEmail = document.getElementById("addTransEmail");
-        const addTransPass = document.getElementById("addTransPass");
-        const addTransRole = document.getElementById("addTransRole");
-        const addTransNote = document.getElementById("addTransNote");
-        const addTransStatus = document.getElementById("addTransStatus");
-        if (addTransName) addTransName.value = "";
-        if (addTransEmail) addTransEmail.value = "";
-        if (addTransPass) addTransPass.value = "";
-        if (addTransRole) addTransRole.value = "dtv";
-        if (addTransNote) addTransNote.value = "";
-        if (addTransStatus) addTransStatus.value = "active";
-        // Reset modal sửa DTV
-        const editTransId = document.getElementById("editTransId");
-        const editTransName = document.getElementById("editTransName");
-        const editTransEmail = document.getElementById("editTransEmail");
-        const editTransPass = document.getElementById("editTransPass");
-        const editTransRole = document.getElementById("editTransRole");
-        if (editTransId) editTransId.value = "";
-        if (editTransName) editTransName.value = "";
-        if (editTransEmail) editTransEmail.value = "";
-        if (editTransPass) editTransPass.value = "";
-        if (editTransRole) editTransRole.value = "dtv";
-        const editTransStatus = document.getElementById("editTransStatus");
-        if (editTransStatus) editTransStatus.value = "active";
-      };
-      document.getElementById("openAddTransactorModal").onclick = () =>
-        (document.getElementById("modalTransactor").style.display = "flex");
-      document.getElementById("openAddSalaryModal").onclick = () =>
-        (document.getElementById("modalSalary").style.display = "flex");
-      document.getElementById("openAddTaskModal").onclick = () =>
-        (document.getElementById("modalTask").style.display = "flex");
-      document.getElementById("openUploadDocModal").onclick = () =>
-        (document.getElementById("modalDoc").style.display = "flex");
-
-      async function loadMaintenanceStatus() {
-        const toggleInput = document.getElementById("maintenanceToggle");
-        if (!toggleInput) return;
-        try {
-          const docRef = doc(db, "system_settings", "maintenance");
-          const docSnap = await getDoc(docRef);
-          toggleInput.checked = docSnap.exists()
-            ? docSnap.data().isMaintenance
-            : false;
-        } catch (error) {
-          console.error("Lỗi nạp bảo trì:", error);
-        }
+      @media (max-width:390px){
+        .stats-grid{grid-template-columns:1fr}
+        .stat-card{min-height:78px}
+        .welcome-banner-status{grid-template-columns:1fr}
+        #realtimeClock{min-width:58px;font-size:10px!important}
+        .page-title{font-size:15px}
+        .data-table tbody td{grid-template-columns:88px minmax(0,1fr)}
       }
-
-      window.toggleMaintenanceMode = async function (element) {
-        const isON = element.checked;
-        try {
-          await setDoc(
-            doc(db, "system_settings", "maintenance"),
-            { isMaintenance: isON, updatedAt: new Date().toISOString() },
-            { merge: true },
-          );
-          logActivity(isON ? "Bật chế độ Bảo trì" : "Tắt chế độ Bảo trì");
-          if (typeof Swal !== "undefined")
-            Swal.fire({
-              icon: isON ? "warning" : "success",
-              title: isON ? "🔴 ĐÃ BẬT!" : "🟢 ĐÃ TẮT!",
-              confirmColor: "#00f0ff",
-            });
-        } catch (err) {
-          console.error("Lỗi cập nhật bảo trì:", err);
-          element.checked = !isON;
-        }
-      };
-
-      // --- HÀM QUYỀN SỬA LỖI ---
-      function checkAndApplyRole(role, userEmail, userName) {
-        // Admin mặc định nếu role là admin hoặc email có chứa bqt
-        let isDTV = true;
-        if (role && role.toLowerCase() === "admin") isDTV = false;
-        if (userEmail && userEmail.toLowerCase().includes("bqt")) isDTV = false;
-
-        window.currentUserIsDTV = isDTV;
-        const roleDisplay = document.getElementById("userRoleDisplay");
-        const nameDisplay = document.getElementById("userNameDisplay");
-        const avatarDisplay = document.getElementById("userAvatar");
-
-        if (roleDisplay)
-          roleDisplay.innerText = window.currentUserIsDTV
-            ? "DỊCH THUẬT VIÊN"
-            : "ADMINISTRATOR";
-        if (nameDisplay)
-          nameDisplay.innerText =
-            userName || (window.currentUserIsDTV ? "DTV" : "Admin");
-        if (avatarDisplay)
-          avatarDisplay.innerText = (userName || userEmail || "A")
-            .charAt(0)
-            .toUpperCase();
-
-        const navItems = document.querySelectorAll(".nav-item");
-        navItems.forEach((item) => {
-          const tab = item.getAttribute("data-tab");
-          if (
-            window.currentUserIsDTV &&
-            (tab === "transactors" || tab === "settings")
-          ) {
-            item.style.display = "none";
-          } else {
-            item.style.display = "flex";
-          }
-        });
-
-        const adminBtns = document.querySelectorAll(
-          "#openAddTransactorModal, #openAddSalaryModal, #openAddTaskModal, #openUploadDocModal, #exportSalaryBtn",
-        );
-        adminBtns.forEach((btn) => {
-          if (btn)
-            btn.style.display = window.currentUserIsDTV
-              ? "none"
-              : "inline-flex";
-        });
-
-        // Đổi tiêu đề tab lương cho DTV
-        const salaryTitle = document.getElementById("salaryTitle");
-        if (salaryTitle) {
-          salaryTitle.textContent = window.currentUserIsDTV
-            ? "Lương của tôi"
-            : "Bảng tính Lương DTV";
-        }
-        const salaryNavLabel = document.getElementById("salaryNavLabel");
-        if (salaryNavLabel) {
-          salaryNavLabel.textContent = window.currentUserIsDTV
-            ? "Lương của tôi"
-            : "Quản lý Lương";
-        }
+      @media (orientation:landscape) and (max-height:560px) and (max-width:900px){
+        .sidebar{width:min(72vw,300px)!important}
+        .nav-links{padding-bottom:72px}
+        .nav-item{min-height:44px;padding:10px 15px}
+        .user-profile{min-height:60px}
+        body>.modal-overlay .modal{max-height:96dvh!important}
       }
+    </style>
 
-      onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-          window.location.href = "index.html";
-          return;
-        }
-        let userRole = "admin";
-        let userName = user.displayName || user.email.split("@")[0];
-        let userStatus = "active";
-        try {
-          const transSnap = await getDocs(collection(db, "Transactors"));
-          transSnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            if (d.email && d.email.toLowerCase() === user.email.toLowerCase()) {
-              if (d.role) userRole = d.role;
-              if (d.name) userName = d.name;
-              if (d.status) userStatus = d.status;
-            }
-          });
-          const isDTV =
-            (userRole && userRole.toLowerCase() === "dtv") ||
-            (!userRole && !user.email.includes("bqt"));
-
-          // 🛑 Nếu là DTV nhưng không active thì đá về login
-          if (
-            isDTV &&
-            userStatus &&
-            userStatus.toLowerCase() !== "active" &&
-            userStatus.toLowerCase() !== "hoạt động"
-          ) {
-            await signOut(auth);
-            Swal.fire({
-              icon: "error",
-              title: "⛔ TÀI KHOẢN KHÔNG HOẠT ĐỘNG",
-              text: "Tài khoản của bạn hiện không hoạt động. Vui lòng liên hệ Ban Quản Trị!",
-              confirmButtonColor: "#ff3366",
-            });
-            window.location.href = "index.html";
-            return;
-          }
-
-          if (isDTV) {
-            const maintSnap = await getDoc(
-              doc(db, "system_settings", "maintenance"),
-            );
-            if (maintSnap.exists() && maintSnap.data().isMaintenance === true) {
-              await signOut(auth);
-              Swal.fire({
-                icon: "warning",
-                title: "🔴 BẢO TRÌ",
-                text: "Hệ thống đang bảo trì!",
-              });
-              window.location.href = "index.html";
-              return;
-            }
-          }
-          checkAndApplyRole(userRole, user.email, userName);
-          loadDashboardData();
-          loadMaintenanceStatus();
-          loadProfile();
-        } catch (e) {
-          console.error("Lỗi kiểm tra quyền:", e);
-        }
-      });
-
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        signOut(auth).then(() => {
-          window.location.href = "index.html";
-        });
-      });
-
-      async function logActivity(action, target = "") {
-        try {
-          await addDoc(collection(db, "activities"), {
-            actorEmail: auth.currentUser?.email || "Admin",
-            action: action,
-            target: target,
-            timestamp: new Date().toISOString(),
-          });
-        } catch (err) {
-          console.error(err);
-        }
-      }
-
-      // === TOAST NOTIFICATION SYSTEM ===
-      let toastContainer = document.getElementById('toastContainer');
-      if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.id = 'toastContainer';
-        toastContainer.style.cssText = 'position:fixed;top:20px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:10px;pointer-events:none;';
-        document.body.appendChild(toastContainer);
-      }
-
-      function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-        const colors = {
-          success: 'border-color:#00ff88;box-shadow:0 0 20px rgba(0,255,136,0.3),inset 0 0 20px rgba(0,255,136,0.05);',
-          error: 'border-color:#ff3366;box-shadow:0 0 20px rgba(255,51,102,0.3),inset 0 0 20px rgba(255,51,102,0.05);',
-          warning: 'border-color:#ffaa00;box-shadow:0 0 20px rgba(255,170,0,0.3),inset 0 0 20px rgba(255,170,0,0.05);',
-          info: 'border-color:#00f0ff;box-shadow:0 0 20px rgba(0,240,255,0.3),inset 0 0 20px rgba(0,240,255,0.05);'
-        };
-        toast.innerHTML = `
-          <div style="display:flex;align-items:center;gap:12px;background:rgba(10,11,16,0.95);backdrop-filter:blur(12px);border:1px solid;border-radius:12px;padding:14px 20px;min-width:320px;max-width:420px;pointer-events:auto;${colors[type] || colors.success}animation:toastSlideIn 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);">
-            <span style="font-size:22px;flex-shrink:0;">${icons[type] || icons.success}</span>
-            <span style="flex:1;color:#e2e8f0;font-size:14px;font-weight:500;font-family:'Roboto',sans-serif;">${message}</span>
-            <span style="font-size:16px;cursor:pointer;color:#94a3b8;transition:color 0.2s;" onclick="this.parentElement.parentElement.remove()">&times;</span>
-          </div>
-        `;
-        toastContainer.appendChild(toast);
-        setTimeout(() => {
-          if (toast.parentNode) {
-            toast.style.transition = 'opacity 0.3s,transform 0.3s';
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(100px)';
-            setTimeout(() => toast.remove(), 300);
-          }
-        }, 4000);
-      }
-
-      // Inject toast animation keyframes
-      const toastStyle = document.createElement('style');
-      toastStyle.textContent = `
-        @keyframes toastSlideIn {
-          from { opacity: 0; transform: translateX(100px) scale(0.9); }
-          to { opacity: 1; transform: translateX(0) scale(1); }
-        }
-      `;
-      document.head.appendChild(toastStyle);
-
-      // Declare currentProfileId globally
-      let currentProfileId = null;
-
-      // --- HELPER: Format relative time ---
-      function timeAgo(timestamp) {
-        if (!timestamp) return "Mới đây";
-        const now = new Date();
-        const date = new Date(timestamp);
-        const diffMs = now - date;
-        const diffSec = Math.floor(diffMs / 1000);
-        if (diffSec < 60) return `${diffSec} giây trước`;
-        const diffMin = Math.floor(diffSec / 60);
-        if (diffMin < 60) return `${diffMin} phút trước`;
-        const diffHr = Math.floor(diffMin / 60);
-        if (diffHr < 24) return `${diffHr} giờ trước`;
-        const diffDay = Math.floor(diffHr / 24);
-        if (diffDay < 7) return `${diffDay} ngày trước`;
-        return date.toLocaleDateString("vi-VN");
-      }
-
-      // --- Activity icon helpers ---
-      function getActivityIcon(action, target) {
-        const a = (action || "").toLowerCase();
-        const t = (target || "").toLowerCase();
-        if (a.includes("thêm") || a.includes("add") || a.includes("tạo") || a.includes("create")) return "fas fa-plus-circle";
-        if (a.includes("xóa") || a.includes("delete") || a.includes("remove")) return "fas fa-trash-alt";
-        if (a.includes("sửa") || a.includes("edit") || a.includes("update") || a.includes("cập nhật")) return "fas fa-edit";
-        if (a.includes("xuất") || a.includes("export") || a.includes("bảng lương")) return "fas fa-file-export";
-        if (a.includes("tải") || a.includes("upload") || a.includes("tài liệu")) return "fas fa-upload";
-        if (a.includes("phân công") || a.includes("task")) return "fas fa-tasks";
-        if (a.includes("bảo trì") || a.includes("maintenance")) return "fas fa-shield-alt";
-        if (a.includes("backup") || a.includes("sao lưu")) return "fas fa-database";
-        return "fas fa-circle";
-      }
-
-      function getActivityIconColor(action) {
-        const a = (action || "").toLowerCase();
-        if (a.includes("thêm") || a.includes("tạo") || a.includes("upload")) return "green";
-        if (a.includes("xóa")) return "red";
-        if (a.includes("sửa") || a.includes("cập nhật")) return "cyan";
-        if (a.includes("xuất") || a.includes("bảng lương")) return "purple";
-        if (a.includes("phân công")) return "orange";
-        if (a.includes("bảo trì")) return "orange";
-        return "cyan";
-      }
-
-      // --- DASHBOARD CHART INSTANCE ---
-      let dashboardChartInstance = null;
-
-      function renderDashboardChart(taskData = null, salaryData = null) {
-        const ctx = document.getElementById('dashboardChart');
-        if (!ctx) return;
-        if (dashboardChartInstance) {
-          dashboardChartInstance.destroy();
-        }
-        // Use real data if provided, otherwise zeros
-        const taskCounts = taskData || [0,0,0,0,0,0,0,0,0,0,0,0];
-        const salaryAmounts = salaryData || [0,0,0,0,0,0,0,0,0,0,0,0];
-
-        dashboardChartInstance = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
-            datasets: [
-              {
-                label: 'Task hoàn thành',
-                data: taskCounts,
-                borderColor: '#00f0ff',
-                backgroundColor: 'rgba(0, 240, 255, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#00f0ff',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                borderWidth: 2,
-              },
-              {
-                label: 'Chi lương (triệu)',
-                data: salaryAmounts,
-                borderColor: '#7000ff',
-                backgroundColor: 'rgba(112, 0, 255, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#7000ff',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                borderWidth: 2,
-                yAxisID: 'y1',
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: {
-              intersect: false,
-              mode: 'index',
-            },
-            plugins: {
-              legend: {
-                labels: {
-                  color: '#94a3b8',
-                  font: { size: 11 },
-                  boxWidth: 12,
-                  padding: 16,
-                }
-              },
-              tooltip: {
-                backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                titleColor: '#e2e8f0',
-                bodyColor: '#94a3b8',
-                borderColor: 'rgba(0, 242, 255, 0.2)',
-                borderWidth: 1,
-                padding: 10,
-                cornerRadius: 8,
-              }
-            },
-            scales: {
-              x: {
-                grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
-                ticks: { color: '#64748b', font: { size: 10 } }
-              },
-              y: {
-                beginAtZero: true,
-                grid: { color: 'rgba(0, 242, 255, 0.05)', drawBorder: false },
-                ticks: { color: '#64748b', font: { size: 10 } },
-                title: {
-                  display: true,
-                  text: 'Task',
-                  color: '#64748b',
-                  font: { size: 10 }
-                }
-              },
-              y1: {
-                position: 'right',
-                beginAtZero: true,
-                grid: { display: false },
-                ticks: { color: '#64748b', font: { size: 10 } },
-                title: {
-                  display: true,
-                  text: 'Triệu VNĐ',
-                  color: '#64748b',
-                  font: { size: 10 }
-                }
-              }
-            }
-          }
-        });
-      }
-
-      async function loadDashboardData() {
-        try {
-          // --- Stats ---
-          const transSnap = await getDocs(collection(db, "Transactors"));
-          let activeCount = 0;
-          transSnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            const st = (d.status || "").toLowerCase();
-            if (st === "active" || st === "hoạt động" || st === "") {
-              activeCount++;
-            }
-          });
-          document.getElementById("statActiveTrans").innerText = activeCount || 0;
-
-          const taskSnap = await getDocs(collection(db, "assignments"));
-          let pending = 0, done = 0;
-          const pendingTasks = [];
-          const allTasks = [];
-          taskSnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            const st = d.status || d.trangThai || d.state || "";
-            const id = docSnap.id;
-            allTasks.push({ id, ...d });
-            if (st === "Hoàn thành" || st === "completed") done++;
-            else {
-              pending++;
-              pendingTasks.push({ id, ...d });
-            }
-          });
-          document.getElementById("statPendingTasks").innerText = pending;
-          document.getElementById("statDoneTasks").innerText = done;
-
-          const salarySnap = await getDocs(collection(db, "salary_records"));
-          let totalSalary = 0;
-          salarySnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            totalSalary += (d.baseSalary || 0) + (d.allowance || 0) + (d.bonus || 0) - (d.deduction || 0);
-          });
-          document.getElementById("statTotalSalary").innerText = totalSalary.toLocaleString("vi-VN") + " đ";
-
-          // --- Compute Chart Data by Month ---
-          const taskByMonth = new Array(12).fill(0);
-          const salaryByMonth = new Array(12).fill(0);
-          // Group completed tasks by month
-          taskSnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            const st = d.status || d.trangThai || d.state || "";
-            if (st === "Hoàn thành" || st === "completed") {
-              let month = 0;
-              // Try multiple timestamp fields
-              const ts = d.createdAt || d.createdAt || d.timestamp || d.updatedAt || d.ngayTao;
-              if (ts) {
-                const date = ts.toDate ? ts.toDate() : new Date(ts);
-                month = date.getMonth(); // 0-11
-              }
-              if (month >= 0 && month < 12) taskByMonth[month]++;
-            }
-          });
-          // Group salary records by month
-          salarySnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            let month = 0;
-            const ts = d.createdAt || d.createdAt || d.timestamp || d.updatedAt || d.ngayTao || d.period || d.thang;
-            if (ts) {
-              const date = ts.toDate ? ts.toDate() : new Date(ts);
-              month = date.getMonth(); // 0-11
-            }
-            const amount = (d.baseSalary || 0) + (d.allowance || 0) + (d.bonus || 0) - (d.deduction || 0);
-            if (month >= 0 && month < 12) salaryByMonth[month] += Math.round(amount / 1000000 * 100) / 100;
-          });
-          // --- Render Chart with Real Data ---
-          renderDashboardChart(taskByMonth, salaryByMonth);
-
-          // --- Render Task Checklist ---
-          const taskChecklist = document.getElementById("taskChecklist");
-          const pendingTaskCount = document.getElementById("pendingTaskCount");
-          if (pendingTaskCount) pendingTaskCount.textContent = pendingTasks.length;
-          if (pendingTasks.length === 0) {
-            taskChecklist.innerHTML = '<li style="color:var(--text-muted); font-size:13px; padding:12px 0;">✅ Tất cả task đã hoàn thành!</li>';
-          } else {
-            let taskHtml = "";
-            // Show top 5 pending tasks
-            const topTasks = pendingTasks.slice(0, 5);
-            topTasks.forEach((t) => {
-              const deadline = t.deadline || "Chưa đặt";
-              const isUrgent = deadline !== "Chưa đặt" && new Date(deadline) < new Date(Date.now() + 86400000 * 3);
-              const statusLabel = t.status === "processing" ? "Đang làm" : "Chờ duyệt";
-              const badgeClass = t.status === "processing" ? "processing" : "pending";
-              taskHtml += `
-                <li class="task-checklist-item">
-                  <div class="task-check"><i class="fas fa-check"></i></div>
-                  <div class="task-info">
-                    <div class="task-name">${t.project || "N/A"}</div>
-                    <div class="task-meta">
-                      <i class="fas fa-user"></i> ${t.dtvName || "N/A"}
-                      <span class="task-deadline ${isUrgent ? 'urgent' : ''}"><i class="fas fa-clock"></i> ${deadline}</span>
-                      <span class="task-badge ${badgeClass}">${statusLabel}</span>
-                    </div>
-                  </div>
-                </li>`;
-            });
-            taskChecklist.innerHTML = taskHtml;
-          }
-
-          // --- Render Deadlines (from assignments) ---
-          const deadlineList = document.getElementById("deadlineList");
-          const deadlineCount = document.getElementById("deadlineCount");
-          // Sort by deadline
-          const tasksWithDeadlines = allTasks
-            .filter(t => t.deadline && t.deadline !== "Chưa đặt" && t.deadline !== "N/A")
-            .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-          if (deadlineCount) deadlineCount.textContent = tasksWithDeadlines.length;
-          if (tasksWithDeadlines.length === 0) {
-            deadlineList.innerHTML = '<li style="color:var(--text-muted); font-size:13px; padding:12px 0;">Không có deadline sắp tới.</li>';
-          } else {
-            let dlHtml = "";
-            const topDeadlines = tasksWithDeadlines.slice(0, 5);
-            topDeadlines.forEach((t) => {
-              const deadlineDate = new Date(t.deadline);
-              const now = new Date();
-              const diffDays = Math.ceil((deadlineDate - now) / (1000 * 60 * 60 * 24));
-              let dotColor = "cyan";
-              let dateLabel = t.deadline;
-              if (diffDays <= 0) { dotColor = "red"; dateLabel = "🔴 QUÁ HẠN"; }
-              else if (diffDays <= 3) { dotColor = "orange"; dateLabel = `${t.deadline} (${diffDays} ngày)`; }
-              else if (diffDays <= 7) { dotColor = "purple"; dateLabel = `${t.deadline} (${diffDays} ngày)`; }
-              else { dotColor = "green"; dateLabel = t.deadline; }
-              dlHtml += `
-                <li class="deadline-item">
-                  <span class="deadline-dot ${dotColor}"></span>
-                  <div class="deadline-content">
-                    <div class="deadline-title">${t.project || "N/A"}</div>
-                    <div class="deadline-sub"><i class="fas fa-user"></i> ${t.dtvName || "N/A"}</div>
-                  </div>
-                  <span class="deadline-date">${dateLabel}</span>
-                </li>`;
-            });
-            deadlineList.innerHTML = dlHtml;
-          }
-
-          // --- Render Activity Feed (Timeline style) ---
-          const q = query(collection(db, "activities"), orderBy("timestamp", "desc"), limit(8));
-          const actSnap = await getDocs(q);
-          const recentList = document.getElementById("recentActivityList");
-          if (actSnap.empty) {
-            recentList.innerHTML = `
-              <li class="activity-empty">
-                <i class="fas fa-inbox"></i>
-                <p>Chưa có hoạt động nào.</p>
-              </li>`;
-            return;
-          }
-          let actHtml = "";
-          actSnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            const actor = d.actorEmail ? d.actorEmail.split('@')[0] : "Hệ thống";
-            const avatarLetter = actor.charAt(0).toUpperCase();
-            const icon = getActivityIcon(d.action, d.target);
-            const iconColor = getActivityIconColor(d.action);
-            const time = timeAgo(d.timestamp);
-            actHtml += `
-              <li class="activity-feed-item">
-                <div class="activity-feed-avatar">${avatarLetter}</div>
-                <div class="activity-feed-content">
-                  <div>
-                    <span class="feed-actor">${actor}</span>
-                    <span class="feed-action"> ${d.action}</span>
-                    ${d.target ? `<span class="feed-target"> - ${d.target}</span>` : ''}
-                  </div>
-                  <div class="feed-time"><i class="far fa-clock"></i> ${time}</div>
-                </div>
-              </li>`;
-          });
-          recentList.innerHTML = actHtml;
-
-          // --- Update welcome banner ---
-          const user = auth.currentUser;
-          if (user) {
-            const welcomeName = document.getElementById("welcomeUserName");
-            // Try to get display name
-            const transSnap2 = await getDocs(collection(db, "Transactors"));
-            let displayName = user.email.split('@')[0];
-            transSnap2.forEach((docSnap) => {
-              const d = docSnap.data();
-              if (d.email && d.email.toLowerCase() === user.email.toLowerCase() && d.name) {
-                displayName = d.name;
-              }
-            });
-            if (welcomeName) welcomeName.textContent = displayName;
-          }
-
-          // --- Update dashboard clock ---
-          function updateDashboardClock() {
-            const now = new Date();
-            const h = String(now.getHours()).padStart(2, "0");
-            const m = String(now.getMinutes()).padStart(2, "0");
-            const s = String(now.getSeconds()).padStart(2, "0");
-            const clockEl = document.getElementById("dashboardClock");
-            if (clockEl) clockEl.textContent = `${h}:${m}:${s}`;
-          }
-          updateDashboardClock();
-          setInterval(updateDashboardClock, 1000);
-
-          // --- Weather / system status ---
-          const weatherEl = document.getElementById("welcomeWeather");
-          if (weatherEl) {
-            const now = new Date();
-            const hour = now.getHours();
-            let greeting = "Chào buổi sáng ☀️";
-            if (hour >= 12 && hour < 18) greeting = "Chào buổi chiều 🌤️";
-            else if (hour >= 18) greeting = "Chào buổi tối 🌙";
-            if (weatherEl) weatherEl.textContent = greeting;
-          }
-        } catch (error) {
-          console.error("Dashboard load error:", error);
-        }
-      }
-      document.getElementById('avatarInput')?.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const avatarDiv = document.getElementById('profileAvatar');
-          if (avatarDiv) {
-            avatarDiv.style.background = `url(${ev.target.result}) center/cover`;
-            avatarDiv.style.backgroundImage = `url(${ev.target.result})`;
-            const textSpan = document.getElementById('profileAvatarText');
-            if (textSpan) textSpan.style.display = 'none';
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-
-      function loadProfile() {
-        const user = auth.currentUser;
-        if (!user) return;
-        const email = user.email || "";
-        // Pre-fill immediately with currentUser data (no waiting for Firestore)
-        const userName = user.displayName || email.split('@')[0] || 'Người dùng';
-
-        // Email
-        document.getElementById("profileEmail").value = email;
-
-        // Role - check if user is DTV or Admin
-        const isDTV = window.currentUserIsDTV;
-        const roleText = isDTV ? "Dịch thuật viên" : "Quản trị viên";
-        document.getElementById("profileRole").value = roleText;
-        document.getElementById("profileRoleText").textContent = roleText;
-
-        // Display name (sidebar)
-        document.getElementById("profileDisplayName").textContent = userName;
-
-        // Avatar initial - show first letter of actual name
-        const avatarText = document.getElementById("profileAvatarText");
-        if (avatarText) avatarText.textContent = userName.charAt(0).toUpperCase();
-
-        // Pre-fill Họ tên input immediately with displayName
-        document.getElementById("profileName").value = userName;
-
-        // Status field
-        document.getElementById("profileStatusField").value = "Hoạt động";
-
-        // Tìm document trong Transactors theo email để lấy tên đầy đủ từ Firestore
-        const q = query(
-          collection(db, "Transactors"),
-          where("email", "==", email),
-        );
-        getDocs(q)
-          .then((snap) => {
-            if (!snap.empty) {
-              const docSnap = snap.docs[0];
-              currentProfileId = docSnap.id;
-              const d = docSnap.data();
-              const name = d.name || "";
-              // Override with Firestore data if available
-              if (name) {
-                document.getElementById("profileName").value = name;
-                document.getElementById("profileDisplayName").textContent = name;
-                if (avatarText) avatarText.textContent = name.charAt(0).toUpperCase();
-              }
-            }
-          })
-          .catch((err) => {
-            console.error("Lỗi tải hồ sơ từ Firestore:", err);
-            // Keep already pre-filled data from currentUser as fallback
-          });
-      }
-
-      document.getElementById("saveProfileBtn").onclick = async () => {
-        const name = document.getElementById("profileName").value.trim();
-        const currentPass = document.getElementById("profileCurrentPass").value;
-        const newPass = document.getElementById("profileNewPass").value;
-
-        if (!name) {
-          return Swal.fire({
-            icon: "warning",
-            title: "Thiếu thông tin",
-            text: "Vui lòng nhập họ tên!",
-          });
-        }
-
-        try {
-          // 1. Cập nhật Firestore
-          if (currentProfileId) {
-            await updateDoc(doc(db, "Transactors", currentProfileId), { name });
-          }
-
-          const user = auth.currentUser;
-          if (!user) throw new Error("Không tìm thấy người dùng");
-
-          // 2. Đổi mật khẩu nếu có đủ thông tin
-          if (newPass && currentPass) {
-            if (newPass.length < 6) {
-              return Swal.fire({
-                icon: "error",
-                title: "Mật khẩu yếu",
-                text: "Mật khẩu mới cần ít nhất 6 ký tự!",
-              });
-            }
-            // Re-authenticate trước khi đổi mật khẩu
-            const { reauthenticateWithCredential, EmailAuthProvider } = await import("firebase/auth");
-            const credential = EmailAuthProvider.credential(user.email, currentPass);
-            await reauthenticateWithCredential(user, credential);
-            await updatePassword(user, newPass);
-          } else if (newPass && !currentPass) {
-            return Swal.fire({
-              icon: "warning",
-              title: "Thiếu mật khẩu hiện tại",
-              text: "Vui lòng nhập mật khẩu hiện tại để đổi mật khẩu mới!",
-            });
-          }
-
-          // 3. Cập nhật tên hiển thị trên sidebar
-          const nameDisplay = document.getElementById("userNameDisplay");
-          if (nameDisplay) nameDisplay.innerText = name;
-          const avatarDisplay = document.getElementById("userAvatar");
-          if (avatarDisplay)
-            avatarDisplay.innerText = name.charAt(0).toUpperCase();
-          document.getElementById("profileDisplayName").textContent = name;
-
-          // Reset fields
-          document.getElementById("profileCurrentPass").value = "";
-          document.getElementById("profileNewPass").value = "";
-
-          Swal.fire({
-            icon: "success",
-            title: "Đã lưu!",
-            text: "Thông tin cá nhân đã được cập nhật.",
-            timer: 1500,
-            showConfirmButton: false,
-          });
-        } catch (error) {
-          console.error("Lỗi lưu hồ sơ:", error);
-          let errMsg = error.message;
-          if (error.code === 'auth/wrong-password' || error.message.includes('wrong-password')) {
-            errMsg = 'Mật khẩu hiện tại không đúng!';
-          } else if (error.code === 'auth/requires-recent-login') {
-            errMsg = 'Vui lòng đăng xuất và đăng nhập lại trước khi đổi mật khẩu.';
-          }
-          Swal.fire({ icon: "error", title: "Lỗi", text: errMsg });
-        }
-      };
-
-      // --- CÁC NÚT LƯU DỮ LIỆU ---
-
-      document.getElementById("saveTransactorBtn").onclick = async () => {
-        const name = document.getElementById("addTransName").value.trim();
-        const email = document.getElementById("addTransEmail").value.trim();
-        const password = document.getElementById("addTransPass").value;
-        const role = document.getElementById("addTransRole").value.trim();
-        const note = document.getElementById("addTransNote").value.trim();
-        const status = document.getElementById("addTransStatus").value.trim();
-        if (!name || !email || !password)
-          return Swal.fire({
-            icon: "warning",
-            title: "Thiếu thông tin",
-            text: "Vui lòng điền đầy đủ!",
-          });
-
-        try {
-          // ⚠️ KHÔNG dùng createUserWithEmailAndPassword vì nó sẽ chuyển session
-          // Dùng REST API signUp để tạo user mà không ảnh hưởng session hiện tại
-          const signUpUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`;
-          const signUpRes = await fetch(signUpUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: email,
-              password: password,
-              returnSecureToken: false,
-            }),
-          });
-          const signUpData = await signUpRes.json();
-
-          if (signUpData.error) {
-            const errMsg = signUpData.error.message;
-            if (errMsg === "EMAIL_EXISTS") {
-              return Swal.fire({
-                icon: "error",
-                title: "Email đã tồn tại!",
-                text: "Email này đã có tài khoản. Hãy dùng email khác hoặc xóa tài khoản cũ trên Firebase Console.",
-                confirmButtonColor: "#ff3366",
-              });
-            } else if (errMsg === "WEAK_PASSWORD") {
-              return Swal.fire({
-                icon: "error",
-                title: "Mật khẩu yếu",
-                text: "Cần ít nhất 6 ký tự!",
-              });
-            } else {
-              return Swal.fire({
-                icon: "error",
-                title: "Lỗi tạo tài khoản",
-                text: errMsg,
-              });
-            }
-          }
-
-          const uid = signUpData.localId;
-          // Lưu vào Firestore
-          await setDoc(doc(db, "Transactors", uid), {
-            uid,
-            name,
-            email,
-            password,
-            role,
-            note,
-            status: status || "active",
-            createdAt: new Date().toISOString(),
-          });
-          logActivity("Thêm DTV mới", note ? `${name} - ${note}` : name);
-          closeModals();
-          Swal.fire({
-            icon: "success",
-            title: "Thành công!",
-            text: "✅ Đã thêm DTV thành công!",
-            timer: 2000,
-            showConfirmButton: false,
-          });
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Lỗi hệ thống",
-            text: error.message,
-          });
-        }
-      };
-
-      document.getElementById("saveSalaryBtn").onclick = async () => {
-        const dtvName = document.getElementById("ten-dtv").value.trim();
-        const position = document
-          .getElementById("salary-position")
-          .value.trim();
-        const email = document.getElementById("salary-email").value.trim();
-        const baseSalary =
-          Number(document.getElementById("luong-tap").value) || 0;
-        const allowance = Number(document.getElementById("phu-cap").value) || 0;
-        const bonus = Number(document.getElementById("thuong-tap").value) || 0;
-        const deduction =
-          Number(document.getElementById("khau-hao").value) || 0;
-        if (!dtvName) return showToast("Vui lòng nhập họ tên nhân sự!", "warning");
-        try {
-          await addDoc(collection(db, "salary_records"), {
-            title: dtvName,
-            dtvName,
-            position: position || "Dịch thuật viên",
-            email,
-            baseSalary,
-            allowance,
-            bonus,
-            deduction,
-            createdAt: new Date().toISOString(),
-          });
-          logActivity("Tạo bảng lương mới", dtvName);
-          closeModals();
-          showToast("✅ Đã lưu bảng lương!", "success");
-        } catch (error) {
-          console.error("Lỗi tạo lương:", error);
-          showToast("❌ Lỗi: " + error.message, "error");
-        }
-      };
-
-      document.getElementById("saveTaskBtn").onclick = async () => {
-        const project = document.getElementById("taskTitleInput").value.trim();
-        const dtvCode = document
-          .getElementById("taskAssigneeInput")
-          .value.trim();
-        const deadline = document.getElementById("taskDeadlineInput").value;
-        if (!project) return showToast("Vui lòng nhập tên dự án!", "warning");
-        try {
-          await addDoc(collection(db, "assignments"), {
-            project,
-            dtvCode,
-            dtvName: dtvCode,
-            deadline: deadline || "Chưa đặt",
-            status: "pending",
-            createdAt: new Date().toISOString(),
-          });
-          logActivity("Phân công Task mới", project);
-          closeModals();
-          showToast("✅ Đã phân công task!", "success");
-        } catch (error) {
-          console.error("Lỗi tạo task:", error);
-          showToast("❌ Lỗi: " + error.message, "error");
-        }
-      };
-
-      document.getElementById("saveDocBtn").onclick = async () => {
-        const tieuDe = document.getElementById("addDocName").value.trim();
-        const fileUrl = document.getElementById("addDocUrl").value.trim();
-        if (!tieuDe) return showToast("Vui lòng nhập tên tài liệu!", "warning");
-        if (!fileUrl) return showToast("Vui lòng nhập Link tải!", "warning");
-        try {
-          await addDoc(collection(db, "documents"), {
-            tieuDe,
-            fileUrl,
-            nguoiKy: auth.currentUser?.email || "Admin",
-            createdAt: new Date().toLocaleDateString("vi-VN"),
-          });
-          logActivity("Tải lên tài liệu mới", tieuDe);
-          closeModals();
-          showToast("✅ Đã đăng tài liệu!", "success");
-        } catch (error) {
-          console.error("Lỗi tải tài liệu:", error);
-          showToast("❌ Lỗi: " + error.message, "error");
-        }
-      };
-
-      document.getElementById("downloadBackupBtn").onclick = async () => {
-        try {
-          const collectionsToBackup = [
-            "Transactors",
-            "salary_records",
-            "assignments",
-            "documents",
-            "activities",
-            "system_settings",
-          ];
-          const backupData = {
-            exportDate: new Date().toISOString(),
-            exportedBy: auth.currentUser?.email || "Admin",
-            data: {},
-          };
-          for (const colName of collectionsToBackup) {
-            const snap = await getDocs(collection(db, colName));
-            backupData.data[colName] = [];
-            snap.forEach((docSnap) => {
-              backupData.data[colName].push({
-                id: docSnap.id,
-                ...docSnap.data(),
-              });
-            });
-          }
-          const jsonString = JSON.stringify(backupData, null, 2);
-          saveAs(
-            new Blob([jsonString], { type: "application/json" }),
-            `Backup_${new Date().toISOString().slice(0, 10)}.json`,
-          );
-          logActivity("Xuất file backup hệ thống (.json)");
-          showToast("✅ Đã xuất file backup thành công!", "success");
-        } catch (error) {
-          console.error("Lỗi backup:", error);
-          showToast("❌ Lỗi khi xuất file backup!", "error");
-        }
-      };
-
-      // === CÔNG CỤ KHÔI PHỤC BACKUP (Restore) ===
-      window.restoreBackup = async function () {
-        const confirmed = confirm(
-          "⚠️ CẢNH BÁO: Hành động này sẽ ghi đè dữ liệu hiện tại bằng dữ liệu trong file Backup.json. Bạn có chắc chắn muốn tiếp tục?",
-        );
-        if (!confirmed) return;
-        try {
-          const response = await fetch("Backup.json");
-          if (!response.ok)
-            throw new Error(
-              "Không tìm thấy file Backup.json. Vui lòng đặt file vào cùng thư mục với dashboard.html",
-            );
-          const backupData = await response.json();
-          console.log("📦 Đã tải file backup:", backupData.exportDate);
-
-          for (const colName of Object.keys(backupData.data)) {
-            if (
-              backupData.data[colName] &&
-              backupData.data[colName].length > 0
-            ) {
-              console.log(`🔄 Đang khôi phục ${colName}...`);
-              for (const item of backupData.data[colName]) {
-                const { id, ...data } = item;
-                if (id) await setDoc(doc(db, colName, id), data);
-                else await addDoc(collection(db, colName), data);
-              }
-            }
-          }
-          showToast("🎉 Khôi phục dữ liệu thành công! Vui lòng F5 (Refresh) lại trang.", "success");
-          setTimeout(() => location.reload(), 2000);
-        } catch (error) {
-          console.error("❌ LỖI KHI KHÔI PHỤC:", error);
-          showToast("Lỗi khôi phục: " + error.message, "error");
-        }
-      };
-
-      // === XUẤT BẢNG LƯƠNG RA FILE WORD (THEO MẪU) ===
-      window.exportSalaryToExcel = async function () {
-        try {
-          const snapshot = await getDocs(collection(db, "salary_records"));
-          if (snapshot.empty) {
-            return Swal.fire({
-              icon: "info",
-              title: "Không có dữ liệu",
-              text: "Chưa có bảng lương nào để xuất.",
-            });
-          }
-
-          // Gom dữ liệu theo tháng (từ title)
-          const monthMap = {};
-          snapshot.forEach((docSnap) => {
-            const d = docSnap.data();
-            const title = d.title || "Không có tiêu đề";
-            const dtvName = d.dtvName || title;
-            const email = d.email || "";
-            const base = Number(d.baseSalary) || 0;
-            const allowance = Number(d.allowance) || 0;
-            const bonus = Number(d.bonus) || 0;
-            const deduction = Number(d.deduction) || 0;
-            const total = base + allowance + bonus - deduction;
-
-            // Trích tháng từ title (VD: "Lương tháng 8" -> 8)
-            let month = "";
-            let year = "";
-            const mMatch = title.match(/tháng\s*(\d+)/i);
-            if (mMatch) month = mMatch[1];
-            const yMatch = title.match(/năm\s*(\d{4})/i);
-            if (yMatch) year = yMatch[1];
-            const key = month ? `Tháng ${month}` : "Khác";
-
-            if (!monthMap[key]) monthMap[key] = [];
-            monthMap[key].push({
-              dtvName,
-              email,
-              base,
-              allowance,
-              bonus,
-              deduction,
-              total,
-              month,
-              year,
-            });
-          });
-
-          // Dùng docx để tạo file Word
-          const {
-            Document,
-            Packer,
-            Paragraph,
-            TextRun,
-            Table,
-            TableRow,
-            TableCell,
-            WidthType,
-            AlignmentType,
-            BorderStyle,
-          } = docx;
-
-          const border = {
-            style: BorderStyle.SINGLE,
-            size: 1,
-            color: "000000",
-          };
-
-          // Hàm tạo cell
-          const cell = (text, opts = {}) => {
-            const runs = [
-              new TextRun({
-                text: String(text),
-                font: "Times New Roman",
-                size: 22,
-                bold: opts.bold || false,
-                ...(opts.runOpts || {}),
-              }),
-            ];
-            return new TableCell({
-              children: [
-                new Paragraph({
-                  children: runs,
-                  alignment: opts.alignment || AlignmentType.CENTER,
-                  spacing: { before: 40, after: 40 },
-                }),
-              ],
-              width: opts.width
-                ? { size: opts.width, type: WidthType.DXA }
-                : undefined,
-              verticalAlign: "center",
-              borders: {
-                top: border,
-                bottom: border,
-                left: border,
-                right: border,
-              },
-              ...(opts.cellOpts || {}),
-            });
-          };
-
-          const children = [];
-
-          // Quốc hiệu (lên trên cùng)
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 40 },
-              children: [
-                new TextRun({
-                  text: "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
-                  font: "Times New Roman",
-                  size: 24,
-                  bold: true,
-                }),
-              ],
-            }),
-          );
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 40 },
-              children: [
-                new TextRun({
-                  text: "Độc lập – Tự do – Hạnh phúc",
-                  font: "Times New Roman",
-                  size: 22,
-                  bold: false,
-                  italics: true,
-                }),
-              ],
-            }),
-          );
-
-          // Dòng kẻ
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 60 },
-              children: [
-                new TextRun({
-                  text: "─".repeat(50),
-                  font: "Times New Roman",
-                  size: 20,
-                }),
-              ],
-            }),
-          );
-
-          // Header nhóm (xuống dưới quốc hiệu)
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 60 },
-              children: [
-                new TextRun({
-                  text: "NHÓM DỊCH THUẬT DORAEMON FANSUB VIỆT NAM",
-                  font: "Times New Roman",
-                  size: 22,
-                  bold: true,
-                  color: "000000",
-                }),
-              ],
-            }),
-          );
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 60 },
-              children: [
-                new TextRun({
-                  text: "TRỰC THUỘC DORAFANCLUB VIỆT NAM",
-                  font: "Times New Roman",
-                  size: 22,
-                  bold: true,
-                  color: "000000",
-                }),
-              ],
-            }),
-          );
-
-          // Dòng kẻ
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 60 },
-              children: [
-                new TextRun({
-                  text: "─".repeat(50),
-                  font: "Times New Roman",
-                  size: 20,
-                }),
-              ],
-            }),
-          );
-
-          // Ban quản trị
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 100 },
-              children: [
-                new TextRun({
-                  text: "BAN QUẢN TRỊ",
-                  font: "Times New Roman",
-                  size: 22,
-                  bold: true,
-                }),
-              ],
-            }),
-          );
-
-          // Địa điểm + ngày tháng
-          const now = new Date();
-          const day = now.getDate();
-          const monthNum = now.getMonth() + 1;
-          const yearNum = now.getFullYear();
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.RIGHT,
-              spacing: { after: 200 },
-              children: [
-                new TextRun({
-                  text: `Đức Nhuận, ngày ${day} tháng ${monthNum} năm ${yearNum}`,
-                  font: "Times New Roman",
-                  size: 22,
-                  italics: true,
-                }),
-              ],
-            }),
-          );
-
-          // Tiêu đề
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 200 },
-              children: [
-                new TextRun({
-                  text: `BẢNG LƯƠNG THÁNG ${monthNum}/${yearNum}`,
-                  font: "Times New Roman",
-                  size: 28,
-                  bold: true,
-                  underline: { type: "single" },
-                }),
-              ],
-            }),
-          );
-
-          // Tạo bảng dữ liệu
-          const tableRows = [];
-
-          // Header row
-          tableRows.push(
-            new TableRow({
-              tableHeader: true,
-              children: [
-                cell("STT", { bold: true, width: 800 }),
-                cell("Họ và tên nhân sự", { bold: true, width: 2500 }),
-                cell("Vị trí", { bold: true, width: 1500 }),
-                cell("Lương tập (VNĐ)", { bold: true, width: 1800 }),
-                cell("Phụ cấp (VNĐ)", { bold: true, width: 1500 }),
-                cell("Thưởng (VNĐ)", { bold: true, width: 1500 }),
-                cell("Khấu hao (VNĐ)", { bold: true, width: 1500 }),
-                cell("Tổng cộng", { bold: true, width: 1500 }),
-              ],
-            }),
-          );
-
-          // Gom tất cả records vào một bảng
-          let stt = 1;
-          let grandTotal = 0;
-          const allRecords = [];
-          Object.values(monthMap).forEach((records) => {
-            records.forEach((r) => allRecords.push(r));
-          });
-
-          allRecords.forEach((r) => {
-            grandTotal += r.total;
-            tableRows.push(
-              new TableRow({
-                children: [
-                  cell(stt++, { width: 800 }),
-                  cell(r.dtvName, {
-                    alignment: AlignmentType.LEFT,
-                    width: 2500,
-                  }),
-                  cell("Dịch thuật viên", { width: 1500 }),
-                  cell(r.base.toLocaleString("vi-VN"), { width: 1800 }),
-                  cell(r.allowance.toLocaleString("vi-VN"), { width: 1500 }),
-                  cell(r.bonus.toLocaleString("vi-VN"), { width: 1500 }),
-                  cell(r.deduction.toLocaleString("vi-VN"), { width: 1500 }),
-                  cell(r.total.toLocaleString("vi-VN"), {
-                    bold: true,
-                    width: 1500,
-                  }),
-                ],
-              }),
-            );
-          });
-
-          // Row tổng cộng
-          tableRows.push(
-            new TableRow({
-              children: [
-                cell("", { width: 800 }),
-                cell("TỔNG CỘNG", {
-                  bold: true,
-                  alignment: AlignmentType.RIGHT,
-                  width: 2500,
-                }),
-                cell("", { width: 1500 }),
-                cell("", { width: 1800 }),
-                cell("", { width: 1500 }),
-                cell("", { width: 1500 }),
-                cell("", { width: 1500 }),
-                cell(grandTotal.toLocaleString("vi-VN"), {
-                  bold: true,
-                  width: 1500,
-                }),
-              ],
-            }),
-          );
-
-          const dataTable = new Table({
-            rows: tableRows,
-            width: { size: 100, type: WidthType.PERCENTAGE },
-          });
-          children.push(dataTable);
-
-          // Khoảng trống
-          children.push(
-            new Paragraph({ spacing: { before: 400 }, children: [] }),
-          );
-
-          // Chữ ký
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.RIGHT,
-              spacing: { after: 40 },
-              children: [
-                new TextRun({
-                  text: "TM. BQT DORA FANCLUB VIỆT NAM",
-                  font: "Times New Roman",
-                  size: 22,
-                  bold: true,
-                }),
-              ],
-            }),
-          );
-          children.push(
-            new Paragraph({
-              alignment: AlignmentType.RIGHT,
-              spacing: { after: 40 },
-              children: [
-                new TextRun({
-                  text: "Nguyễn Tuấn Khải",
-                  font: "Times New Roman",
-                  size: 22,
-                  bold: true,
-                }),
-              ],
-            }),
-          );
-
-          const doc = new Document({
-            sections: [
-              {
-                properties: {
-                  page: {
-                    margin: {
-                      top: 1440,
-                      bottom: 1440,
-                      left: 1440,
-                      right: 1440,
-                    },
-                  },
-                },
-                children: children,
-              },
-            ],
-          });
-
-          const blob = await Packer.toBlob(doc);
-          saveAs(blob, `BangLuong_Thang${monthNum}_${yearNum}.docx`);
-
-          logActivity("Xuất bảng lương ra file Word");
-
-          Swal.fire({
-            icon: "success",
-            title: "Xuất thành công!",
-            text: `Đã tải file BangLuong_Thang${monthNum}_${yearNum}.docx`,
-            timer: 2000,
-            showConfirmButton: false,
-          });
-        } catch (error) {
-          console.error("Lỗi xuất Word:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Lỗi xuất file",
-            text: error.message,
-          });
-        }
-      };
-
-      // === THAO TÁC SỬA DTV (ADMIN) ===
-      window.openEditTransactor = async function (id) {
-        try {
-          const docSnap = await getDoc(doc(db, "Transactors", id));
-          if (!docSnap.exists()) {
-            Swal.fire({
-              icon: "error",
-              title: "Không tìm thấy",
-              text: "DTV này không tồn tại hoặc đã bị xóa.",
-            });
-            return;
-          }
-          const d = docSnap.data();
-
-          document.getElementById("editTransId").value = id;
-          document.getElementById("editTransName").value = d.name || "";
-          document.getElementById("editTransEmail").value = d.email || "";
-          document.getElementById("editTransPass").value = ""; // không điền sẵn mật khẩu
-          document.getElementById("editTransRole").value = d.role || "dtv";
-          document.getElementById("editTransStatus").value =
-            d.status || "active";
-
-          document.getElementById("modalEditTransactor").style.display = "flex";
-        } catch (error) {
-          console.error("Lỗi mở modal sửa:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Lỗi hệ thống",
-            text: error.message,
-          });
-        }
-      };
-
-      // Lưu thay đổi khi admin bấm "Cập Nhật DTV"
-      document.getElementById("updateTransactorBtn").onclick = async () => {
-        const id = document.getElementById("editTransId").value;
-        const name = document.getElementById("editTransName").value.trim();
-        const email = document.getElementById("editTransEmail").value.trim();
-        const password = document.getElementById("editTransPass").value;
-        const role = document.getElementById("editTransRole").value.trim();
-
-        if (!id) return;
-        if (!name || !email) {
-          return Swal.fire({
-            icon: "warning",
-            title: "Thiếu thông tin",
-            text: "Tên và Email không được để trống.",
-          });
-        }
-
-        try {
-          const docSnap = await getDoc(doc(db, "Transactors", id));
-          if (!docSnap.exists()) {
-            return Swal.fire({
-              icon: "error",
-              title: "Không tìm thấy",
-              text: "DTV này không còn tồn tại.",
-            });
-          }
-          const oldData = docSnap.data();
-
-          // 1. Cập nhật Firestore
-          const newStatus = document
-            .getElementById("editTransStatus")
-            .value.trim();
-          await updateDoc(doc(db, "Transactors", id), {
-            name,
-            email,
-            role,
-            status: newStatus || "active",
-            updatedAt: new Date().toISOString(),
-          });
-
-          // 2. Cập nhật tài khoản Auth (nếu đổi email)
-          if (oldData.email && oldData.email !== email) {
-            try {
-              const user = auth.currentUser;
-              if (user && user.uid === id) {
-                await updateEmail(user, email);
-              } else {
-                // Nếu admin đang sửa DTV khác, không thể đổi email Auth trực tiếp
-                // (Firebase chỉ cho đổi email của user đang đăng nhập).
-                console.warn(
-                  "Không thể đổi email Auth của DTV khác khi đang đăng nhập bằng tài khoản admin.",
-                );
-              }
-            } catch (authErr) {
-              console.error("Lỗi đổi email Auth:", authErr);
-              Swal.fire({
-                icon: "warning",
-                title: "Đã lưu Firestore",
-                text:
-                  "Đã cập nhật dữ liệu, nhưng không đổi được email đăng nhập: " +
-                  authErr.message,
-              });
-            }
-          }
-
-          // 3. Đổi mật khẩu Auth (nếu admin nhập mật khẩu mới)
-          if (password) {
-            try {
-              const user = auth.currentUser;
-              if (user && user.uid === id) {
-                await updatePassword(user, password);
-              } else {
-                console.warn(
-                  "Không thể đổi mật khẩu Auth của DTV khác khi đang đăng nhập bằng tài khoản admin.",
-                );
-              }
-            } catch (authErr) {
-              console.error("Lỗi đổi mật khẩu Auth:", authErr);
-              Swal.fire({
-                icon: "warning",
-                title: "Đã lưu Firestore",
-                text:
-                  "Đã cập nhật dữ liệu, nhưng không đổi được mật khẩu đăng nhập: " +
-                  authErr.message,
-              });
-            }
-          }
-
-          logActivity("Sửa thông tin DTV", name);
-          closeModals();
-          Swal.fire({
-            icon: "success",
-            title: "Thành công!",
-            text: "✅ Đã cập nhật thông tin DTV!",
-            timer: 2000,
-            showConfirmButton: false,
-          });
-        } catch (error) {
-          console.error("Lỗi cập nhật DTV:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Lỗi hệ thống",
-            text: error.message,
-          });
-        }
-      };
-
-      // Mở tab mặc định khi tải lại trang
-      setTimeout(() => {
-        document.querySelector(".nav-item.active")?.click();
-      }, 500);
-    </script>
+    <script type="module" src="./js/dashboard.js?v=10.0.0"></script>
   </body>
 </html>

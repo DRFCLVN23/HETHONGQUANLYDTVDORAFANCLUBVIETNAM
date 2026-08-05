@@ -1,0 +1,74 @@
+<section id="tab-profile" class="tab-content">
+        
+        <div class="profile-grid">
+          
+          <div class="profile-card profile-card-left">
+            <div class="profile-avatar-wrapper">
+              <div class="profile-avatar" id="profileAvatar">
+                <span id="profileAvatarText">A</span>
+              </div>
+              <div class="profile-avatar-ring"></div>
+              <button class="profile-avatar-btn" id="changeAvatarBtn" title="Đổi ảnh đại diện">
+                <i class="fas fa-camera"></i>
+              </button>
+              <input type="file" id="avatarInput" accept="image/*" style="display:none" />
+            </div>
+            <h2 class="profile-name" id="profileDisplayName">Admin</h2>
+            <div class="profile-role-badge" id="profileRoleBadge">
+              <i class="fas fa-shield-alt"></i>
+              <span id="profileRoleText">Quản trị viên</span>
+            </div>
+            <div class="profile-status" id="profileStatus">
+              <span class="status-dot"></span>
+              <span>Tài khoản hoạt động</span>
+            </div>
+          </div>
+
+          <div class="profile-card profile-card-right">
+            <div class="profile-form-section">
+              <h3 class="profile-form-title">
+                <i class="fas fa-info-circle"></i> Thông tin cơ bản
+              </h3>
+              <div class="profile-form-row">
+                <div class="profile-form-group">
+                  <label><i class="fas fa-user"></i> Họ và tên</label>
+                  <div class="profile-input-wrapper">
+                    <i class="fas fa-user profile-input-icon"></i>
+                    <input type="text" id="profileName" placeholder="Nhập họ và tên" />
+                  </div>
+                </div>
+                <div class="profile-form-group">
+                  <label><i class="fas fa-envelope"></i> Email</label>
+                  <div class="profile-input-wrapper">
+                    <i class="fas fa-envelope profile-input-icon"></i>
+                    <input type="email" id="profileEmail" disabled placeholder="Email" />
+                  </div>
+                </div>
+              </div>
+              <div class="profile-form-row">
+                <div class="profile-form-group">
+                  <label><i class="fas fa-shield-alt"></i> Vai trò</label>
+                  <div class="profile-input-wrapper">
+                    <i class="fas fa-tag profile-input-icon"></i>
+                    <input type="text" id="profileRole" disabled class="profile-role-input" />
+                  </div>
+                </div>
+                <div class="profile-form-group">
+                  <label><i class="fas fa-check-circle"></i> Trạng thái</label>
+                  <div class="profile-input-wrapper">
+                    <i class="fas fa-circle profile-input-icon status-icon"></i>
+                    <input type="text" id="profileStatusField" disabled value="Hoạt động" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="profile-save-row">
+              <button class="profile-save-btn" id="saveProfileBtn">
+                <i class="fas fa-save"></i> Lưu thông tin
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
