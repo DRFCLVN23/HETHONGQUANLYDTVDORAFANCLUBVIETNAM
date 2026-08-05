@@ -548,8 +548,8 @@ async function loadSalary(force = false) {
 }
 
 async function populateDTVSelectOptions() {
-  const select = document.getElementById("taskAssigneeSelect") || document.getElementById("taskAssigneeInput");
-  if (!select || select.tagName !== "SELECT") return;
+  const taskSelect = document.getElementById("taskAssigneeSelect") || document.getElementById("taskAssigneeInput");
+  const salarySelect = document.getElementById("salary-email");
 
   try {
     let translators = tableCache.translators || [];
@@ -557,23 +557,55 @@ async function populateDTVSelectOptions() {
       translators = await getCollectionRows("Transactors", 15000, false);
     }
 
-    select.innerHTML = '<option value="">-- Chọn Dịch Thuật Viên --</option>';
-    if (!translators || translators.length === 0) {
-      select.innerHTML += '<option value="" disabled>Chưa có dịch thuật viên nào</option>';
-      return;
+    if (taskSelect && taskSelect.tagName === "SELECT") {
+      taskSelect.innerHTML = '<option value="">-- Chọn Dịch Thuật Viên --</option>';
+      if (!translators || translators.length === 0) {
+        taskSelect.innerHTML += '<option value="" disabled>Chưa có dịch thuật viên nào</option>';
+      } else {
+        translators.forEach((dtv) => {
+          const email = dtv.email || dtv.dtvCode || "";
+          const name = dtv.name || dtv.dtvName || email || "N/A";
+          const status = dtv.status || "active";
+          const statusLabel = status === "inactive" ? " [Ngừng HD]" : "";
+          const option = document.createElement("option");
+          option.value = email || name;
+          option.dataset.dtvName = name;
+          option.textContent = `${name}${email ? ` (${email})` : ""}${statusLabel}`;
+          taskSelect.appendChild(option);
+        });
+      }
     }
 
-    translators.forEach((dtv) => {
-      const email = dtv.email || dtv.dtvCode || "";
-      const name = dtv.name || dtv.dtvName || email || "N/A";
-      const status = dtv.status || "active";
-      const statusLabel = status === "inactive" ? " [Ngừng HD]" : "";
-      const option = document.createElement("option");
-      option.value = email || name;
-      option.dataset.dtvName = name;
-      option.textContent = `${name}${email ? ` (${email})` : ""}${statusLabel}`;
-      select.appendChild(option);
-    });
+    if (salarySelect && salarySelect.tagName === "SELECT") {
+      salarySelect.innerHTML = '<option value="">-- Chọn Email DTV --</option>';
+      if (!translators || translators.length === 0) {
+        salarySelect.innerHTML += '<option value="" disabled>Chưa có dịch thuật viên nào</option>';
+      } else {
+        translators.forEach((dtv) => {
+          const email = dtv.email || dtv.dtvCode || "";
+          const name = dtv.name || dtv.dtvName || email || "N/A";
+          const status = dtv.status || "active";
+          const statusLabel = status === "inactive" ? " [Ngừng HD]" : "";
+          if (email) {
+            const option = document.createElement("option");
+            option.value = email;
+            option.dataset.dtvName = name;
+            option.textContent = `${email} (${name})${statusLabel}`;
+            salarySelect.appendChild(option);
+          }
+        });
+      }
+
+      salarySelect.onchange = () => {
+        const selectedOption = salarySelect.options[salarySelect.selectedIndex];
+        const dtvNameInput = document.getElementById("ten-dtv");
+        if (selectedOption && selectedOption.dataset && selectedOption.dataset.dtvName && dtvNameInput) {
+          dtvNameInput.value = selectedOption.dataset.dtvName;
+        } else if (dtvNameInput && !salarySelect.value) {
+          dtvNameInput.value = "";
+        }
+      };
+    }
   } catch (err) {
     console.error("Lỗi nạp danh sách DTV cho select:", err);
   }
@@ -849,6 +881,7 @@ document.getElementById("openAddTransactorModal").onclick = () => {
 };
 document.getElementById("openAddSalaryModal").onclick = () => {
   if (!requireAdminPermission("tạo bảng lương")) return;
+  populateDTVSelectOptions();
   document.getElementById("modalSalary").style.display = "flex";
 };
 document.getElementById("openAddTaskModal").onclick = () => {
@@ -1482,17 +1515,27 @@ document.getElementById("saveTransactorBtn").onclick = async () => {
 
 document.getElementById("saveSalaryBtn").onclick = async () => {
   if (!requireAdminPermission("tạo bảng lương")) return;
-  const dtvName = document.getElementById("ten-dtv").value.trim();
+  const salarySelect = document.getElementById("salary-email");
+  const email = salarySelect ? salarySelect.value.trim() : "";
+  const dtvNameInput = document.getElementById("ten-dtv");
+  let dtvName = dtvNameInput ? dtvNameInput.value.trim() : "";
+
+  if (!dtvName && salarySelect && salarySelect.selectedIndex >= 0) {
+    const selectedOption = salarySelect.options[salarySelect.selectedIndex];
+    dtvName = selectedOption?.dataset?.dtvName || email;
+  }
+
   const position = document
     .getElementById("salary-position")
     .value.trim();
-  const email = document.getElementById("salary-email").value.trim();
   const baseSalary =
     Number(document.getElementById("luong-tap").value) || 0;
   const allowance = Number(document.getElementById("phu-cap").value) || 0;
   const bonus = Number(document.getElementById("thuong-tap").value) || 0;
   const deduction =
     Number(document.getElementById("khau-hao").value) || 0;
+
+  if (!email) return showToast("Vui lòng chọn Email DTV!", "warning");
   if (!dtvName) return showToast("Vui lòng nhập họ tên nhân sự!", "warning");
   try {
     await addDoc(collection(db, "salary_records"), {
