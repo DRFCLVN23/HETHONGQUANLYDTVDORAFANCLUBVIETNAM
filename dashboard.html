@@ -1653,7 +1653,9 @@
       .data-table tbody tr{animation:rowSweep 520ms var(--motion-ease) both;animation-delay:calc(var(--row-index,0) * 23ms)}
       .modal-overlay[style*="display: flex"]{animation:overlayEnter 220ms ease-out both}
       .modal-overlay[style*="display: flex"] .modal{animation:modalEnter 420ms var(--motion-ease) both}
-      .logs-container,.backup-table-wrap{scroll-behavior:smooth}
+      .admin-only{display:none!important}
+      body.is-admin .admin-only{display:flex!important}
+      body.is-admin div.admin-only,body.is-admin .admin-only.widget-card{display:block!important}
       .is-dtv .admin-only-column,.is-dtv .admin-delete-action,.is-dtv .admin-edit-action,.is-dtv .admin-only-action,.is-dtv .btn-danger{display:none!important}
       .table-pagination{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 2px 2px;color:var(--text-muted);font-size:12px;animation:paginationEnter 520ms var(--motion-ease) both}
       .table-pagination[hidden]{display:none!important}
@@ -1764,8 +1766,8 @@
         <div class="user-info">
           <div class="avatar" id="userAvatar">A</div>
           <div class="user-details">
-            <div class="name" id="userNameDisplay">Admin</div>
-            <div class="role" id="userRoleDisplay">ADMINISTRATOR</div>
+            <div class="name" id="userNameDisplay">...</div>
+            <div class="role" id="userRoleDisplay">...</div>
           </div>
         </div>
         <button class="btn-logout" id="logoutBtn" title="Đăng xuất">

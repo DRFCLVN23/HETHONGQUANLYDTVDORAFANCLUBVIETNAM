@@ -472,6 +472,7 @@ function renderAdminDeleteButton(handlerName, id, title = "Xóa") {
       type="button"
       onclick="window.${handlerName}?.('${id}')"
       title="${escapeHtml(title)}"
+      style="width: auto; min-height: auto; font-size: 11px; padding: 4px 8px; display: inline-flex; align-items: center; justify-content: center;"
     >
       <i class="fas fa-trash"></i>
     </button>`;
@@ -639,8 +640,12 @@ async function loadAssignments(force = false) {
         else if (status === "processing") badgeClass = "badge-info";
         else if (status === "cancelled") badgeClass = "badge-danger";
 
-        const noteText = item.note || item.desc || "-";
+        const mainNote = item.note || item.desc || "";
+        const dtvNote = item.dtvNote || "";
+        const noteText = mainNote || dtvNote || "-";
+        const hasNote = Boolean(mainNote || dtvNote);
         const fileUrl = item.translationUrl || item.fileUrl || "";
+        const truncatedNote = noteText.length > 25 ? noteText.substring(0, 25) + "..." : noteText;
 
         return `<tr>
           <td><strong>${escapeHtml(item.project || item.title || "N/A")}</strong></td>
@@ -652,22 +657,31 @@ async function loadAssignments(force = false) {
               <i class="fas fa-tasks"></i> Tiến độ: <strong>${progress}%</strong>
             </div>
           </td>
-          <td style="max-width: 220px; word-break: break-word; font-size: 13px; color: var(--text-muted);" title="${escapeHtml(noteText)}">
-            ${escapeHtml(noteText)}
+          <td style="max-width: 220px; font-size: 13px; color: var(--text-muted);" title="${escapeHtml(noteText)}">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+              <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px; display: inline-block;">
+                ${escapeHtml(truncatedNote)}
+              </span>
+              ${hasNote ? `
+                <button type="button" class="btn-edit" onclick="window.viewAssignmentNote?.('${item.id}')" style="padding: 2px 7px; font-size: 11px; line-height: 1.3; background: rgba(0, 240, 255, 0.12); color: var(--cyan-neon); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 4px; cursor: pointer; flex-shrink: 0;" title="Xem chi tiết ghi chú">
+                  <i class="fas fa-eye"></i> Xem
+                </button>
+              ` : ""}
+            </div>
             ${fileUrl ? `<div style="margin-top: 4px;"><a href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener noreferrer" style="color: var(--cyan-neon); font-size: 12px; font-weight: bold;"><i class="fas fa-link"></i> Link file dịch</a></div>` : ""}
           </td>
           <td style="white-space: nowrap;">
             ${isDTV ? `
-              <button class="btn-submit" type="button" onclick="window.openSubmitFileModal?.('${item.id}')" title="Gửi file dịch thuật cho Admin" style="padding: 4px 8px; font-size: 12px;">
+              <button class="btn-submit" type="button" onclick="window.openSubmitFileModal?.('${item.id}')" title="Gửi file dịch thuật cho Admin" style="padding: 4px 10px; font-size: 12px; width: auto; min-height: auto; display: inline-flex; align-items: center; gap: 4px;">
                 <i class="fas fa-paperclip"></i> ${fileUrl ? "Sửa File" : "Gửi File"}
               </button>
             ` : `
               ${fileUrl ? `
-                <a class="btn-submit" href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener noreferrer" title="Mở file dịch DTV đã gửi" style="background: var(--success-neon); color: #000; padding: 4px 8px; font-size: 12px; font-weight: bold; margin-right: 4px; display: inline-block;">
+                <a class="btn-edit" href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener noreferrer" title="Mở file dịch DTV đã gửi" style="background: rgba(0, 255, 135, 0.15); color: var(--success-neon); border: 1px solid rgba(0, 255, 135, 0.4); padding: 4px 8px; font-size: 11px; font-weight: bold; margin-right: 4px; display: inline-flex; align-items: center; gap: 4px; width: auto; min-height: auto; text-decoration: none; border-radius: 4px;">
                   <i class="fas fa-file-export"></i> Xem file
                 </a>
               ` : ""}
-              <button class="btn-edit admin-edit-action" type="button" onclick="window.openUpdateProgressModal?.('${item.id}')" title="Cập nhật tiến độ">
+              <button class="btn-edit admin-edit-action" type="button" onclick="window.openUpdateProgressModal?.('${item.id}')" title="Cập nhật tiến độ" style="padding: 4px 8px; font-size: 11px; width: auto; min-height: auto; display: inline-flex; align-items: center; gap: 4px;">
                 <i class="fas fa-chart-line"></i> Tiến độ
               </button>
               ${renderAdminDeleteButton("deleteAssignmentRecord", item.id, "Xóa task")}
@@ -935,6 +949,76 @@ window.openUpdateProgressModal = (taskId) => {
   document.body.classList.add("modal-open");
 };
 
+window.viewAssignmentNote = (taskId) => {
+  const task = (tableCache.assignments || []).find((t) => t.id === taskId);
+  if (!task) return showToast("Không tìm thấy thông tin task!", "error");
+
+  const projectTitle = task.project || task.title || "Nhiệm vụ";
+  const mainNote = task.note || task.desc || "";
+  const dtvNote = task.dtvNote || "";
+  const fileUrl = task.translationUrl || task.fileUrl || "";
+
+  let htmlContent = `
+    <div style="text-align: left; background: var(--card-bg, #1e293b); padding: 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; color: var(--text-muted, #cbd5e1);">
+      <div style="margin-bottom: 12px; font-weight: bold; color: var(--cyan-neon, #00f0ff); font-size: 15px;">
+        <i class="fas fa-folder"></i> ${escapeHtml(projectTitle)}
+      </div>
+  `;
+
+  if (mainNote) {
+    htmlContent += `
+      <div style="margin-bottom: 12px;">
+        <div style="font-weight: 600; color: #fff; margin-bottom: 4px; font-size: 13px;">
+          <i class="fas fa-sticky-note" style="color: var(--warning-neon, #ffe066);"></i> Ghi chú Admin / Tiến độ:
+        </div>
+        <div style="white-space: pre-wrap; word-break: break-word; background: rgba(0,0,0,0.25); padding: 10px 12px; border-radius: 6px; line-height: 1.5; color: #f1f5f9; border-left: 3px solid var(--cyan-neon, #00f0ff);">${escapeHtml(mainNote)}</div>
+      </div>
+    `;
+  }
+
+  if (dtvNote) {
+    htmlContent += `
+      <div style="margin-bottom: 12px;">
+        <div style="font-weight: 600; color: #fff; margin-bottom: 4px; font-size: 13px;">
+          <i class="fas fa-comment-dots" style="color: var(--success-neon, #00ff87);"></i> Ghi chú từ DTV:
+        </div>
+        <div style="white-space: pre-wrap; word-break: break-word; background: rgba(0,0,0,0.25); padding: 10px 12px; border-radius: 6px; line-height: 1.5; color: #f1f5f9; border-left: 3px solid var(--success-neon, #00ff87);">${escapeHtml(dtvNote)}</div>
+      </div>
+    `;
+  }
+
+  if (!mainNote && !dtvNote) {
+    htmlContent += `
+      <div style="font-style: italic; color: #94a3b8; padding: 8px 0;">Không có ghi chú chi tiết cho nhiệm vụ này.</div>
+    `;
+  }
+
+  if (fileUrl) {
+    htmlContent += `
+      <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
+        <a href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener noreferrer" style="color: var(--cyan-neon, #00f0ff); font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+          <i class="fas fa-external-link-alt"></i> Mở Link file dịch
+        </a>
+      </div>
+    `;
+  }
+
+  htmlContent += `</div>`;
+
+  if (typeof Swal !== "undefined") {
+    Swal.fire({
+      title: "Chi tiết Ghi chú",
+      html: htmlContent,
+      confirmButtonText: "Đóng",
+      confirmButtonColor: "#00f0ff",
+      background: "#0f172a",
+      color: "#ffffff"
+    });
+  } else {
+    alert(`Ghi chú (${projectTitle}):\n\n${mainNote || dtvNote || "Không có ghi chú"}`);
+  }
+};
+
 document.getElementById("openAddTransactorModal").onclick = () => {
   if (!requireAdminPermission("thêm dịch thuật viên")) return;
   document.getElementById("modalTransactor").style.display = "flex";
@@ -996,36 +1080,137 @@ function checkAndApplyRole(role, userEmail, userName) {
   window.currentUserIsDTV = !isAdmin;
   window.currentUserRole = isAdmin ? "admin" : "dtv";
   runtimeState.roleReady = true;
-  runtimeState.currentEmail = normalizedEmail;
+  if (normalizedEmail) runtimeState.currentEmail = normalizedEmail;
+
+  try {
+    localStorage.setItem("cachedUserRole", window.currentUserRole);
+    if (normalizedEmail) localStorage.setItem("cachedUserEmail", normalizedEmail);
+    if (userName) localStorage.setItem("cachedUserName", userName);
+  } catch (err) {}
+
   const roleDisplay = document.getElementById("userRoleDisplay");
   const nameDisplay = document.getElementById("userNameDisplay");
   const avatarDisplay = document.getElementById("userAvatar");
+  const welcomeNameDisplay = document.getElementById("welcomeUserName");
+
+  const displayName = userName || (isAdmin ? "Admin" : "DTV");
+
   if (roleDisplay) roleDisplay.innerText = isAdmin ? "ADMINISTRATOR" : "DỊCH THUẬT VIÊN";
-  if (nameDisplay) nameDisplay.innerText = userName || (isAdmin ? "Admin" : "DTV");
-  if (avatarDisplay) avatarDisplay.innerText = (userName || userEmail || "A").charAt(0).toUpperCase();
+  if (nameDisplay) nameDisplay.innerText = displayName;
+  if (welcomeNameDisplay) welcomeNameDisplay.innerText = displayName;
+  if (avatarDisplay) avatarDisplay.innerText = (displayName || userEmail || "A").charAt(0).toUpperCase();
+
   document.querySelectorAll(".nav-item").forEach((item) => {
     item.style.display = !isAdmin && item.classList.contains("admin-only") ? "none" : "flex";
   });
+
   document.body.classList.toggle("is-dtv", !isAdmin);
   document.body.classList.toggle("is-admin", isAdmin);
+
   document.querySelectorAll(".admin-only-action, .admin-only-column, .admin-delete-action, .admin-edit-action").forEach((element) => {
     if (!isAdmin) element.remove();
   });
+
   const quickActionsWidget = document.getElementById("quickActionsWidget");
   if (quickActionsWidget) quickActionsWidget.style.display = isAdmin ? "block" : "none";
+
   document.querySelectorAll("#openAddTransactorModal, #openAddSalaryModal, #openAddTaskModal, #openUploadDocModal, #exportSalaryBtn").forEach((button) => {
     button.style.display = isAdmin ? "inline-flex" : "none";
   });
+
   const salaryTitle = document.getElementById("salaryTitle");
   const salaryNavLabel = document.getElementById("salaryNavLabel");
   if (salaryTitle) salaryTitle.textContent = isAdmin ? "Bảng tính Lương DTV" : "Lương của tôi";
   if (salaryNavLabel) salaryNavLabel.textContent = isAdmin ? "Quản lý Lương" : "Lương của tôi";
+
   const activeItem = document.querySelector(".nav-item.active");
   if (!activeItem || (!isAdmin && activeItem.classList.contains("admin-only"))) activateTab("dashboard");
+
+  startPresenceHeartbeat();
 }
+
+// --- PRESENCE & REALTIME ONLINE TRACKER ---
+let presenceInterval = null;
+let presenceUnsubscribe = null;
+
+function getSanitizedEmailDocId(email) {
+  return String(email || "guest").toLowerCase().replace(/[^a-z0-9]/g, "_");
+}
+
+async function sendPresenceHeartbeat() {
+  const email = auth.currentUser?.email || runtimeState.currentEmail;
+  if (!email) return;
+  const docId = getSanitizedEmailDocId(email);
+  try {
+    await setDoc(doc(db, "user_presence", docId), {
+      email: email.toLowerCase(),
+      name: document.getElementById("userNameDisplay")?.innerText || email,
+      role: window.currentUserRole || "dtv",
+      lastActive: Date.now(),
+    }, { merge: true });
+  } catch (err) {
+    console.warn("Presence heartbeat error:", err);
+  }
+}
+
+async function removeUserPresence() {
+  const email = auth.currentUser?.email || runtimeState.currentEmail;
+  if (!email) return;
+  const docId = getSanitizedEmailDocId(email);
+  try {
+    await deleteDoc(doc(db, "user_presence", docId));
+  } catch (err) {}
+}
+
+function startPresenceHeartbeat() {
+  sendPresenceHeartbeat();
+  if (!presenceInterval) {
+    presenceInterval = setInterval(sendPresenceHeartbeat, 30000);
+  }
+
+  if (!presenceUnsubscribe) {
+    try {
+      presenceUnsubscribe = onSnapshot(collection(db, "user_presence"), (snapshot) => {
+        const now = Date.now();
+        let activeCount = 0;
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (data.lastActive && (now - Number(data.lastActive)) < 90000) {
+            activeCount++;
+          }
+        });
+        if (activeCount === 0 && auth.currentUser) activeCount = 1;
+
+        const activeElement = document.getElementById("statActiveTrans");
+        if (activeElement) {
+          activeElement.textContent = activeCount;
+        }
+      }, (err) => console.warn("Presence snapshot listener error:", err));
+    } catch (e) {}
+  }
+}
+
+window.addEventListener("beforeunload", () => {
+  removeUserPresence();
+});
+
+// Immediate synchronous cached role application on script load
+try {
+  const cachedRole = localStorage.getItem("cachedUserRole");
+  const cachedEmail = localStorage.getItem("cachedUserEmail");
+  const cachedName = localStorage.getItem("cachedUserName");
+  if (cachedRole && cachedEmail) {
+    checkAndApplyRole(cachedRole, cachedEmail, cachedName || "");
+  }
+} catch (e) {}
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
+    try {
+      localStorage.removeItem("cachedUserRole");
+      localStorage.removeItem("cachedUserEmail");
+      localStorage.removeItem("cachedUserName");
+    } catch (e) {}
     window.location.href = "index.html";
     return;
   }
@@ -1052,6 +1237,11 @@ onAuthStateChanged(auth, async (user) => {
       userStatus.toLowerCase() !== "active" &&
       userStatus.toLowerCase() !== "hoạt động"
     ) {
+      try {
+        localStorage.removeItem("cachedUserRole");
+        localStorage.removeItem("cachedUserEmail");
+        localStorage.removeItem("cachedUserName");
+      } catch (e) {}
       await signOut(auth);
       Swal.fire({
         icon: "error",
@@ -1068,6 +1258,11 @@ onAuthStateChanged(auth, async (user) => {
         doc(db, "system_settings", "maintenance"),
       );
       if (maintSnap.exists() && maintSnap.data().isMaintenance === true) {
+        try {
+          localStorage.removeItem("cachedUserRole");
+          localStorage.removeItem("cachedUserEmail");
+          localStorage.removeItem("cachedUserName");
+        } catch (e) {}
         await signOut(auth);
         Swal.fire({
           icon: "warning",
@@ -1085,7 +1280,13 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-document.getElementById("logoutBtn").addEventListener("click", () => {
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    localStorage.removeItem("cachedUserRole");
+    localStorage.removeItem("cachedUserEmail");
+    localStorage.removeItem("cachedUserName");
+    await removeUserPresence();
+  } catch (e) {}
   signOut(auth).then(() => {
     window.location.href = "index.html";
   });
@@ -1310,12 +1511,41 @@ async function loadDashboardData() {
       getDocs(activityQuery),
     ]);
     const email = runtimeState.currentEmail;
-    const taskRows = allTaskRows;
-    const salaryRows = allSalaryRows;
-    const activeCount = transRows.filter((item) => {
-      const status = String(item.status || "active").toLowerCase();
-      return status === "active" || status === "hoạt động";
-    }).length;
+    const isDTV = window.currentUserIsDTV === true;
+    const userProfile = transRows.find((item) => String(item.email || "").toLowerCase() === email);
+    const userDtvCode = String(userProfile?.dtvCode || userProfile?.code || "").toLowerCase();
+
+    const taskRows = isDTV
+      ? allTaskRows.filter((item) => {
+          const taskEmail = String(item.assigneeEmail || item.email || "").toLowerCase();
+          const taskDtvCode = String(item.dtvCode || "").toLowerCase();
+          return (
+            taskEmail === email ||
+            (userDtvCode && taskDtvCode === userDtvCode) ||
+            (taskDtvCode && taskDtvCode === email)
+          );
+        })
+      : allTaskRows;
+
+    const salaryRows = isDTV
+      ? allSalaryRows.filter((item) => {
+          const salEmail = String(item.dtvCode || item.assigneeEmail || item.email || "").toLowerCase();
+          const salCode = String(item.dtvCode || "").toLowerCase();
+          return salEmail === email || (userDtvCode && salCode === userDtvCode);
+        })
+      : allSalaryRows;
+    let onlineActiveCount = 1;
+    try {
+      const presenceSnap = await getDocs(collection(db, "user_presence"));
+      const now = Date.now();
+      let count = 0;
+      presenceSnap.forEach((docSnap) => {
+        const d = docSnap.data();
+        if (d.lastActive && (now - Number(d.lastActive)) < 90000) count++;
+      });
+      if (count > 0) onlineActiveCount = count;
+    } catch (e) {}
+
     const pendingTasks = taskRows.filter((item) => !["Hoàn thành", "completed"].includes(item.status || item.trangThai || item.state || ""));
     const completedTasks = taskRows.filter((item) => ["Hoàn thành", "completed"].includes(item.status || item.trangThai || item.state || ""));
     const totalSalary = salaryRows.reduce((sum, item) => sum + (Number(item.baseSalary) || 0) + (Number(item.allowance) || 0) + (Number(item.bonus) || 0) - (Number(item.deduction) || 0), 0);
@@ -1323,7 +1553,7 @@ async function loadDashboardData() {
     const pendingElement = document.getElementById("statPendingTasks");
     const completedElement = document.getElementById("statDoneTasks");
     const salaryElement = document.getElementById("statTotalSalary");
-    if (activeElement) activeElement.textContent = activeCount;
+    if (activeElement) activeElement.textContent = onlineActiveCount;
     if (pendingElement) pendingElement.textContent = pendingTasks.length;
     if (completedElement) completedElement.textContent = completedTasks.length;
     if (salaryElement) salaryElement.textContent = `${formatMoney(totalSalary)} đ`;
