@@ -547,10 +547,43 @@ async function loadSalary(force = false) {
   }
 }
 
+async function populateDTVSelectOptions() {
+  const select = document.getElementById("taskAssigneeSelect") || document.getElementById("taskAssigneeInput");
+  if (!select || select.tagName !== "SELECT") return;
+
+  try {
+    let translators = tableCache.translators || [];
+    if (!translators.length) {
+      translators = await getCollectionRows("Transactors", 15000, false);
+    }
+
+    select.innerHTML = '<option value="">-- Chọn Dịch Thuật Viên --</option>';
+    if (!translators || translators.length === 0) {
+      select.innerHTML += '<option value="" disabled>Chưa có dịch thuật viên nào</option>';
+      return;
+    }
+
+    translators.forEach((dtv) => {
+      const email = dtv.email || dtv.dtvCode || "";
+      const name = dtv.name || dtv.dtvName || email || "N/A";
+      const status = dtv.status || "active";
+      const statusLabel = status === "inactive" ? " [Ngừng HD]" : "";
+      const option = document.createElement("option");
+      option.value = email || name;
+      option.dataset.dtvName = name;
+      option.textContent = `${name}${email ? ` (${email})` : ""}${statusLabel}`;
+      select.appendChild(option);
+    });
+  } catch (err) {
+    console.error("Lỗi nạp danh sách DTV cho select:", err);
+  }
+}
+
 async function loadAssignments(force = false) {
   const isDTV = window.currentUserIsDTV === true;
-  const columns = isDTV ? 4 : 5;
+  const columns = isDTV ? 5 : 6;
   const body = setTableLoading("assignmentsTableBody", columns);
+  populateDTVSelectOptions();
   if (!body || !runtimeState.roleReady) return;
   try {
     const rows = await getCollectionRows("assignments", 15000, force);
@@ -568,13 +601,33 @@ async function loadAssignments(force = false) {
       tableCache.assignments,
       (item) => {
         const status = item.status || "pending";
-        const completed = status === "completed";
+        const progress = typeof item.progress === "number" ? item.progress : (status === "completed" ? 100 : status === "processing" ? 50 : 0);
+        let badgeClass = "badge-warning";
+        if (status === "completed") badgeClass = "badge-success";
+        else if (status === "processing") badgeClass = "badge-info";
+        else if (status === "cancelled") badgeClass = "badge-danger";
+
+        const noteText = item.note || item.desc || "-";
+
         return `<tr>
           <td><strong>${escapeHtml(item.project || item.title || "N/A")}</strong></td>
           <td>${escapeHtml(item.dtvName || item.dtvCode || "N/A")}</td>
           <td>${formatStoredDate(item.deadline)}</td>
-          <td><span class="badge ${completed ? "badge-success" : "badge-warning"}">${escapeHtml(getTaskStatusText(status))}</span></td>
-          ${isDTV ? "" : `<td class="admin-only-column">${renderAdminDeleteButton("deleteAssignmentRecord", item.id, "Xóa task")}</td>`}
+          <td>
+            <span class="badge ${badgeClass}">${escapeHtml(getTaskStatusText(status))}</span>
+            <div style="font-size: 11px; margin-top: 4px; color: var(--text-muted);">
+              <i class="fas fa-tasks"></i> Tiến độ: <strong>${progress}%</strong>
+            </div>
+          </td>
+          <td style="max-width: 220px; word-break: break-word; font-size: 13px; color: var(--text-muted);" title="${escapeHtml(noteText)}">${escapeHtml(noteText)}</td>
+          ${isDTV ? "" : `
+            <td class="admin-only-column" style="white-space: nowrap;">
+              <button class="btn-edit admin-edit-action" type="button" onclick="window.openUpdateProgressModal?.('${item.id}')" title="Cập nhật tiến độ">
+                <i class="fas fa-chart-line"></i> Tiến độ
+              </button>
+              ${renderAdminDeleteButton("deleteAssignmentRecord", item.id, "Xóa task")}
+            </td>
+          `}
         </tr>`;
       },
       force,
@@ -727,6 +780,30 @@ window.closeModals = () => {
   if (editTransRole) editTransRole.value = "dtv";
   const editTransStatus = document.getElementById("editTransStatus");
   if (editTransStatus) editTransStatus.value = "active";
+
+  const taskTitleInput = document.getElementById("taskTitleInput");
+  const taskAssigneeSelect = document.getElementById("taskAssigneeSelect");
+  const taskDeadlineInput = document.getElementById("taskDeadlineInput");
+  const taskNoteInput = document.getElementById("taskNoteInput");
+  if (taskTitleInput) taskTitleInput.value = "";
+  if (taskAssigneeSelect) taskAssigneeSelect.value = "";
+  if (taskDeadlineInput) taskDeadlineInput.value = "";
+  if (taskNoteInput) taskNoteInput.value = "";
+
+  const progressTaskId = document.getElementById("progressTaskId");
+  const progressTaskTitle = document.getElementById("progressTaskTitle");
+  const progressTaskAssignee = document.getElementById("progressTaskAssignee");
+  const progressTaskStatus = document.getElementById("progressTaskStatus");
+  const progressTaskPercentRange = document.getElementById("progressTaskPercentRange");
+  const progressTaskPercentNumber = document.getElementById("progressTaskPercentNumber");
+  const progressTaskNote = document.getElementById("progressTaskNote");
+  if (progressTaskId) progressTaskId.value = "";
+  if (progressTaskTitle) progressTaskTitle.value = "";
+  if (progressTaskAssignee) progressTaskAssignee.value = "";
+  if (progressTaskStatus) progressTaskStatus.value = "pending";
+  if (progressTaskPercentRange) progressTaskPercentRange.value = "0";
+  if (progressTaskPercentNumber) progressTaskPercentNumber.value = "0";
+  if (progressTaskNote) progressTaskNote.value = "";
 };
 function requireAdminPermission(actionLabel = "thao tác này") {
   
@@ -738,6 +815,34 @@ function requireAdminPermission(actionLabel = "thao tác này") {
 }
 window.requireAdminPermission = requireAdminPermission;
 
+window.openUpdateProgressModal = (taskId) => {
+  if (!requireAdminPermission("cập nhật tiến độ task")) return;
+  const task = (tableCache.assignments || []).find((t) => t.id === taskId);
+  if (!task) return showToast("Không tìm thấy thông tin task!", "error");
+
+  const progressTaskId = document.getElementById("progressTaskId");
+  const progressTaskTitle = document.getElementById("progressTaskTitle");
+  const progressTaskAssignee = document.getElementById("progressTaskAssignee");
+  const progressTaskStatus = document.getElementById("progressTaskStatus");
+  const progressTaskPercentRange = document.getElementById("progressTaskPercentRange");
+  const progressTaskPercentNumber = document.getElementById("progressTaskPercentNumber");
+  const progressTaskNote = document.getElementById("progressTaskNote");
+
+  if (progressTaskId) progressTaskId.value = task.id;
+  if (progressTaskTitle) progressTaskTitle.value = task.project || task.title || "N/A";
+  if (progressTaskAssignee) progressTaskAssignee.value = `${task.dtvName || "N/A"} (${task.dtvCode || "N/A"})`;
+  if (progressTaskStatus) progressTaskStatus.value = task.status || "pending";
+
+  const currentProgress = typeof task.progress === "number" ? task.progress : (task.status === "completed" ? 100 : task.status === "processing" ? 50 : 0);
+  if (progressTaskPercentRange) progressTaskPercentRange.value = currentProgress;
+  if (progressTaskPercentNumber) progressTaskPercentNumber.value = currentProgress;
+
+  if (progressTaskNote) progressTaskNote.value = task.note || task.desc || "";
+
+  document.getElementById("modalProgress").style.display = "flex";
+  document.body.classList.add("modal-open");
+};
+
 document.getElementById("openAddTransactorModal").onclick = () => {
   if (!requireAdminPermission("thêm dịch thuật viên")) return;
   document.getElementById("modalTransactor").style.display = "flex";
@@ -748,6 +853,7 @@ document.getElementById("openAddSalaryModal").onclick = () => {
 };
 document.getElementById("openAddTaskModal").onclick = () => {
   if (!requireAdminPermission("phân công task")) return;
+  populateDTVSelectOptions();
   document.getElementById("modalTask").style.display = "flex";
 };
 document.getElementById("openUploadDocModal").onclick = () => {
@@ -1414,18 +1520,26 @@ document.getElementById("saveSalaryBtn").onclick = async () => {
 document.getElementById("saveTaskBtn").onclick = async () => {
   if (!requireAdminPermission("phân công task")) return;
   const project = document.getElementById("taskTitleInput").value.trim();
-  const dtvCode = document
-    .getElementById("taskAssigneeInput")
-    .value.trim();
+  const select = document.getElementById("taskAssigneeSelect") || document.getElementById("taskAssigneeInput");
+  const dtvCode = select ? select.value.trim() : "";
+  const selectedOption = select && select.options && select.selectedIndex >= 0 ? select.options[select.selectedIndex] : null;
+  const dtvName = selectedOption?.dataset?.dtvName || (selectedOption?.text ? selectedOption.text.split(" (")[0] : dtvCode);
   const deadline = document.getElementById("taskDeadlineInput").value;
+  const note = document.getElementById("taskNoteInput")?.value.trim() || "";
+
   if (!project) return showToast("Vui lòng nhập tên dự án!", "warning");
+  if (!dtvCode) return showToast("Vui lòng chọn Dịch Thuật Viên!", "warning");
+
   try {
     await addDoc(collection(db, "assignments"), {
       project,
       dtvCode,
-      dtvName: dtvCode,
+      dtvName,
       deadline: deadline || "Chưa đặt",
       status: "pending",
+      progress: 0,
+      note,
+      desc: note,
       createdAt: new Date().toISOString(),
     });
     logActivity("Phân công Task mới", project);
@@ -1435,6 +1549,34 @@ document.getElementById("saveTaskBtn").onclick = async () => {
     showToast("✅ Đã phân công task!", "success");
   } catch (error) {
     console.error("Lỗi tạo task:", error);
+    showToast("❌ Lỗi: " + error.message, "error");
+  }
+};
+
+document.getElementById("saveProgressBtn").onclick = async () => {
+  if (!requireAdminPermission("cập nhật tiến độ task")) return;
+  const taskId = document.getElementById("progressTaskId").value;
+  const status = document.getElementById("progressTaskStatus").value;
+  const progress = Number(document.getElementById("progressTaskPercentNumber").value) || 0;
+  const note = document.getElementById("progressTaskNote").value.trim();
+
+  if (!taskId) return showToast("Thiếu ID task!", "error");
+
+  try {
+    await updateDoc(doc(db, "assignments", taskId), {
+      status,
+      progress,
+      note,
+      desc: note,
+      updatedAt: new Date().toISOString(),
+    });
+    logActivity("Cập nhật tiến độ Task", `Trạng thái: ${getTaskStatusText(status)}, ${progress}%`);
+    closeModals();
+    invalidateCollection("assignments");
+    await loadAssignments(true);
+    showToast("✅ Đã cập nhật tiến độ task!", "success");
+  } catch (error) {
+    console.error("Lỗi cập nhật tiến độ:", error);
     showToast("❌ Lỗi: " + error.message, "error");
   }
 };

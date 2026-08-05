@@ -526,6 +526,16 @@
         color: #ffaa00;
         border: 1px solid #ffaa00;
       }
+      .badge-info {
+        background: rgba(0, 240, 255, 0.15);
+        color: var(--cyan-neon);
+        border: 1px solid var(--cyan-neon);
+      }
+      .badge-danger {
+        background: rgba(255, 51, 102, 0.15);
+        color: var(--danger-neon);
+        border: 1px solid var(--danger-neon);
+      }
       .setting-item {
         display: flex;
         justify-content: space-between;
@@ -1972,18 +1982,66 @@
           />
         </div>
         <div class="form-group">
-          <label>NGƯỜI THỰC HIỆN (Email DTV)</label
-          ><input
-            type="email"
-            id="taskAssigneeInput"
-            placeholder="dtv@gmail.com"
-          />
+          <label>NGƯỜI THỰC HIỆN (Dịch Thuật Viên)</label>
+          <select id="taskAssigneeSelect" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; outline: none;">
+            <option value="">-- Đang tải danh sách DTV... --</option>
+          </select>
         </div>
         <div class="form-group">
           <label>HẠN CHÓT</label><input type="date" id="taskDeadlineInput" />
         </div>
+        <div class="form-group">
+          <label>GHI CHÚ / MÔ TẢ</label>
+          <textarea
+            id="taskNoteInput"
+            placeholder="Nhập ghi chú hoặc mô tả công việc (link tài liệu, yêu cầu...)"
+            rows="3"
+            style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; outline: none; resize: vertical;"
+          ></textarea>
+        </div>
         <button type="submit" class="btn-submit" id="saveTaskBtn">
           Tạo Task
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalProgress">
+      <div class="modal">
+        <div class="modal-header">
+          <h3><i class="fas fa-tasks" style="color: var(--cyan-neon);"></i> Cập Nhật Tiến Độ Task</h3>
+          <span class="close-btn" onclick="closeModals()">&times;</span>
+        </div>
+        <input type="hidden" id="progressTaskId" />
+        <div class="form-group">
+          <label>DỰ ÁN / NHIỆM VỤ</label>
+          <input type="text" id="progressTaskTitle" readonly style="opacity: 0.8; cursor: not-allowed;" />
+        </div>
+        <div class="form-group">
+          <label>NGƯỜI THỰC HIỆN</label>
+          <input type="text" id="progressTaskAssignee" readonly style="opacity: 0.8; cursor: not-allowed;" />
+        </div>
+        <div class="form-group">
+          <label>TRẠNG THÁI TASK</label>
+          <select id="progressTaskStatus" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; outline: none;">
+            <option value="pending">Chờ xử lý</option>
+            <option value="processing">Đang thực hiện</option>
+            <option value="completed">Hoàn thành</option>
+            <option value="cancelled">Đã hủy</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>TIẾN ĐỘ HOÀN THÀNH (%)</label>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <input type="range" id="progressTaskPercentRange" min="0" max="100" step="5" value="0" style="flex: 1; accent-color: var(--cyan-neon);" oninput="document.getElementById('progressTaskPercentNumber').value = this.value" />
+            <input type="number" id="progressTaskPercentNumber" min="0" max="100" value="0" style="width: 75px; text-align: center; padding: 6px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-color); color: #fff; border-radius: 4px;" oninput="document.getElementById('progressTaskPercentRange').value = this.value" />%
+          </div>
+        </div>
+        <div class="form-group">
+          <label>GHI CHÚ / MÔ TẢ</label>
+          <textarea id="progressTaskNote" placeholder="Cập nhật ghi chú hoặc phản hồi tiến độ..." rows="3" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; outline: none; resize: vertical;"></textarea>
+        </div>
+        <button type="button" class="btn-submit" id="saveProgressBtn">
+          <i class="fas fa-save"></i> Lưu Tiến Độ
         </button>
       </div>
     </div>
