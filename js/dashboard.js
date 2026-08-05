@@ -613,7 +613,7 @@ async function populateDTVSelectOptions() {
 
 async function loadAssignments(force = false) {
   const isDTV = window.currentUserIsDTV === true;
-  const columns = isDTV ? 5 : 6;
+  const columns = 6;
   const body = setTableLoading("assignmentsTableBody", columns);
   populateDTVSelectOptions();
   if (!body || !runtimeState.roleReady) return;
@@ -640,6 +640,7 @@ async function loadAssignments(force = false) {
         else if (status === "cancelled") badgeClass = "badge-danger";
 
         const noteText = item.note || item.desc || "-";
+        const fileUrl = item.translationUrl || item.fileUrl || "";
 
         return `<tr>
           <td><strong>${escapeHtml(item.project || item.title || "N/A")}</strong></td>
@@ -651,15 +652,27 @@ async function loadAssignments(force = false) {
               <i class="fas fa-tasks"></i> Tiến độ: <strong>${progress}%</strong>
             </div>
           </td>
-          <td style="max-width: 220px; word-break: break-word; font-size: 13px; color: var(--text-muted);" title="${escapeHtml(noteText)}">${escapeHtml(noteText)}</td>
-          ${isDTV ? "" : `
-            <td class="admin-only-column" style="white-space: nowrap;">
+          <td style="max-width: 220px; word-break: break-word; font-size: 13px; color: var(--text-muted);" title="${escapeHtml(noteText)}">
+            ${escapeHtml(noteText)}
+            ${fileUrl ? `<div style="margin-top: 4px;"><a href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener noreferrer" style="color: var(--cyan-neon); font-size: 12px; font-weight: bold;"><i class="fas fa-link"></i> Link file dịch</a></div>` : ""}
+          </td>
+          <td style="white-space: nowrap;">
+            ${isDTV ? `
+              <button class="btn-submit" type="button" onclick="window.openSubmitFileModal?.('${item.id}')" title="Gửi file dịch thuật cho Admin" style="padding: 4px 8px; font-size: 12px;">
+                <i class="fas fa-paperclip"></i> ${fileUrl ? "Sửa File" : "Gửi File"}
+              </button>
+            ` : `
+              ${fileUrl ? `
+                <a class="btn-submit" href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener noreferrer" title="Mở file dịch DTV đã gửi" style="background: var(--success-neon); color: #000; padding: 4px 8px; font-size: 12px; font-weight: bold; margin-right: 4px; display: inline-block;">
+                  <i class="fas fa-file-export"></i> Xem file
+                </a>
+              ` : ""}
               <button class="btn-edit admin-edit-action" type="button" onclick="window.openUpdateProgressModal?.('${item.id}')" title="Cập nhật tiến độ">
                 <i class="fas fa-chart-line"></i> Tiến độ
               </button>
               ${renderAdminDeleteButton("deleteAssignmentRecord", item.id, "Xóa task")}
-            </td>
-          `}
+            `}
+          </td>
         </tr>`;
       },
       force,
@@ -836,6 +849,17 @@ window.closeModals = () => {
   if (progressTaskPercentRange) progressTaskPercentRange.value = "0";
   if (progressTaskPercentNumber) progressTaskPercentNumber.value = "0";
   if (progressTaskNote) progressTaskNote.value = "";
+
+  const submitFileTaskId = document.getElementById("submitFileTaskId");
+  const submitFileTaskTitle = document.getElementById("submitFileTaskTitle");
+  const submitFileUrl = document.getElementById("submitFileUrl");
+  const submitFileNote = document.getElementById("submitFileNote");
+  const submitFileCompleteTask = document.getElementById("submitFileCompleteTask");
+  if (submitFileTaskId) submitFileTaskId.value = "";
+  if (submitFileTaskTitle) submitFileTaskTitle.value = "";
+  if (submitFileUrl) submitFileUrl.value = "";
+  if (submitFileNote) submitFileNote.value = "";
+  if (submitFileCompleteTask) submitFileCompleteTask.checked = true;
 };
 function requireAdminPermission(actionLabel = "thao tác này") {
   
@@ -846,6 +870,24 @@ function requireAdminPermission(actionLabel = "thao tác này") {
   return true;
 }
 window.requireAdminPermission = requireAdminPermission;
+
+window.openSubmitFileModal = (taskId) => {
+  const task = (tableCache.assignments || []).find((t) => t.id === taskId);
+  if (!task) return showToast("Không tìm thấy thông tin task!", "error");
+
+  const submitFileTaskId = document.getElementById("submitFileTaskId");
+  const submitFileTaskTitle = document.getElementById("submitFileTaskTitle");
+  const submitFileUrl = document.getElementById("submitFileUrl");
+  const submitFileNote = document.getElementById("submitFileNote");
+
+  if (submitFileTaskId) submitFileTaskId.value = task.id;
+  if (submitFileTaskTitle) submitFileTaskTitle.value = task.project || task.title || "N/A";
+  if (submitFileUrl) submitFileUrl.value = task.translationUrl || task.fileUrl || "";
+  if (submitFileNote) submitFileNote.value = task.dtvNote || "";
+
+  document.getElementById("modalSubmitFile").style.display = "flex";
+  document.body.classList.add("modal-open");
+};
 
 window.openUpdateProgressModal = (taskId) => {
   if (!requireAdminPermission("cập nhật tiến độ task")) return;
@@ -859,6 +901,7 @@ window.openUpdateProgressModal = (taskId) => {
   const progressTaskPercentRange = document.getElementById("progressTaskPercentRange");
   const progressTaskPercentNumber = document.getElementById("progressTaskPercentNumber");
   const progressTaskNote = document.getElementById("progressTaskNote");
+  const progressSubmittedFileContainer = document.getElementById("progressSubmittedFileContainer");
 
   if (progressTaskId) progressTaskId.value = task.id;
   if (progressTaskTitle) progressTaskTitle.value = task.project || task.title || "N/A";
@@ -870,6 +913,23 @@ window.openUpdateProgressModal = (taskId) => {
   if (progressTaskPercentNumber) progressTaskPercentNumber.value = currentProgress;
 
   if (progressTaskNote) progressTaskNote.value = task.note || task.desc || "";
+
+  const fileUrl = task.translationUrl || task.fileUrl;
+  if (progressSubmittedFileContainer) {
+    if (fileUrl) {
+      progressSubmittedFileContainer.innerHTML = `
+        <label style="color: var(--success-neon); font-weight: bold; display: block; margin-bottom: 4px;">FILE DỊCH TỪ DTV:</label>
+        <div>
+          <a href="${escapeHtml(fileUrl)}" target="_blank" rel="noopener noreferrer" class="btn-submit" style="background: var(--success-neon); color: #000; text-decoration: none; padding: 6px 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px;">
+            <i class="fas fa-external-link-alt"></i> Mở File Dịch Thuật
+          </a>
+        </div>
+        ${task.dtvNote ? `<div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Ghi chú DTV: ${escapeHtml(task.dtvNote)}</div>` : ""}
+      `;
+    } else {
+      progressSubmittedFileContainer.innerHTML = `<div style="font-size: 12px; color: var(--text-muted);"><i class="fas fa-info-circle"></i> Chưa có file dịch thuật nào được gửi từ DTV.</div>`;
+    }
+  }
 
   document.getElementById("modalProgress").style.display = "flex";
   document.body.classList.add("modal-open");
@@ -1621,6 +1681,38 @@ document.getElementById("saveProgressBtn").onclick = async () => {
   } catch (error) {
     console.error("Lỗi cập nhật tiến độ:", error);
     showToast("❌ Lỗi: " + error.message, "error");
+  }
+};
+
+document.getElementById("saveSubmitFileBtn").onclick = async () => {
+  const taskId = document.getElementById("submitFileTaskId")?.value;
+  const fileUrl = document.getElementById("submitFileUrl")?.value.trim();
+  const dtvNote = document.getElementById("submitFileNote")?.value.trim() || "";
+  const completeTask = document.getElementById("submitFileCompleteTask")?.checked;
+
+  if (!taskId) return showToast("Không tìm thấy ID task!", "error");
+  if (!fileUrl) return showToast("Vui lòng nhập Link file dịch thuật!", "warning");
+
+  try {
+    const updateData = {
+      translationUrl: fileUrl,
+      fileUrl: fileUrl,
+      dtvNote: dtvNote,
+      submittedAt: new Date().toISOString(),
+    };
+    if (completeTask) {
+      updateData.status = "completed";
+      updateData.progress = 100;
+    }
+    await updateDoc(doc(db, "assignments", taskId), updateData);
+    logActivity("Gửi file dịch thuật", fileUrl);
+    closeModals();
+    invalidateCollection("assignments");
+    await loadAssignments(true);
+    showToast("✅ Đã gửi file dịch thuật cho Admin!", "success");
+  } catch (error) {
+    console.error("Lỗi gửi file dịch thuật:", error);
+    showToast("❌ Lỗi gửi file: " + error.message, "error");
   }
 };
 

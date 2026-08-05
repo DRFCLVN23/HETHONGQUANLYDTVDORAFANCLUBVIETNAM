@@ -2041,8 +2041,47 @@
           <label>GHI CHÚ / MÔ TẢ</label>
           <textarea id="progressTaskNote" placeholder="Cập nhật ghi chú hoặc phản hồi tiến độ..." rows="3" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; outline: none; resize: vertical;"></textarea>
         </div>
+        <div id="progressSubmittedFileContainer" style="margin-bottom: 15px;"></div>
         <button type="button" class="btn-submit" id="saveProgressBtn">
           <i class="fas fa-save"></i> Lưu Tiến Độ
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalSubmitFile">
+      <div class="modal">
+        <div class="modal-header">
+          <h3><i class="fas fa-paperclip" style="color: var(--success-neon);"></i> Gửi File Dịch Thuật Cho Admin</h3>
+          <span class="close-btn" onclick="closeModals()">&times;</span>
+        </div>
+        <input type="hidden" id="submitFileTaskId" />
+        <div class="form-group">
+          <label>NHIỆM VỤ / DỰ ÁN</label>
+          <input type="text" id="submitFileTaskTitle" readonly style="opacity: 0.8; cursor: not-allowed;" />
+        </div>
+        <div class="form-group">
+          <label>LINK FILE DỊCH THUẬT (Google Drive / Transfer / URL)</label>
+          <input
+            type="url"
+            id="submitFileUrl"
+            placeholder="https://drive.google.com/file/d/..."
+          />
+        </div>
+        <div class="form-group">
+          <label>GHI CHÚ / LƯU Ý GỬI ADMIN</label>
+          <textarea
+            id="submitFileNote"
+            placeholder="Nhập ghi chú thêm cho Admin (nếu có)..."
+            rows="3"
+            style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; outline: none; resize: vertical;"
+          ></textarea>
+        </div>
+        <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="submitFileCompleteTask" checked style="width: 18px; height: 18px; accent-color: var(--success-neon);" />
+          <label for="submitFileCompleteTask" style="margin: 0; cursor: pointer; font-size: 13px;">Đánh dấu hoàn thành nhiệm vụ này (100%)</label>
+        </div>
+        <button type="button" class="btn-submit" id="saveSubmitFileBtn">
+          <i class="fas fa-paper-plane"></i> Gửi File Cho Admin
         </button>
       </div>
     </div>
