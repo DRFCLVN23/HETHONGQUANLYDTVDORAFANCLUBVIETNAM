@@ -1114,7 +1114,7 @@ function checkAndApplyRole(role, userEmail, userName) {
   const quickActionsWidget = document.getElementById("quickActionsWidget");
   if (quickActionsWidget) quickActionsWidget.style.display = isAdmin ? "block" : "none";
 
-  document.querySelectorAll("#openAddTransactorModal, #openAddSalaryModal, #openAddTaskModal, #openUploadDocModal, #exportSalaryBtn").forEach((button) => {
+  document.querySelectorAll("#openAddTransactorModal, #openAddSalaryModal, #openAddTaskModal, #openUploadDocModal, #exportSalaryBtn, #exportPersonalSalaryBtn").forEach((button) => {
     button.style.display = isAdmin ? "inline-flex" : "none";
   });
 
@@ -2515,6 +2515,525 @@ window.exportSalaryToExcel = async function () {
     });
   } catch (error) {
     console.error("Lỗi xuất Word:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Lỗi xuất file",
+      text: error.message,
+    });
+  }
+};
+
+window.exportPersonalSalaryToWord = async function () {
+  if (!requireAdminPermission("xuất lương cá nhân")) return;
+
+  try {
+    // Load DTV list from transactors
+    const transSnapshot = await getDocs(collection(db, "Transactors"));
+    const dtvList = [];
+    transSnapshot.forEach((docSnap) => {
+      const d = docSnap.data();
+      dtvList.push({
+        id: docSnap.id,
+        name: d.name || "Chưa có tên",
+        email: (d.email || "").toLowerCase().trim(),
+      });
+    });
+
+    if (dtvList.length === 0) {
+      return Swal.fire({
+        icon: "info",
+        title: "Danh sách rỗng",
+        text: "Chưa có DTV nào trong hệ thống.",
+      });
+    }
+
+    // Build HTML options for the dropdown
+    const optionsHtml = dtvList
+      .map(
+        (dtv, idx) =>
+          `<option value="${idx}">${dtv.name} (${dtv.email})</option>`
+      )
+      .join("");
+
+    const selectResult = await Swal.fire({
+      title: "Chọn Dịch thuật viên",
+      html: `<label style="color:#fff;display:block;margin-bottom:8px;font-size:15px;">Chọn DTV để xuất bảng lương cá nhân:</label>
+             <select id="swal-dtv-select" style="width:100%;padding:10px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#fff;font-size:14px;box-sizing:border-box;">
+               ${optionsHtml}
+             </select>`,
+      confirmButtonText: "Xuất lương",
+      cancelButtonText: "Hủy",
+      showCancelButton: true,
+      confirmButtonColor: "#00ff88",
+      cancelButtonColor: "#6b7280",
+      background: "#0f172a",
+      color: "#ffffff",
+      customClass: {
+        popup: "swal-mobile-optimized",
+        htmlContainer: "swal-html-container-mobile",
+      },
+      preConfirm: () => {
+        const sel = document.getElementById("swal-dtv-select");
+        if (!sel) return Swal.showValidationMessage("Lỗi giao diện");
+        const idx = parseInt(sel.value, 10);
+        if (isNaN(idx) || idx < 0 || idx >= dtvList.length)
+          return Swal.showValidationMessage("Vui lòng chọn DTV");
+        return dtvList[idx];
+      },
+    });
+
+    if (!selectResult.isConfirmed || !selectResult.value) return;
+    const selectedDTV = selectResult.value;
+
+    // Query salary_records for the selected DTV
+    const snapshot = await getDocs(collection(db, "salary_records"));
+    if (snapshot.empty) {
+      return Swal.fire({
+        icon: "info",
+        title: "Không có dữ liệu",
+        text: "Chưa có bảng lương nào được ghi nhận.",
+      });
+    }
+
+    const records = [];
+    snapshot.forEach((docSnap) => {
+      const d = docSnap.data();
+      const recordEmail = (d.email || "").toLowerCase().trim();
+      const recordName = (d.dtvName || "").toLowerCase().trim();
+      const targetEmail = selectedDTV.email;
+      const targetName = selectedDTV.name.toLowerCase().trim();
+
+      if (
+        recordEmail === targetEmail ||
+        recordName === targetName ||
+        recordName.includes(targetName)
+      ) {
+        // Avoid duplicates by title
+        const exists = records.some(
+          (r) => r.title === (d.title || "Không có tiêu đề")
+        );
+        if (!exists) {
+          records.push({
+            title: d.title || "Không có tiêu đề",
+            base: Number(d.baseSalary) || 0,
+            allowance: Number(d.allowance) || 0,
+            bonus: Number(d.bonus) || 0,
+            deduction: Number(d.deduction) || 0,
+          });
+        }
+      }
+    });
+
+    if (records.length === 0) {
+      return Swal.fire({
+        icon: "info",
+        title: "Không tìm thấy",
+        text: `Không tìm thấy bảng lương nào cho "${selectedDTV.name}".`,
+      });
+    }
+
+    // Calculate totals
+    let totalBase = 0,
+      totalAllowance = 0,
+      totalBonus = 0,
+      totalDeduction = 0,
+      grandTotal = 0;
+    records.forEach((r) => {
+      totalBase += r.base;
+      totalAllowance += r.allowance;
+      totalBonus += r.bonus;
+      totalDeduction += r.deduction;
+      grandTotal += r.base + r.allowance + r.bonus - r.deduction;
+    });
+
+    const {
+      Document,
+      Packer,
+      Paragraph,
+      TextRun,
+      Table,
+      TableRow,
+      TableCell,
+      WidthType,
+      AlignmentType,
+      BorderStyle,
+    } = docx;
+
+    const border = {
+      style: BorderStyle.SINGLE,
+      size: 1,
+      color: "000000",
+    };
+
+    const cell = (text, opts = {}) => {
+      const runs = [
+        new TextRun({
+          text: String(text),
+          font: "Times New Roman",
+          size: 22,
+          bold: opts.bold || false,
+          ...(opts.runOpts || {}),
+        }),
+      ];
+      return new TableCell({
+        children: [
+          new Paragraph({
+            children: runs,
+            alignment: opts.alignment || AlignmentType.CENTER,
+            spacing: { before: 40, after: 40 },
+          }),
+        ],
+        width: opts.width
+          ? { size: opts.width, type: WidthType.DXA }
+          : undefined,
+        verticalAlign: "center",
+        borders: {
+          top: border,
+          bottom: border,
+          left: border,
+          right: border,
+        },
+        ...(opts.cellOpts || {}),
+      });
+    };
+
+    const children = [];
+
+    // Header: Republic
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 40 },
+        children: [
+          new TextRun({
+            text: "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+            font: "Times New Roman",
+            size: 24,
+            bold: true,
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 40 },
+        children: [
+          new TextRun({
+            text: "Độc lập – Tự do – Hạnh phúc",
+            font: "Times New Roman",
+            size: 22,
+            bold: false,
+            italics: true,
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 60 },
+        children: [
+          new TextRun({
+            text: "─".repeat(50),
+            font: "Times New Roman",
+            size: 20,
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 60 },
+        children: [
+          new TextRun({
+            text: "NHÓM DỊCH THUẬT DORAEMON FANSUB VIỆT NAM",
+            font: "Times New Roman",
+            size: 22,
+            bold: true,
+            color: "000000",
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 60 },
+        children: [
+          new TextRun({
+            text: "TRỰC THUỘC DORAFANCLUB VIỆT NAM",
+            font: "Times New Roman",
+            size: 22,
+            bold: true,
+            color: "000000",
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 60 },
+        children: [
+          new TextRun({
+            text: "─".repeat(50),
+            font: "Times New Roman",
+            size: 20,
+          }),
+        ],
+      })
+    );
+
+    // Title
+    const now = new Date();
+    const day = now.getDate();
+    const monthNum = now.getMonth() + 1;
+    const yearNum = now.getFullYear();
+
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 100 },
+        children: [
+          new TextRun({
+            text: "BẢNG LƯƠNG CÁ NHÂN",
+            font: "Times New Roman",
+            size: 28,
+            bold: true,
+            underline: { type: "single" },
+          }),
+        ],
+      })
+    );
+
+    // User info
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.LEFT,
+        spacing: { after: 40 },
+        children: [
+          new TextRun({
+            text: `Họ và tên: `,
+            font: "Times New Roman",
+            size: 22,
+            bold: true,
+          }),
+          new TextRun({
+            text: selectedDTV.name,
+            font: "Times New Roman",
+            size: 22,
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.LEFT,
+        spacing: { after: 40 },
+        children: [
+          new TextRun({
+            text: `Email: `,
+            font: "Times New Roman",
+            size: 22,
+            bold: true,
+          }),
+          new TextRun({
+            text: selectedDTV.email || "Chưa có email",
+            font: "Times New Roman",
+            size: 22,
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.LEFT,
+        spacing: { after: 40 },
+        children: [
+          new TextRun({
+            text: `Vai trò: `,
+            font: "Times New Roman",
+            size: 22,
+            bold: true,
+          }),
+          new TextRun({
+            text: "Dịch thuật viên",
+            font: "Times New Roman",
+            size: 22,
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 200 },
+        children: [
+          new TextRun({
+            text: `Đức Nhuận, ngày ${day} tháng ${monthNum} năm ${yearNum}`,
+            font: "Times New Roman",
+            size: 22,
+            italics: true,
+          }),
+        ],
+      })
+    );
+
+    // Data table
+    const tableRows = [];
+
+    tableRows.push(
+      new TableRow({
+        tableHeader: true,
+        children: [
+          cell("STT", { bold: true, width: 800 }),
+          cell("Tháng", { bold: true, width: 2000 }),
+          cell("Lương tập (VNĐ)", { bold: true, width: 2000 }),
+          cell("Phụ cấp (VNĐ)", { bold: true, width: 1800 }),
+          cell("Thưởng (VNĐ)", { bold: true, width: 1800 }),
+          cell("Khấu hao (VNĐ)", { bold: true, width: 1800 }),
+          cell("Tổng cộng", { bold: true, width: 1800 }),
+        ],
+      })
+    );
+
+    records.forEach((r, idx) => {
+      const total = r.base + r.allowance + r.bonus - r.deduction;
+      tableRows.push(
+        new TableRow({
+          children: [
+            cell(idx + 1, { width: 800 }),
+            cell(r.title, {
+              alignment: AlignmentType.LEFT,
+              width: 2000,
+            }),
+            cell(r.base.toLocaleString("vi-VN"), { width: 2000 }),
+            cell(r.allowance.toLocaleString("vi-VN"), { width: 1800 }),
+            cell(r.bonus.toLocaleString("vi-VN"), { width: 1800 }),
+            cell(r.deduction.toLocaleString("vi-VN"), { width: 1800 }),
+            cell(total.toLocaleString("vi-VN"), {
+              bold: true,
+              width: 1800,
+            }),
+          ],
+        })
+      );
+    });
+
+    // Summary row
+    tableRows.push(
+      new TableRow({
+        children: [
+          cell("", { width: 800 }),
+          cell("TỔNG CỘNG", {
+            bold: true,
+            alignment: AlignmentType.RIGHT,
+            width: 2000,
+          }),
+          cell(totalBase.toLocaleString("vi-VN"), {
+            bold: true,
+            width: 2000,
+          }),
+          cell(totalAllowance.toLocaleString("vi-VN"), {
+            bold: true,
+            width: 1800,
+          }),
+          cell(totalBonus.toLocaleString("vi-VN"), {
+            bold: true,
+            width: 1800,
+          }),
+          cell(totalDeduction.toLocaleString("vi-VN"), {
+            bold: true,
+            width: 1800,
+          }),
+          cell(grandTotal.toLocaleString("vi-VN"), {
+            bold: true,
+            width: 1800,
+          }),
+        ],
+      })
+    );
+
+    const dataTable = new Table({
+      rows: tableRows,
+      width: { size: 100, type: WidthType.PERCENTAGE },
+    });
+    children.push(dataTable);
+
+    // Signature
+    children.push(
+      new Paragraph({ spacing: { before: 400 }, children: [] })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 40 },
+        children: [
+          new TextRun({
+            text: "TM. BQT DORA FANCLUB VIỆT NAM",
+            font: "Times New Roman",
+            size: 22,
+            bold: true,
+          }),
+        ],
+      })
+    );
+    children.push(
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 40 },
+        children: [
+          new TextRun({
+            text: "Nguyễn Tuấn Khải",
+            font: "Times New Roman",
+            size: 22,
+            bold: true,
+          }),
+        ],
+      })
+    );
+
+    const doc = new Document({
+      sections: [
+        {
+          properties: {
+            page: {
+              margin: {
+                top: 1440,
+                bottom: 1440,
+                left: 1440,
+                right: 1440,
+              },
+            },
+          },
+          children: children,
+        },
+      ],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const safeName = selectedDTV.name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9]/g, "_");
+    saveAs(
+      blob,
+      `LuongCaNhan_${safeName}_Thang${monthNum}_${yearNum}.docx`
+    );
+
+    logActivity(`Xuất lương cá nhân cho DTV: ${selectedDTV.name}`);
+
+    Swal.fire({
+      icon: "success",
+      title: "Xuất thành công!",
+      text: `Đã tải file LuongCaNhan_${safeName}_Thang${monthNum}_${yearNum}.docx`,
+      timer: 2000,
+      showConfirmButton: false,
+    });
+  } catch (error) {
+    console.error("Lỗi xuất lương cá nhân:", error);
     Swal.fire({
       icon: "error",
       title: "Lỗi xuất file",

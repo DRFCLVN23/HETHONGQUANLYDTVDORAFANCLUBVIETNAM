@@ -632,3 +632,45 @@ tbody tr:hover {
     color: var(--secondary);
     font-size: 12px;
 }
+
+/* Mobile-optimized Swal modal for export personal salary */
+@media (max-width: 480px) {
+    .swal-mobile-optimized {
+        width: 92vw !important;
+        max-width: 92vw !important;
+        padding: 16px 12px !important;
+        margin: 20px auto !important;
+        font-size: 14px !important;
+        box-sizing: border-box !important;
+    }
+    .swal-html-container-mobile {
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+    }
+    .swal-html-container-mobile label {
+        font-size: 13px !important;
+    }
+    .swal-html-container-mobile select {
+        font-size: 14px !important;
+        padding: 10px 8px !important;
+        min-height: 44px !important;
+        box-sizing: border-box !important;
+    }
+    .swal-mobile-optimized .swal2-title {
+        font-size: 16px !important;
+        padding: 0 0 8px 0 !important;
+    }
+    .swal-mobile-optimized .swal2-actions {
+        flex-direction: column-reverse !important;
+        gap: 8px !important;
+        margin-top: 12px !important;
+    }
+    .swal-mobile-optimized .swal2-actions button {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 12px !important;
+        font-size: 14px !important;
+        min-height: 44px !important;
+    }
+}
