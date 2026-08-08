@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xem phim - Doraemon Fansub</title>
+
+    <!-- ===== XÁC MINH GOOGLE SEARCH CONSOLE ===== -->
+   <meta name="google-site-verification" content="3GRdfsRMUkitPKdfHDwANQ55jp0CLDvDROKILqx_3cg" />
+
+    <!-- ===== META BẢO MẬT ===== -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- ===== META CHO CHIA SẺ ===== -->
+    <meta property="og:title" content="Doraemon Fansub - Xem phim" />
+    <meta property="og:description" content="Xem phim Doraemon và nhiều bộ phim hay khác" />
+    <meta property="og:image" content="https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png" />
+    <meta property="og:url" content="https://doraemon-fansub-vietnam.web.app" />
+    <meta property="og:type" content="video.other" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- ===== SEO ===== -->
+    <meta name="description" content="Xem phim Doraemon và nhiều bộ phim hay khác - Doraemon Fansub Việt Nam" />
+    <meta name="keywords" content="Doraemon, Anime, Vietsub, Xem phim, Doraemon Fansub" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ===== FAVICON ===== -->
+    <link rel="icon" href="https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png" type="image/png" />
+
+    <!-- Firebase compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .share-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .movie-player {
+            padding: 30px 0;
+        }
+
+        .video-wrapper {
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/9;
+            max-height: 80vh;
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #000;
+        }
+
+        .movie-info {
+            padding: 24px 0;
+        }
+
+        .movie-info h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .movie-info .meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .movie-info .meta .genre {
+            background: #1a73e8;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .movie-info .meta .views {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .movie-info .meta .year {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .movie-info .desc {
+            color: #ccc;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 700px;
+        }
+
+        .loading-state {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #1a1a2e;
+            border-top: 4px solid #1a73e8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .error-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .error-state h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .error-state p {
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .error-state .btn-home {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .error-state .btn-home:hover {
+            background: #1557b0;
+            transform: scale(1.05);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: auto;
+            transform: translateY(-10px);
+            background: #1a73e8;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(17, 57, 115, 0.28);
+            z-index: 99999;
+            display: none;
+            font-weight: 600;
+            font-size: 15px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .toast.show {
+            display: block;
+            transform: translateY(0);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .login-required-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .login-required-overlay.show {
+            display: flex;
+        }
+
+        .login-required-popup {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 35px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .login-required-popup .popup-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .login-required-popup h3 {
+            font-size: 22px;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+        }
+
+        .login-required-popup p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .login-required-popup .popup-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .login-required-popup .popup-btn-login {
+            display: inline-block;
+            background: #1a73e8;
+            color: white;
+            padding: 12px 40px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-required-popup .popup-btn-login:hover {
+            background: #1557b0;
+            transform: scale(1.02);
+        }
+
+        .login-required-popup .popup-btn-close {
+            background: transparent;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .login-required-popup .popup-btn-close:hover {
+            background: #f0f2f5;
+            border-color: #999;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .login-required-message {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .login-required-message .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .login-required-message h2 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .login-required-message p {
+            color: #999;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .movie-info h1 {
+                font-size: 22px;
+            }
+            .header-content {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .video-wrapper {
+                aspect-ratio: 16/9;
+            }
+            .login-required-popup {
+                padding: 30px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .movie-info h1 {
+                font-size: 18px;
+            }
+            .back-btn,
+            .share-btn {
+                font-size: 12px;
+                padding: 6px 14px;
+            }
+            .logo {
+                font-size: 18px;
+            }
+            .logo img {
+                height: 32px;
+            }
+            .login-required-popup {
+                padding: 25px 20px;
+            }
+            .login-required-popup .popup-icon {
+                font-size: 48px;
+            }
+            .login-required-popup h3 {
+                font-size: 18px;
+            }
+            .login-required-popup p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png" alt="Doraemon Fansub" loading="lazy">
+                    Doraemon
+                </a>
+                <div class="header-actions">
+                    <a href="index.html" class="back-btn">← Quay lại</a>
+                    <button class="share-btn" onclick="shareMovie()">📤 Chia sẻ</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="movieContent">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p style="color: #999;">Đang tải phim...</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="login-required-overlay" id="loginRequiredOverlay">
+        <div class="login-required-popup">
+            <div class="popup-icon">🔒</div>
+            <h3>Vui lòng đăng nhập</h3>
+            <p>Bạn cần đăng nhập để xem phim này.<br>Đăng nhập ngay để trải nghiệm đầy đủ tính năng!</p>
+            <div class="popup-actions">
+                <a href="login.html" class="popup-btn-login">🔑 Đăng nhập ngay</a>
+                <button onclick="closeLoginRequiredPopup()" class="popup-btn-close">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✅ Đã sao chép link phim!</div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBt3G9n5JYu3EsvqJR9IoW2vRAc_Es3-ws",
+            authDomain: "doraemon-fansub-vietnam.firebaseapp.com",
+            projectId: "doraemon-fansub-vietnam",
+            storageBucket: "doraemon-fansub-vietnam.firebasestorage.app",
+            messagingSenderId: "380840935390",
+            appId: "1:380840935390:web:60fab4722a9fba5053a74f",
+            measurementId: "G-0S2Z4XRK0B"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const LOGO_URL = 'https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png';
+        let currentMovie = null;
+        let movieId = null;
+        let isLoggedIn = false;
+        let isBanned = false;
+        let authReady = false;
+        let authStatePromise = null;
+
+        function getMovieIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        async function checkBannedUser(email) {
+            if (!email) return false;
+            try {
+                const doc = await db.collection('banned_users').doc(email).get();
+                return doc.exists;
+            } catch (e) {
+                console.error('Lỗi kiểm tra banned:', e);
+                return false;
+            }
+        }
+
+        const TWO_FACTOR_SESSION_KEY = 'twoFactorVerifiedUid';
+
+        function getTwoFactorVerifiedUid() {
+            return localStorage.getItem(TWO_FACTOR_SESSION_KEY);
+        }
+
+        async function getUserTwoFactorData(uid) {
+            if (!uid) return null;
+            try {
+                const doc = await db.collection('users').doc(uid).get();
+                return doc.exists ? doc.data()?.twoFactor || null : null;
+            } catch (e) {
+                console.error('Lỗi kiểm tra 2FA:', e);
+                return null;
+            }
+        }
+
+        function waitForAuthUser() {
+            if (auth.currentUser) {
+                authReady = true;
+                return Promise.resolve(auth.currentUser);
+            }
+
+            if (authReady) {
+                return Promise.resolve(null);
+            }
+
+            if (!authStatePromise) {
+                authStatePromise = new Promise((resolve) => {
+                    const unsubscribe = auth.onAuthStateChanged((user) => {
+                        authReady = true;
+                        unsubscribe();
+                        resolve(user);
+                    });
+                });
+            }
+
+            return authStatePromise;
+        }
+
+        async function loadMovieDetail() {
+            movieId = getMovieIdFromURL();
+            const container = document.getElementById('movieContent');
+
+            container.innerHTML = `
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p style="color: #999; font-size: 16px;">Đang tải phim, vui lòng chờ...</p>
+                    </div>
+                `;
+
+            if (!movieId) {
+                container.innerHTML = `
+                        <div class="error-state">
+                            <div class="icon">❌</div>
+                            <h2>Không tìm thấy phim</h2>
+                            <p>ID phim không hợp lệ hoặc không tồn tại.</p>
+                            <a href="index.html" class="btn-home">🏠 Về trang chủ</a>
+                        </div>
+                    `;
+                return;
+            }
+
+            try {
+                const doc = await db.collection('movies').doc(movieId).get();
+
+                if (!doc.exists) {
+                    container.innerHTML = `
+                            <div class="error-state">
+                                <div class="icon">🎬</div>
+                                <h2>Phim không tồn tại</h2>
+                                <p>Phim bạn tìm kiếm đã bị xóa hoặc không có.</p>
+                                <a href="index.html" class="btn-home">🏠 Về trang chủ</a>
+                            </div>
+                        `;
+                    return;
+                }
+
+                currentMovie = doc.data();
+
+                try {
+                    await db.collection('movies').doc(movieId).update({
+                        views: (currentMovie.views || 0) + 1
+                    });
+                } catch (e) {
+                    console.warn('Không cập nhật được lượt xem:', e);
+                }
+
+                renderMovieDetail(currentMovie);
+
+            } catch (e) {
+                console.error('Lỗi tải phim:', e);
+                container.innerHTML = `
+                        <div class="error-state">
+                            <div class="icon">❌</div>
+                            <h2>Lỗi tải phim</h2>
+                            <p>${e.message || 'Không thể tải phim. Vui lòng thử lại sau.'}</p>
+                            <a href="index.html" class="btn-home">🏠 Về trang chủ</a>
+                        </div>
+                    `;
+            }
+        }
+
+        function renderMovieDetail(movie) {
+            const container = document.getElementById('movieContent');
+
+            let videoContent = '';
+            if (movie.embed) {
+                videoContent = movie.embed;
+            } else if (movie.video) {
+                videoContent = `
+                        <video controls autoplay>
+                            <source src="${movie.video}">
+                            Trình duyệt không hỗ trợ video
+                        </video>
+                    `;
+            } else {
+                videoContent = `<p style="color:#999;text-align:center;padding:40px;">Không có video</p>`;
+            }
+
+            document.title = `${movie.title || 'Xem phim'} - Doraemon Fansub`;
+
+            const metaTitle = document.querySelector('meta[property="og:title"]');
+            const metaDesc = document.querySelector('meta[property="og:description"]');
+            if (metaTitle) metaTitle.content = `${movie.title || 'Xem phim'} - Doraemon Fansub`;
+            if (metaDesc) metaDesc.content = movie.desc || 'Xem phim Doraemon và nhiều bộ phim hay khác';
+
+            container.innerHTML = `
+                    <div class="movie-player">
+                        <div class="video-wrapper">
+                            ${videoContent}
+                        </div>
+                        <div class="movie-info">
+                            <h1>${movie.title || 'Không có tiêu đề'}</h1>
+                            <div class="meta">
+                                <span class="genre">${movie.genre || 'Phim'}</span>
+                                <span class="views">👁️ ${(movie.views || 0) + 1} lượt xem</span>
+                                <span class="year">📅 ${movie.year || 'N/A'}</span>
+                            </div>
+                            <p class="desc">${movie.desc || ''}</p>
+                        </div>
+                    </div>
+                `;
+        }
+
+        function showLoginRequired() {
+            const overlay = document.getElementById('loginRequiredOverlay');
+            if (overlay) {
+                overlay.classList.add('show');
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLoginRequiredPopup() {
+            const overlay = document.getElementById('loginRequiredOverlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            window.location.href = 'index.html';
+        }
+
+        function shareMovie() {
+            if (!isLoggedIn || isBanned) {
+                showLoginRequired();
+                return;
+            }
+
+            const url = window.location.href;
+            const title = currentMovie?.title || 'Xem phim trên Doraemon Fansub';
+
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: `🎬 ${title}\nXem ngay tại:`,
+                    url: url
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        showToast('✅ Đã sao chép link phim!');
+                    })
+                    .catch(() => {
+                        prompt('📤 Sao chép link này để chia sẻ:', url);
+                    });
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        let lastAuthUserId = null;
+        let authStateInitialized = false;
+
+        async function handleMovieAuthState(user) {
+            if (!user && !authReady) {
+                return;
+            }
+
+            const userId = user?.uid || null;
+            if (authStateInitialized && lastAuthUserId === userId) {
+                return;
+            }
+
+            lastAuthUserId = userId;
+            authStateInitialized = true;
+
+            if (user) {
+                const twoFactor = await getUserTwoFactorData(user.uid);
+                if (twoFactor?.enabled && twoFactor.secret && getTwoFactorVerifiedUid() !== user.uid) {
+                    await auth.signOut();
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                isBanned = await checkBannedUser(user.email);
+                if (isBanned) {
+                    showLoginRequired();
+                    document.getElementById('movieContent').innerHTML = `
+                            <div class="login-required-message">
+                                <span class="icon">🚫</span>
+                                <h2>Tài khoản đã bị khóa</h2>
+                                <p>Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin để được hỗ trợ.</p>
+                            </div>
+                        `;
+                    return;
+                }
+
+                isLoggedIn = true;
+                await loadMovieDetail();
+            } else {
+                isLoggedIn = false;
+                isBanned = false;
+                showLoginRequired();
+                document.getElementById('movieContent').innerHTML = `
+                        <div class="login-required-message">
+                            <span class="icon">🔒</span>
+                            <h2>Vui lòng đăng nhập</h2>
+                            <p>Bạn cần đăng nhập để xem phim này.</p>
+                        </div>
+                    `;
+            }
+        }
+
+        auth.onAuthStateChanged((user) => {
+            authReady = true;
+            handleMovieAuthState(user);
+        });
+
+        (async function initializeMovieAuth() {
+            const initialUser = await waitForAuthUser();
+            await handleMovieAuthState(initialUser);
+        })();
+
+        document.addEventListener('click', function(e) {
+            const overlay = document.getElementById('loginRequiredOverlay');
+            if (overlay && overlay.classList.contains('show')) {
+                if (e.target === overlay) {
+                    closeLoginRequiredPopup();
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLoginRequiredPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isLoggedIn && !isBanned) {
+                window.location.href = 'index.html';
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                shareMovie();
+            }
+        });
+
+        console.log('🎬 Trang chi tiết phim đã sẵn sàng!');
+        console.log('📤 Nhấn Ctrl+S để chia sẻ phim');
+        console.log('⌨️ Nhấn ESC để quay lại');
+        console.log('🔒 Kiểm tra đăng nhập trước khi xem phim');
+        console.log('🚫 Kiểm tra tài khoản bị cấm');
+        console.log('🔗 Đường dẫn đã sửa cho GitHub Pages!');
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /profile/
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /forgot-password.html
+
+# Sitemap
+Sitemap: https://doraemon-fansub-vietnam.web.app/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 5

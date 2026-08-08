@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Đăng nhập - Doraemon Fansub VN</title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js">
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 235, 59, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            z-index: -2;
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                background-image: url('anh_nen_pc.png');
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-attachment: fixed;
+            }
+
+            .bg-character {
+                position: fixed;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 320px;
+                height: 420px;
+                background-position: center center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                z-index: 3;
+                pointer-events: none;
+            }
+
+            .bg-left {
+                left: 2%;
+                background-image: url('news_dora.png');
+            }
+
+            .bg-right {
+                right: 2%;
+                background-image: url('news_nobi.png');
+            }
+
+            .login-container {
+                max-width: 520px;
+                background: rgba(255, 255, 255, 0.92);
+                box-shadow: 0 35px 80px rgba(0, 0, 0, 0.18);
+                border: 1px solid rgba(255, 255, 255, 0.65);
+                position: relative;
+                z-index: 1;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            body {
+                padding-top: 80px;
+                padding-bottom: 80px;
+                background-image: url('anh_nen_pc.png');
+                background-position: center top;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .login-container {
+                margin-top: 40px;
+                margin-bottom: 40px;
+            }
+
+            .bg-left,
+            .bg-right {
+                position: fixed;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 260px;
+                height: 260px;
+                background-position: center center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                z-index: 3;
+                pointer-events: none;
+                animation: floatCharacter 6s ease-in-out infinite;
+            }
+
+            .bg-left {
+                top: -120px;
+                background-image: url('news_dora.png');
+            }
+
+            .bg-right {
+                bottom: -120px;
+                background-image: url('news_nobi.png');
+            }
+        }
+
+        @keyframes floatCharacter {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(18px);
+            }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 35px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-overlay .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f0f2f5;
+            border-top: 4px solid #1a73e8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-overlay p {
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .logo-wrapper {
+            text-decoration: none;
+            display: block;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 24px;
+            cursor: pointer;
+        }
+
+        .logo img {
+            width: 120px;
+            height: auto;
+            border-radius: 0;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border: none;
+            box-shadow: none;
+            transition: transform 0.2s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.03);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: #1a1a2e;
+            font-weight: 700;
+        }
+
+        .logo h1 span {
+            color: #1a73e8;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .domain-info {
+            background: #e8f0fe;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #1a73e8;
+            text-align: center;
+            border: 1px solid #d2e3fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .domain-info strong {
+            background: #1a73e8;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: none;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+
+        .message.error {
+            background: #fce8e6;
+            color: #c62828;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e4e6eb;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.3s;
+            outline: none;
+            background: #fafafa;
+        }
+
+        .form-group input:focus {
+            border-color: #1a73e8;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: rotate(45deg);
+            transition: 0.6s;
+        }
+
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(26, 115, 232, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            background: #f1f5f9;
+            color: #1a1a2e;
+            border: 2px solid #d2e3fc;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-google {
+            width: 100%;
+            padding: 14px;
+            background: white;
+            color: #1a1a2e;
+            border: 2px solid #e4e6eb;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-google:hover {
+            background: #f0f2f5;
+            border-color: #1a73e8;
+            transform: scale(1.02);
+        }
+
+        .btn-google:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e4e6eb;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-footer a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .form-links a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .form-links a:hover {
+            text-decoration: underline;
+        }
+
+        #registerForm,
+        #forgotForm {
+            display: none;
+        }
+
+        .login-footer {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e4e6eb;
+            text-align: center;
+        }
+
+        .login-footer p {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .login-footer .highlight {
+            color: #1a73e8;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 28px 20px;
+            }
+            .logo h1 {
+                font-size: 20px;
+            }
+            .logo img {
+                width: 64px;
+                height: 64px;
+            }
+            .form-links {
+                flex-direction: column;
+                gap: 6px;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-container {
+                padding: 20px 16px;
+            }
+            .logo h1 {
+                font-size: 18px;
+            }
+            .logo img {
+                width: 56px;
+                height: 56px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-character bg-left"></div>
+    <div class="bg-character bg-right"></div>
+
+    <div class="login-container">
+        <!-- Loading -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <p>⏳ Đang xử lý...</p>
+        </div>
+
+        <!-- Logo -->
+        <a href="index.html" class="logo-wrapper">
+            <div class="logo">
+                <img src="https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png" alt="Doraemon Fansub" />
+                <h1>Doraemon <span>FanSub</span></h1>
+                <p>🏠 Cộng đồng yêu thích Doraemon</p>
+            </div>
+        </a>
+
+        <div class="domain-info">
+            🌐 Domain: <strong id="domainInfo">loading...</strong>
+        </div>
+
+        <div class="message error" id="errorMessage"></div>
+        <div class="message success" id="successMessage"></div>
+
+        <!-- LOGIN -->
+        <form id="loginForm" onsubmit="return false;">
+            <div class="form-group">
+                <label>📧 Email</label>
+                <input type="email" id="email" placeholder="example@email.com" required />
+            </div>
+            <div class="form-group">
+                <label>🔒 Mật khẩu</label>
+                <input type="password" id="password" placeholder="••••••••" required />
+            </div>
+            <button type="button" class="btn-primary" id="loginBtn">🚀 Đăng nhập</button>
+            <div class="form-links">
+                <a href="#" id="showForgot">🔑 Quên mật khẩu?</a>
+                <a href="#" id="showRegister">📝 Đăng ký</a>
+            </div>
+        </form>
+
+        <div id="twoFactorSection" style="display:none; margin-top:16px;">
+            <div class="form-group">
+                <label>🔐 Mã xác thực 2 lớp</label>
+                <input type="text" id="twoFactorCode" placeholder="Nhập mã 6 chữ số" maxlength="6" autocomplete="one-time-code" />
+            </div>
+            <button type="button" class="btn-primary" id="verifyTwoFactorBtn">✅ Xác thực 2 lớp</button>
+            <button type="button" class="btn-secondary" id="cancelTwoFactorBtn">↩️ Hủy và đăng nhập lại</button>
+        </div>
+
+        <!-- REGISTER -->
+        <form id="registerForm" onsubmit="return false;">
+            <div class="form-group">
+                <label>👤 Tên hiển thị</label>
+                <input type="text" id="registerName" placeholder="Tên của bạn" required />
+            </div>
+            <div class="form-group">
+                <label>📧 Email</label>
+                <input type="email" id="registerEmail" placeholder="example@email.com" required />
+            </div>
+            <div class="form-group">
+                <label>🔒 Mật khẩu</label>
+                <input type="password" id="registerPassword" placeholder="Tối thiểu 6 ký tự" required />
+            </div>
+            <div class="form-group">
+                <label>✅ Xác nhận mật khẩu</label>
+                <input type="password" id="registerConfirmPassword" placeholder="Nhập lại mật khẩu" required />
+            </div>
+            <button type="button" class="btn-primary" id="registerBtn">📝 Đăng ký</button>
+            <div class="form-footer">
+                Đã có tài khoản? <a href="#" id="backToLogin">← Đăng nhập</a>
+            </div>
+        </form>
+
+        <!-- FORGOT -->
+        <form id="forgotForm" onsubmit="return false;">
+            <div class="form-group">
+                <label>📧 Email</label>
+                <input type="email" id="forgotEmail" placeholder="example@email.com" required />
+            </div>
+            <button type="button" class="btn-primary" id="forgotBtn">📤 Gửi email đặt lại</button>
+            <div class="form-footer">
+                <a href="#" id="backToLogin2">← Quay lại đăng nhập</a>
+            </div>
+        </form>
+
+        <div class="divider">Hoặc</div>
+
+        <button class="btn-google" id="googleBtn">
+            <svg width="24" height="24" viewBox="0 0 48 48">
+                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+                <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+                <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+                <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
+            </svg>
+            Đăng nhập với Google
+        </button>
+
+        <div style="text-align:center;margin-top:14px;font-size:12px;color:#999;">
+            🔒 Bảo mật bởi Firebase
+        </div>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>© 2026 <span class="highlight">Doraemon Fansub VN</span> - Cộng đồng yêu thích Doraemon</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('domainInfo').textContent = window.location.hostname;
+
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBt3G9n5JYu3EsvqJR9IoW2vRAc_Es3-ws",
+            authDomain: "doraemon-fansub-vietnam.firebaseapp.com",
+            projectId: "doraemon-fansub-vietnam",
+            storageBucket: "doraemon-fansub-vietnam.firebasestorage.app",
+            messagingSenderId: "380840935390",
+            appId: "1:380840935390:web:60fab4722a9fba5053a74f",
+            measurementId: "G-0S2Z4XRK0B"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        const loading = document.getElementById('loadingOverlay');
+        const errorMsg = document.getElementById('errorMessage');
+        const successMsg = document.getElementById('successMessage');
+
+        // ============================================================
+        // HÀM HIỂN THỊ
+        // ============================================================
+        function showLoading() { loading.classList.add('active'); }
+
+        function hideLoading() { loading.classList.remove('active'); }
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.style.display = 'block';
+            successMsg.style.display = 'none';
+            setTimeout(() => errorMsg.style.display = 'none', 8000);
+        }
+
+        function showSuccess(msg) {
+            successMsg.textContent = msg;
+            successMsg.style.display = 'block';
+            errorMsg.style.display = 'none';
+            setTimeout(() => successMsg.style.display = 'none', 5000);
+        }
+
+        function clearMessages() {
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+        }
+
+        async function hmacSha1(keyBytes, messageBytes) {
+            const cryptoKey = await crypto.subtle.importKey(
+                'raw',
+                keyBytes,
+                { name: 'HMAC', hash: 'SHA-1' },
+                false,
+                ['sign']
+            );
+            const signature = await crypto.subtle.sign('HMAC', cryptoKey, messageBytes);
+            return new Uint8Array(signature);
+        }
+
+        function base32ToBytes(base32) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let bits = '';
+            let bytes = [];
+            base32 = base32.replace(/=+$/, '').toUpperCase();
+            for (let char of base32) {
+                const val = alphabet.indexOf(char);
+                if (val === -1) continue;
+                bits += val.toString(2).padStart(5, '0');
+            }
+            for (let i = 0; i + 8 <= bits.length; i += 8) {
+                bytes.push(parseInt(bits.slice(i, i + 8), 2));
+            }
+            return new Uint8Array(bytes);
+        }
+
+        function leftPad(str, length) {
+            return str.toString().padStart(length, '0');
+        }
+
+        async function verifyTOTP(secret, code) {
+            if (!secret || !code) return false;
+            code = code.trim();
+            const now = Math.floor(Date.now() / 1000 / 30);
+            for (let delta = -1; delta <= 1; delta++) {
+                const counter = now + delta;
+                const counterBytes = new ArrayBuffer(8);
+                const view = new DataView(counterBytes);
+                view.setUint32(4, counter, false);
+                const hash = await hmacSha1(base32ToBytes(secret), new Uint8Array(counterBytes));
+                const offset = hash[hash.length - 1] & 0xf;
+                const binary = ((hash[offset] & 0x7f) << 24) |
+                    ((hash[offset + 1] & 0xff) << 16) |
+                    ((hash[offset + 2] & 0xff) << 8) |
+                    (hash[offset + 3] & 0xff);
+                if (leftPad(binary % 10 ** 6, 6) === code) return true;
+            }
+            return false;
+        }
+
+        const TWO_FACTOR_SESSION_KEY = 'twoFactorVerifiedUid';
+
+        function setTwoFactorVerifiedUid(uid) {
+            if (!uid) return;
+            localStorage.setItem(TWO_FACTOR_SESSION_KEY, uid);
+        }
+
+        function getTwoFactorVerifiedUid() {
+            return localStorage.getItem(TWO_FACTOR_SESSION_KEY);
+        }
+
+        function clearTwoFactorVerifiedUid() {
+            localStorage.removeItem(TWO_FACTOR_SESSION_KEY);
+        }
+
+        function isTwoFactorVerifiedForUser(uid) {
+            return uid && getTwoFactorVerifiedUid() === uid;
+        }
+
+        async function getUserTwoFactorData(uid) {
+            if (!uid) return null;
+            try {
+                const doc = await db.collection('users').doc(uid).get();
+                return doc.exists ? doc.data()?.twoFactor || null : null;
+            } catch (e) {
+                console.error('Lỗi kiểm tra 2FA:', e);
+                return null;
+            }
+        }
+
+        async function ensureLoginPageTwoFactorState(user) {
+            if (!user) return false;
+            const twoFactor = await getUserTwoFactorData(user.uid);
+            if (twoFactor?.enabled && twoFactor.secret) {
+                if (!isTwoFactorVerifiedForUser(user.uid)) {
+                    showTwoFactorStep(twoFactor.secret, user.uid);
+                    return true;
+                }
+            } else if (isTwoFactorVerifiedForUser(user.uid)) {
+                clearTwoFactorVerifiedUid();
+            }
+            return false;
+        }
+
+        let pending2faSecret = null;
+        let pending2faUid = null;
+        let twoFactorLoginInProgress = false;
+
+        function showTwoFactorStep(secret, userUid) {
+            pending2faSecret = secret;
+            pending2faUid = userUid;
+            twoFactorLoginInProgress = true;
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('twoFactorSection').style.display = 'block';
+            document.getElementById('twoFactorCode').value = '';
+            showSuccess('✅ Đăng nhập thành công. Vui lòng nhập mã 2FA.');
+        }
+
+        function resetTwoFactorStep() {
+            pending2faSecret = null;
+            pending2faUid = null;
+            twoFactorLoginInProgress = false;
+            document.getElementById('twoFactorSection').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('twoFactorCode').value = '';
+        }
+
+        // ============================================================
+        // KIỂM TRA BANNED
+        // ============================================================
+        async function checkBannedUser(email) {
+            if (!email) return false;
+            try {
+                const doc = await db.collection('banned_users').doc(email).get();
+                if (doc.exists) {
+                    console.warn('⚠️ Tài khoản đã bị cấm:', email);
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.error('Lỗi kiểm tra banned:', e);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // LƯU USER VÀO FIRESTORE
+        // ============================================================
+        function saveUserToFirestore(user, isNew = false) {
+            const userData = {
+                email: user.email,
+                displayName: user.displayName || user.email.split('@')[0],
+                photoURL: user.photoURL || '',
+                providerData: user.providerData || [],
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (isNew) {
+                userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            }
+
+            return db.collection('users').doc(user.uid).set(userData, { merge: true })
+                .then(() => {
+                    console.log('✅ Đã lưu user vào Firestore:', user.email);
+                    return true;
+                })
+                .catch((error) => {
+                    console.error('❌ Lỗi lưu user:', error);
+                    return false;
+                });
+        }
+
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!email || !password) {
+                showError('📝 Vui lòng nhập đầy đủ email và mật khẩu!');
+                return;
+            }
+
+            twoFactorLoginInProgress = true;
+            showLoading();
+            this.disabled = true;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(async (userCredential) => {
+                    const user = userCredential.user;
+
+                    // Kiểm tra banned
+                    const isBanned = await checkBannedUser(user.email);
+                    if (isBanned) {
+                        showError('🚫 Tài khoản của bạn đã bị cấm! Vui lòng liên hệ Admin.');
+                        await auth.signOut();
+                        return;
+                    }
+
+                    await saveUserToFirestore(user, false);
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    const userData = userDoc.exists ? userDoc.data() : {};
+
+                    if (userData?.twoFactor?.enabled && userData.twoFactor.secret) {
+                        showTwoFactorStep(userData.twoFactor.secret, user.uid);
+                        return;
+                    }
+
+                    showSuccess('✅ Đăng nhập thành công! Đang chuyển hướng...');
+                    setTimeout(() => window.location.href = 'index.html', 1500);
+                })
+                .catch((err) => {
+                    let msg = '❌ Đăng nhập thất bại, hãy kiểm tra lại tài khoản hoặc mật khẩu đi. ';
+                    switch (err.code) {
+                        case 'auth/user-not-found':
+                            msg += 'Email chưa được đăng ký.';
+                            break;
+                        case 'auth/wrong-password':
+                            msg += 'Mật khẩu không đúng.';
+                            break;
+                        case 'auth/invalid-email':
+                            msg += 'Email không hợp lệ.';
+                            break;
+                        case 'auth/too-many-requests':
+                            msg += 'Quá nhiều yêu cầu, thử lại sau.';
+                            break;
+                        default:
+                            msg += err.message;
+                    }
+                    showError(msg);
+                })
+                .finally(() => {
+                    this.disabled = false;
+                    hideLoading();
+                });
+        });
+
+        // ============================================================
+        // GOOGLE LOGIN
+        // ============================================================
+        document.getElementById('googleBtn').addEventListener('click', function() {
+            showLoading();
+            this.disabled = true;
+
+            auth.signInWithPopup(provider)
+                .then(async (result) => {
+                    const user = result.user;
+                    twoFactorLoginInProgress = true;
+
+                    // Kiểm tra banned
+                    const isBanned = await checkBannedUser(user.email);
+                    if (isBanned) {
+                        showError('🚫 Tài khoản của bạn đã bị cấm! Liên hệ Admin.');
+                        await auth.signOut();
+                        return;
+                    }
+
+                    await saveUserToFirestore(user, true);
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    const userData = userDoc.exists ? userDoc.data() : {};
+
+                    if (userData?.twoFactor?.enabled && userData.twoFactor.secret) {
+                        showTwoFactorStep(userData.twoFactor.secret, user.uid);
+                        return;
+                    }
+
+                    showSuccess('✅ Đăng nhập thành công! Đang chuyển hướng...');
+                    setTimeout(() => window.location.href = 'index.html', 1500);
+                })
+                .catch((err) => {
+                    let msg = '❌ Đăng nhập Google thất bại! ';
+                    switch (err.code) {
+                        case 'auth/popup-closed-by-user':
+                            msg += 'Bạn đã đóng cửa sổ đăng nhập.';
+                            break;
+                        case 'auth/popup-blocked':
+                            msg += 'Trình duyệt chặn popup, vui lòng cho phép.';
+                            break;
+                        default:
+                            msg += err.message;
+                    }
+                    showError(msg);
+                })
+                .finally(() => {
+                    this.disabled = false;
+                    hideLoading();
+                });
+        });
+
+        // ============================================================
+        // REGISTER
+        // ============================================================
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const confirm = document.getElementById('registerConfirmPassword').value.trim();
+
+            if (!name || !email || !password || !confirm) {
+                showError('📝 Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+            if (password.length < 6) {
+                showError('🔒 Mật khẩu phải có ít nhất 6 ký tự!');
+                return;
+            }
+            if (password !== confirm) {
+                showError('❌ Mật khẩu xác nhận không khớp!');
+                return;
+            }
+
+            showLoading();
+            this.disabled = true;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(async (userCredential) => {
+                    const user = userCredential.user;
+
+                    // Cập nhật tên hiển thị
+                    await user.updateProfile({ displayName: name });
+
+                    await saveUserToFirestore(user, true);
+                    showSuccess('✅ Đăng ký thành công! Đang chuyển hướng...');
+                    setTimeout(() => window.location.href = 'index.html', 1500);
+                })
+                .catch((err) => {
+                    let msg = '❌ Đăng ký thất bại! ';
+                    switch (err.code) {
+                        case 'auth/email-already-in-use':
+                            msg += 'Email đã được sử dụng.';
+                            break;
+                        case 'auth/invalid-email':
+                            msg += 'Email không hợp lệ.';
+                            break;
+                        case 'auth/weak-password':
+                            msg += 'Mật khẩu quá yếu.';
+                            break;
+                        default:
+                            msg += err.message;
+                    }
+                    showError(msg);
+                })
+                .finally(() => {
+                    this.disabled = false;
+                    hideLoading();
+                });
+        });
+
+        // ============================================================
+        // FORGOT PASSWORD
+        // ============================================================
+        document.getElementById('forgotBtn').addEventListener('click', function() {
+            const email = document.getElementById('forgotEmail').value.trim();
+            if (!email) {
+                showError('📝 Vui lòng nhập email của bạn!');
+                return;
+            }
+
+            showLoading();
+            this.disabled = true;
+
+            auth.sendPasswordResetEmail(email, {
+                    url: window.location.href,
+                    handleCodeInApp: false
+                })
+                .then(() => {
+                    showSuccess(`✅ Email đặt lại mật khẩu đã gửi đến ${email}!`);
+                    document.getElementById('forgotEmail').value = '';
+                    setTimeout(() => {
+                        document.getElementById('forgotForm').style.display = 'none';
+                        document.getElementById('loginForm').style.display = 'block';
+                        clearMessages();
+                    }, 4000);
+                })
+                .catch((err) => {
+                    let msg = '❌ Gửi email thất bại! ';
+                    switch (err.code) {
+                        case 'auth/user-not-found':
+                            msg += 'Email này chưa được đăng ký.';
+                            break;
+                        case 'auth/invalid-email':
+                            msg += 'Email không hợp lệ.';
+                            break;
+                        case 'auth/too-many-requests':
+                            msg += 'Quá nhiều yêu cầu, thử lại sau.';
+                            break;
+                        default:
+                            msg += err.message;
+                    }
+                    showError(msg);
+                })
+                .finally(() => {
+                    this.disabled = false;
+                    hideLoading();
+                });
+        });
+
+        // ============================================================
+        // TOGGLE FORMS
+        // ============================================================
+        document.getElementById('showRegister').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('forgotForm').style.display = 'none';
+            clearMessages();
+        });
+
+        document.getElementById('showForgot').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'block';
+            clearMessages();
+        });
+
+        document.getElementById('backToLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'none';
+            clearMessages();
+        });
+
+        document.getElementById('backToLogin2').addEventListener('click', function(e) {
+            e.preventDefault();
+            resetTwoFactorStep();
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'none';
+            clearMessages();
+        });
+
+        document.getElementById('verifyTwoFactorBtn').addEventListener('click', async function() {
+            const code = document.getElementById('twoFactorCode').value.trim();
+            if (!pending2faUid || !pending2faSecret) {
+                showError('❌ Vui lòng nhập email và mật khẩu trước.');
+                resetTwoFactorStep();
+                return;
+            }
+            if (!code) {
+                showError('📝 Vui lòng nhập mã 2FA.');
+                return;
+            }
+
+            this.disabled = true;
+            this.textContent = '⏳ Đang xác thực...';
+
+            const valid = await verifyTOTP(pending2faSecret, code);
+            if (valid) {
+                setTwoFactorVerifiedUid(pending2faUid);
+                showSuccess('✅ Xác thực 2FA thành công! Đang chuyển hướng...');
+                setTimeout(() => window.location.href = 'index.html', 1500);
+            } else {
+                showError('❌ Mã 2FA không đúng. Vui lòng thử lại.');
+            }
+
+            this.disabled = false;
+            this.textContent = '✅ Xác thực 2 lớp';
+        });
+
+        document.getElementById('cancelTwoFactorBtn').addEventListener('click', async function() {
+            clearTwoFactorVerifiedUid();
+            await auth.signOut();
+            resetTwoFactorStep();
+            showError('✋ Đã hủy 2FA. Vui lòng đăng nhập lại.');
+        });
+
+        // ============================================================
+        // ENTER KEY
+        // ============================================================
+        document.getElementById('email').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('password').focus();
+            }
+        });
+
+        document.getElementById('password').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('loginBtn').click();
+            }
+        });
+
+        document.getElementById('registerEmail').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('registerPassword').focus();
+            }
+        });
+
+        document.getElementById('registerPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('registerConfirmPassword').focus();
+            }
+        });
+
+        document.getElementById('twoFactorCode')?.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('verifyTwoFactorBtn').click();
+            }
+        });
+
+        document.getElementById('registerConfirmPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('registerBtn').click();
+            }
+        });
+
+        document.getElementById('forgotEmail').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('forgotBtn').click();
+            }
+        });
+
+        // ============================================================
+        // AUTH STATE - TỰ ĐỘNG CHUYỂN HƯỚNG
+        // ============================================================
+        auth.onAuthStateChanged(async function(user) {
+            if (!user) return;
+
+            const requiresTwoFactor = await ensureLoginPageTwoFactorState(user);
+            if (requiresTwoFactor) return;
+
+            if (window.location.pathname.includes('login.html')) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        console.log('🔥 Firebase Auth sẵn sàng!');
+        console.log('🌐 Domain:', window.location.hostname);
+        console.log('🎬 Đây là trang đăng nhập của cộng đồng Doraemon Fansub');
+        console.log('✅ User sẽ được lưu vào Firestore khi đăng nhập/đăng ký');
+    </script>
+</body>
+</html>

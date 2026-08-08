@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang cá nhân - Doraemon Fansub VN</title>
+
+    <!-- ===== XÁC MINH GOOGLE SEARCH CONSOLE ===== -->
+    <meta name="google-site-verification" content="HXszZpGpQu3yZVPZ0jetZcCyhA26gCjYC_oI5G7AJJw" />
+
+    <!-- ===== META BẢO MẬT ===== -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- ===== FAVICON ===== -->
+    <link rel="icon" href="https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png" type="image/png" />
+
+    <!-- Firebase compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js">
+    </script>
+
+    <!-- Cloudinary Upload Widget -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript">
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        header {
+            background: linear-gradient(135deg, #67b7ff, #2f78c1);
+            padding: 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(18, 43, 107, 0.16);
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -80px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.32), transparent 60%);
+            filter: blur(26px);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            border-radius: 999px;
+            min-height: auto;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 18px rgba(2, 6, 23, 0.10);
+            overflow: visible;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 999px;
+            background: conic-gradient(from 240deg, #ff3ec4, #6b36ff, #16b6ff, #48ff9a, #fff859, #ff7d2f, #ff3ec4);
+            opacity: 0.35;
+            filter: blur(14px);
+            z-index: -1;
+            animation: rainbowSpin 3.6s linear infinite;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 18px 40px rgba(2, 6, 23, 0.24), 0 0 0 1px rgba(255, 255, 255, 0.18);
+        }
+
+        .logo:hover::after {
+            opacity: 0.5;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 14px rgba(255, 235, 170, 0.6));
+        }
+
+        .logo img {
+            display: block;
+            height: 48px;
+            width: auto;
+            max-width: 120px;
+            border-radius: 24px;
+            object-fit: contain;
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 10px rgba(255, 235, 170, 0.35), 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: transform 0.25s ease, filter 0.25s ease;
+            filter: drop-shadow(0 0 8px rgba(255, 235, 170, 0.45));
+        }
+
+        .logo:hover img {
+            transform: scale(1.04);
+        }
+
+        @keyframes rainbowSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        #authStatus {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 16px 4px 4px;
+            border-radius: 30px;
+        }
+
+        #authStatus a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+        }
+
+        #authStatus img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid #ffeb3b;
+            object-fit: cover;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #authStatus img:hover {
+            transform: scale(1.05);
+            border-color: #ffeb3b;
+        }
+
+        #authStatus .user-name {
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #authStatus .user-name:hover {
+            color: #ffeb3b;
+        }
+
+        .verified-badge {
+            display: inline-block;
+            background: #ffeb3b;
+            color: #0d47a1;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 4px;
+            vertical-align: middle;
+            line-height: 1.5;
+            border: 1px solid #fdd835;
+        }
+
+        .verified-badge .check {
+            margin-right: 2px;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #1a73e8, #0f5ccf);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(26, 115, 232, 0.18);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 30px rgba(26, 115, 232, 0.25);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: none;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff4444;
+        }
+
+        .dashboard-link {
+            display: none;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .dashboard-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .dashboard-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .verified-badge {
+            display: inline-block;
+            background: #ffeb3b;
+            color: #0d47a1;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 6px;
+            vertical-align: middle;
+            line-height: 1.5;
+        }
+
+        .verified-badge .check {
+            margin-right: 3px;
+        }
+
+        .profile-container {
+            max-width: 980px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: minmax(280px, 1.2fr) minmax(260px, 0.9fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .profile-left,
+        .profile-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .security-card {
+            background: #f7fbff;
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid rgba(26, 115, 232, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .security-card h3 {
+            margin-bottom: 14px;
+            font-size: 18px;
+            color: #102a54;
+        }
+
+        .security-card p {
+            color: #384a60;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .security-status {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .security-status span {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(26, 115, 232, 0.12);
+            color: #0d47a1;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .two-factor-setup {
+            padding: 20px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+            border: 1px solid rgba(59, 130, 246, 0.16);
+            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.06);
+            overflow: hidden;
+        }
+
+        .two-factor-setup-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            align-items: stretch;
+            margin-bottom: 20px;
+        }
+
+        .qr-card,
+        .qr-info,
+        .two-factor-setup .form-group {
+            min-width: 0;
+            width: 100%;
+        }
+
+        .qr-info {
+            width: 100%;
+        }
+
+        .qr-card {
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 20px;
+            border-radius: 0;
+            background: #eef5ff;
+            border: 1px solid rgba(59, 130, 246, 0.14);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .qr-card img {
+            width: 100%;
+            max-width: 240px;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 0;
+            border: 1px solid rgba(59, 130, 246, 0.18);
+            background: white;
+        }
+
+        .qr-card .qr-label {
+            margin-top: 14px;
+            color: #1d4ed8;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .qr-card .qr-hint {
+            margin-top: 8px;
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.5;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .qr-info p {
+            margin-bottom: 18px;
+            color: #334155;
+            line-height: 1.75;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        .secret-box {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            align-items: stretch;
+            margin-top: 6px;
+        }
+
+        .secret-box input {
+            width: 100%;
+            min-width: 0;
+            border-radius: 14px;
+            border: 1px solid #dbeafe;
+            background: #eff6ff;
+            padding: 12px 14px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: #0f172a;
+        }
+
+        .two-factor-setup .form-group input[readonly] {
+            background: #eff6ff;
+            cursor: text;
+            border-color: #bfdbfe;
+        }
+
+        .btn-secondary.copy-secret {
+            min-width: 120px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: #1d4ed8;
+            background: #e0efff;
+            border: 1px solid #bfdbfe;
+            white-space: nowrap;
+        }
+
+        .btn-secondary.copy-secret:hover {
+            background: #dbeafe;
+        }
+
+        .two-factor-setup .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
+        .two-factor-setup .form-group input,
+        .two-factor-setup .form-group textarea {
+            border-radius: 16px;
+        }
+
+        .two-factor-setup .btn-primary {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            box-shadow: 0 12px 28px rgba(59, 130, 246, 0.22);
+            min-width: 0;
+        }
+
+        .two-factor-setup .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 100%;
+                padding: 0 18px;
+            }
+            .profile-container {
+                max-width: 100%;
+                padding: 0 14px;
+            }
+            .profile-card {
+                padding: 22px;
+            }
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 840px) {
+            .two-factor-setup-grid {
+                grid-template-columns: 1fr;
+            }
+            .secret-box {
+                grid-template-columns: 1fr;
+            }
+            .btn-secondary.copy-secret {
+                width: 100%;
+            }
+            .qr-card {
+                padding: 16px;
+            }
+            .qr-card img {
+                max-width: 100%;
+                height: auto;
+            }
+            .two-factor-setup {
+                padding: 18px;
+            }
+            .two-factor-setup .form-group {
+                width: 100%;
+            }
+            .two-factor-setup .form-group label,
+            .two-factor-setup .form-group input {
+                display: block;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .header-actions {
+                gap: 8px;
+            }
+            .header-actions a,
+            .header-actions button {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            .profile-card {
+                padding: 16px;
+            }
+            .profile-name {
+                font-size: 20px;
+            }
+            .profile-avatar img {
+                width: 90px;
+                height: 90px;
+            }
+            .profile-bio {
+                padding: 10px;
+            }
+            .stats-row {
+                gap: 10px;
+            }
+            .stat-item {
+                padding: 12px;
+            }
+            .two-factor-setup {
+                padding: 14px;
+            }
+            .qr-card {
+                padding: 14px;
+            }
+            .qr-card img {
+                max-width: 100%;
+                height: auto;
+            }
+            .secret-box {
+                grid-template-columns: 1fr;
+            }
+            .btn-secondary.copy-secret {
+                width: 100%;
+            }
+            .two-factor-setup .form-group label {
+                font-size: 14px;
+            }
+            .two-factor-setup .form-group input {
+                padding: 12px 14px;
+            }
+            .two-factor-setup .btn-primary {
+                padding: 14px;
+                font-size: 15px;
+            }
+        }
+
+        .security-actions {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .security-actions .btn-primary,
+        .security-actions .btn-secondary {
+            width: 100%;
+        }
+
+        .profile-avatar {
+            text-align: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffeb3b;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-avatar .avatar-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: none;
+        }
+
+        .profile-avatar:hover .avatar-overlay {
+            display: block;
+        }
+
+        .profile-avatar .avatar-overlay:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .profile-name {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .profile-email {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .profile-bio {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 14px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .stat-item .number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a73e8;
+        }
+
+        .stat-item .label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e4e6eb;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.3s;
+            outline: none;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #1a73e8;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+            transform: scale(1.02);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 12px;
+            background: #e4e6eb;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d2d6;
+        }
+
+        .upload-progress {
+            display: none;
+            margin: 8px 0;
+            padding: 10px 14px;
+            background: #e8f0fe;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #1a73e8;
+        }
+
+        .upload-progress .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #d2e3fc;
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .upload-progress .progress-bar .fill {
+            height: 100%;
+            background: #1a73e8;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: auto;
+            transform: translateY(-10px);
+            background: #1a73e8;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 600;
+            z-index: 99999;
+            opacity: 0;
+            transition: 0.3s ease;
+            box-shadow: 0 18px 40px rgba(17, 57, 115, 0.28);
+            font-size: 14px;
+            max-width: 360px;
+            min-width: 220px;
+            text-align: left;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .confirm-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: auto;
+            width: min(100%, 420px);
+            background: #ffffff;
+            color: #102a54;
+            border: 1px solid rgba(16, 42, 84, 0.12);
+            border-radius: 18px;
+            box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+            padding: 18px 20px;
+            z-index: 100000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: 0.25s ease;
+            display: grid;
+            gap: 12px;
+        }
+
+        .confirm-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .confirm-toast p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .confirm-actions button {
+            min-width: 90px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .confirm-actions .confirm-btn {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .confirm-actions .confirm-btn:hover {
+            background: #1557b0;
+        }
+
+        .confirm-actions .cancel-btn {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .confirm-actions .cancel-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .login-required {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .login-required .icon {
+            font-size: 80px;
+            margin-bottom: 16px;
+        }
+
+        .login-required h2 {
+            font-size: 24px;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .login-required p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .login-required .btn-login {
+            padding: 12px 40px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .login-required .btn-login:hover {
+            background: #1557b0;
+            transform: scale(1.05);
+        }
+
+        .owner-badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-size: 12px;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .loading-spinner .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f0f2f5;
+            border-top: 4px solid #1a73e8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                padding: 0 12px;
+            }
+            .logo {
+                font-size: 18px;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
+
+            .login-btn {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+
+            .logout-btn,
+            .dashboard-link {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-actions {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                gap: 8px;
+            }
+            .logo img {
+                height: 36px;
+            }
+            #authStatus {
+                min-width: 0;
+                flex-shrink: 1;
+            }
+            #authStatus a {
+                min-width: 0;
+                overflow: hidden;
+            }
+            #authStatus .user-name {
+                display: none;
+            }
+            .login-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+                white-space: nowrap;
+            }
+            .logout-btn,
+            .dashboard-link {
+                padding: 8px 12px;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 12px;
+            }
+            .header-content {
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            }
+            .header-actions {
+                gap: 6px;
+                flex-wrap: nowrap;
+                justify-content: flex-end;
+                min-width: 0;
+                overflow-x: auto;
+            }
+            .header-actions > * {
+                flex-shrink: 0;
+            }
+            #authStatus {
+                min-width: 0;
+                flex-shrink: 0;
+                overflow: hidden;
+            }
+            #authStatus a {
+                min-width: 0;
+            }
+            #authStatus img {
+                width: 32px;
+                height: 32px;
+            }
+            #authStatus .user-name {
+                display: none;
+            }
+            .login-btn,
+            .logout-btn,
+            .dashboard-link {
+                padding: 7px 10px;
+                font-size: 12px;
+                white-space: nowrap;
+            }
+            .profile-card {
+                padding: 20px;
+            }
+            .profile-avatar img {
+                width: 90px;
+                height: 90px;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+            .stat-item {
+                padding: 10px;
+            }
+            .stat-item .number {
+                font-size: 18px;
+            }
+            .verified-badge {
+                font-size: 9px;
+                padding: 1px 6px;
+            }
+            .back-link {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+        }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo" aria-label="Doraemon Fansub">
+                    <img src="https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png" alt="Doraemon Fansub" loading="lazy">
+                </a>
+                <div class="header-actions">
+                    <div id="authStatus">
+                        <a href="profile.html" id="profileLink">
+                            <img id="userAvatar" src="" alt="Avatar" loading="lazy">
+                            <span class="user-name" id="userName">User</span>
+                            <span class="verified-badge" id="headerBadge" style="display:none;">
+                                <span class="check">✓</span> Admin
+                            </span>
+                        </a>
+                        <a href="dashboard.html" class="dashboard-link" id="dashboardLink">📊 Dashboard</a>
+                    </div>
+                    <a href="login.html" class="login-btn" id="loginBtn">🔑 Đăng nhập</a>
+                    <button class="logout-btn" id="logoutBtn" onclick="logoutUser()">🚪 Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="profile-container" id="profileContainer">
+        <div id="loadingState" class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Đang tải thông tin...</p>
+        </div>
+
+        <div id="loginRequired" class="login-required" style="display:none;">
+            <div class="icon">🔒</div>
+            <h2>Vui lòng đăng nhập</h2>
+            <p>Đăng nhập để xem và chỉnh sửa trang cá nhân của bạn</p>
+            <a href="login.html" class="btn-login">Đăng nhập ngay</a>
+        </div>
+
+        <div id="profileContent" style="display:none;">
+            <div class="profile-card">
+                <div class="profile-grid">
+                    <div class="profile-left">
+                        <!-- Avatar -->
+                        <div class="profile-avatar" id="avatarContainer">
+                            <img id="profileAvatar" src="" alt="Avatar">
+                            <div class="avatar-overlay" id="avatarOverlay" onclick="openAvatarUpload()">📷 Đổi ảnh</div>
+                        </div>
+
+                        <!-- Name & Badge -->
+                        <div class="profile-name" id="profileName">
+                            <span id="profileNameText">Tên người dùng</span>
+                            <span class="verified-badge" id="profileBadge" style="display:none;">
+                                <span class="check">✓</span> Admin
+                            </span>
+                            <span class="owner-badge" id="ownerBadge" style="display:none;">👤 Bạn</span>
+                        </div>
+                        <div class="profile-email" id="profileEmail">email@example.com</div>
+
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <div class="number" id="statPosts">0</div>
+                                <div class="label">📝 Bài viết</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="number" id="statLikes">0</div>
+                                <div class="label">❤️ Lượt thích</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="number" id="statComments">0</div>
+                                <div class="label">💬 Bình luận</div>
+                            </div>
+                        </div>
+
+                        <div class="profile-bio" id="profileBio">⭐ Thành viên của Doraemon Fansub VN</div>
+
+                        <!-- Edit Form - Chỉ hiện khi xem trang của chính mình -->
+                        <div id="editSection">
+                            <form id="profileForm" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label>Tên hiển thị</label>
+                                    <input type="text" id="editName" placeholder="Nhập tên của bạn" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Giới thiệu</label>
+                                    <textarea id="editBio" placeholder="Viết một vài dòng giới thiệu về bạn..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary" id="saveBtn">💾 Lưu thay đổi</button>
+                            </form>
+
+                            <button class="btn-secondary" onclick="logoutUser()">🚪 Đăng xuất</button>
+                        </div>
+                    </div>
+
+                    <div class="profile-right">
+                        <div class="security-card">
+                            <h3>🔐 Bảo mật tài khoản</h3>
+                            <p>Đổi mật khẩu và bật xác thực 2 lớp bằng Google Authenticator để tăng bảo mật cho tài khoản của bạn.</p>
+
+                            <div class="security-status">
+                                <span id="passwordStatus">Mật khẩu: an toàn</span>
+                                <span id="twoFactorStatus">2 lớp: chưa kích hoạt</span>
+                            </div>
+
+                            <div class="security-actions">
+                                <button type="button" class="btn-primary" id="showPasswordBoxBtn">🔒 Đổi mật khẩu</button>
+                                <button type="button" class="btn-secondary" id="toggle2faBtn">🛡️ Bật Google Authenticator</button>
+                            </div>
+
+                            <div class="two-factor-setup" id="twoFactorSetup" style="display:none;">
+                                <div class="two-factor-setup-grid">
+                                    <div class="qr-card">
+                                        <img id="tfaQrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=placeholder" alt="Mã QR Google Authenticator" />
+                                        <p class="qr-label">Quét mã QR bằng Google Authenticator</p>
+                                        <p class="qr-hint">Mở ứng dụng và thêm tài khoản mới bằng mã QR. Nếu cần, nhập secret key thủ công.</p>
+                                    </div>
+                                    <div class="qr-info">
+                                        <p>Quét mã QR hoặc sao chép secret key vào Google Authenticator để kích hoạt xác thực 2 lớp.</p>
+                                        <div class="form-group">
+                                            <label>Secret key</label>
+                                            <div class="secret-box">
+                                                <input type="text" id="tfaSecret" readonly value="HƯỚNG DẪN NHẬP 2FA" />
+                                                <button type="button" class="btn-secondary copy-secret" id="copyTfaSecretBtn">Sao chép</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mã xác thực</label>
+                                            <input type="text" id="tfaCode" placeholder="Nhập mã 6 chữ số" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-primary" id="verify2faBtn">✅ Xác thực 2 lớp</button>
+                            </div>
+                        </div>
+
+                        <div id="passwordSection" style="display:none;">
+                            <h3 style="margin-bottom:12px; font-size:16px; font-weight:600; color:#1a1a2e;">🔒 Đổi mật khẩu</h3>
+                            <form id="passwordForm" onsubmit="return false;">
+                                <div class="form-group">
+                                    <label>Mật khẩu hiện tại</label>
+                                    <input type="password" id="currentPassword" placeholder="Nhập mật khẩu hiện tại" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu mới</label>
+                                    <input type="password" id="newPassword" placeholder="Tối thiểu 6 ký tự" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Xác nhận mật khẩu mới</label>
+                                    <input type="password" id="confirmNewPassword" placeholder="Nhập lại mật khẩu mới" />
+                                </div>
+                                <button type="button" class="btn-primary" id="changePasswordBtn">🔒 Đổi mật khẩu</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <div class="confirm-toast" id="confirmToast" style="display:none;">
+        <p id="confirmToastMessage">Bạn có chắc muốn tắt xác thực 2 lớp?</p>
+        <div class="confirm-actions">
+            <button type="button" class="cancel-btn" id="confirmCancelBtn">Hủy</button>
+            <button type="button" class="confirm-btn" id="confirmAcceptBtn">Xác nhận</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // FIREBASE CONFIG
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBt3G9n5JYu3EsvqJR9IoW2vRAc_Es3-ws",
+            authDomain: "doraemon-fansub-vietnam.firebaseapp.com",
+            projectId: "doraemon-fansub-vietnam",
+            storageBucket: "doraemon-fansub-vietnam.firebasestorage.app",
+            messagingSenderId: "380840935390",
+            appId: "1:380840935390:web:60fab4722a9fba5053a74f",
+            measurementId: "G-0S2Z4XRK0B"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const SUPER_ADMIN_EMAIL = 'tuankhaimoi12345@gmail.com';
+        const LOGO_URL = 'https://i.ibb.co/9kJhtfp1/Doraemon-fansub.png';
+
+        async function hmacSha1(keyBytes, messageBytes) {
+            const cryptoKey = await crypto.subtle.importKey(
+                'raw',
+                keyBytes,
+                { name: 'HMAC', hash: 'SHA-1' },
+                false,
+                ['sign']
+            );
+            const signature = await crypto.subtle.sign('HMAC', cryptoKey, messageBytes);
+            return new Uint8Array(signature);
+        }
+
+        function base32ToBytes(base32) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let bits = '';
+            let bytes = [];
+            base32 = base32.replace(/=+$/, '').toUpperCase();
+            for (let char of base32) {
+                const val = alphabet.indexOf(char);
+                if (val === -1) continue;
+                bits += val.toString(2).padStart(5, '0');
+            }
+            for (let i = 0; i + 8 <= bits.length; i += 8) {
+                bytes.push(parseInt(bits.slice(i, i + 8), 2));
+            }
+            return new Uint8Array(bytes);
+        }
+
+        function leftPad(str, length) {
+            return str.toString().padStart(length, '0');
+        }
+
+        function generateSecretBase32(length = 16) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            const bytes = new Uint8Array(length);
+            window.crypto.getRandomValues(bytes);
+            return Array.from(bytes, b => alphabet[b % alphabet.length]).join('');
+        }
+
+        async function generateTOTP(secret, step = 30, digits = 6) {
+            const key = base32ToBytes(secret);
+            const counter = Math.floor(Date.now() / 1000 / step);
+            const counterBytes = new ArrayBuffer(8);
+            const view = new DataView(counterBytes);
+            view.setUint32(4, counter, false);
+            const hash = await hmacSha1(key, new Uint8Array(counterBytes));
+            const offset = hash[hash.length - 1] & 0xf;
+            const binary = ((hash[offset] & 0x7f) << 24) |
+                ((hash[offset + 1] & 0xff) << 16) |
+                ((hash[offset + 2] & 0xff) << 8) |
+                (hash[offset + 3] & 0xff);
+            return leftPad(binary % 10 ** digits, digits);
+        }
+
+        async function verifyTOTP(secret, code) {
+            if (!secret || !code) return false;
+            code = code.trim();
+            const now = Math.floor(Date.now() / 1000 / 30);
+            for (let delta = -1; delta <= 1; delta++) {
+                const counter = now + delta;
+                const counterBytes = new ArrayBuffer(8);
+                const view = new DataView(counterBytes);
+                view.setUint32(4, counter, false);
+                const hash = await hmacSha1(base32ToBytes(secret), new Uint8Array(counterBytes));
+                const offset = hash[hash.length - 1] & 0xf;
+                const binary = ((hash[offset] & 0x7f) << 24) |
+                    ((hash[offset + 1] & 0xff) << 16) |
+                    ((hash[offset + 2] & 0xff) << 8) |
+                    (hash[offset + 3] & 0xff);
+                if (leftPad(binary % 10 ** 6, 6) === code) return true;
+            }
+            return false;
+        }
+
+        const QR_CODE_API_URL = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=';
+
+        function buildOtpAuthUri(secret, account) {
+            const issuer = 'Doraemon Fansub VN';
+            const label = `${account}`;
+            return `otpauth://totp/${encodeURIComponent(issuer)}:${encodeURIComponent(label)}?secret=${secret}&issuer=${encodeURIComponent(issuer)}&algorithm=SHA1&digits=6&period=30`;
+        }
+
+        function updateTfaQrCode(secret, account) {
+            const qrImage = document.getElementById('tfaQrCode');
+            if (!qrImage) return;
+            qrImage.src = `${QR_CODE_API_URL}${encodeURIComponent(buildOtpAuthUri(secret, account))}`;
+        }
+
+        async function copyTfaSecret() {
+            const secret = document.getElementById('tfaSecret').value.trim();
+            if (!secret) return;
+            try {
+                await navigator.clipboard.writeText(secret);
+                showToast('✅ Đã sao chép secret key!');
+            } catch (e) {
+                const textarea = document.createElement('textarea');
+                textarea.value = secret;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('✅ Đã sao chép secret key!');
+                } catch (copyError) {
+                    showToast('❌ Không thể sao chép. Vui lòng sao chép thủ công.', true);
+                }
+                document.body.removeChild(textarea);
+            }
+        }
+
+        const TWO_FACTOR_SESSION_KEY = 'twoFactorVerifiedUid';
+
+        function getTwoFactorVerifiedUid() {
+            return localStorage.getItem(TWO_FACTOR_SESSION_KEY);
+        }
+
+        function clearTwoFactorVerifiedUid() {
+            localStorage.removeItem(TWO_FACTOR_SESSION_KEY);
+        }
+
+        async function getUserTwoFactorData(uid) {
+            if (!uid) return null;
+            try {
+                const doc = await db.collection('users').doc(uid).get();
+                return doc.exists ? doc.data()?.twoFactor || null : null;
+            } catch (e) {
+                console.error('Lỗi kiểm tra 2FA:', e);
+                return null;
+            }
+        }
+
+        function isTwoFactorVerifiedForUser(uid) {
+            return uid && getTwoFactorVerifiedUid() === uid;
+        }
+
+        // ============================================================
+        // CLOUDINARY CONFIG
+        // ============================================================
+        const CLOUDINARY_CONFIG = {
+            cloudName: 'gntkeeno',
+            uploadPreset: 'doraemon_fansub_vn',
+            folder: 'avatars'
+        };
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const authStatus = document.getElementById('authStatus');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        const loadingState = document.getElementById('loadingState');
+        const loginRequired = document.getElementById('loginRequired');
+        const profileContent = document.getElementById('profileContent');
+
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profileNameText = document.getElementById('profileNameText');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileBio = document.getElementById('profileBio');
+        const profileBadge = document.getElementById('profileBadge');
+        const ownerBadge = document.getElementById('ownerBadge');
+        const avatarOverlay = document.getElementById('avatarOverlay');
+
+        const editName = document.getElementById('editName');
+        const editBio = document.getElementById('editBio');
+        const saveBtn = document.getElementById('saveBtn');
+        const editSection = document.getElementById('editSection');
+        const passwordSection = document.getElementById('passwordSection');
+
+        const showPasswordBoxBtn = document.getElementById('showPasswordBoxBtn');
+        const toggle2faBtn = document.getElementById('toggle2faBtn');
+        const twoFactorSetup = document.getElementById('twoFactorSetup');
+        const tfaSecret = document.getElementById('tfaSecret');
+        const tfaCode = document.getElementById('tfaCode');
+        const verify2faBtn = document.getElementById('verify2faBtn');
+        const twoFactorStatus = document.getElementById('twoFactorStatus');
+        const passwordStatus = document.getElementById('passwordStatus');
+        const currentPasswordInput = document.getElementById('currentPassword');
+        const newPasswordInput = document.getElementById('newPassword');
+        const confirmNewPasswordInput = document.getElementById('confirmNewPassword');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+
+        const statPosts = document.getElementById('statPosts');
+        const statLikes = document.getElementById('statLikes');
+        const statComments = document.getElementById('statComments');
+
+        const toast = document.getElementById('toast');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressFill = document.getElementById('progressFill');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        let currentUser = null;
+        let viewingUserId = null;
+        let isViewingSelf = false;
+        let isAdmin = false;
+        let adminEmails = new Set();
+
+        // ============================================================
+        // LẤY DANH SÁCH ADMIN
+        // ============================================================
+        async function loadAdminList() {
+            try {
+                const snapshot = await db.collection('admins').get();
+                adminEmails = new Set();
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.email) {
+                        adminEmails.add(data.email);
+                    }
+                });
+                adminEmails.add(SUPER_ADMIN_EMAIL);
+            } catch (e) {
+                console.error('Lỗi load admin list:', e);
+            }
+        }
+
+        function isUserAdmin(email) {
+            if (!email) return false;
+            return adminEmails.has(email);
+        }
+
+        // ============================================================
+        // HIỂN THỊ QUYỀN HẠN ADMIN TRONG HEADER
+        // ============================================================
+        function updateAdminHeader() {
+            const dashboardLink = document.getElementById('dashboardLink');
+            const headerBadge = document.getElementById('headerBadge');
+            if (!dashboardLink || !headerBadge) return;
+
+            if (isAdmin) {
+                dashboardLink.style.display = 'inline-block';
+                headerBadge.style.display = 'inline-block';
+            } else {
+                dashboardLink.style.display = 'none';
+                headerBadge.style.display = 'none';
+            }
+        }
+
+        // ============================================================
+        // LẤY USER ID TỪ URL
+        // ============================================================
+        function getUserIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('uid');
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg, isError = false) {
+            toast.textContent = msg;
+            toast.style.background = isError ? '#c62828' : '#1a73e8';
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        const confirmToast = document.getElementById('confirmToast');
+        const confirmToastMessage = document.getElementById('confirmToastMessage');
+        const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+        const confirmAcceptBtn = document.getElementById('confirmAcceptBtn');
+        let confirmCallback = null;
+
+        function showConfirmToast(message, callback) {
+            confirmToastMessage.textContent = message;
+            confirmToast.style.display = 'grid';
+            requestAnimationFrame(() => confirmToast.classList.add('show'));
+            confirmCallback = callback;
+        }
+
+        function hideConfirmToast() {
+            confirmToast.classList.remove('show');
+            clearTimeout(confirmToast._hideTimer);
+            confirmToast._hideTimer = setTimeout(() => {
+                confirmToast.style.display = 'none';
+            }, 250);
+            confirmCallback = null;
+        }
+
+        confirmCancelBtn.addEventListener('click', hideConfirmToast);
+        confirmAcceptBtn.addEventListener('click', function() {
+            if (typeof confirmCallback === 'function') {
+                confirmCallback();
+            }
+            hideConfirmToast();
+        });
+
+        // ============================================================
+        // KIỂM TRA USER EXIST TRONG FIRESTORE
+        // ============================================================
+        async function ensureUserInFirestore(user) {
+            if (!user) return false;
+
+            try {
+                const doc = await db.collection('users').doc(user.uid).get();
+
+                if (!doc.exists) {
+                    const userData = {
+                        email: user.email,
+                        displayName: user.displayName || user.email.split('@')[0],
+                        photoURL: user.photoURL || '',
+                        providerData: user.providerData || [],
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    await db.collection('users').doc(user.uid).set(userData, { merge: true });
+                    console.log('✅ Đã tạo user trong Firestore:', user.email);
+                    return true;
+                }
+                return true;
+            } catch (e) {
+                console.error('❌ Lỗi kiểm tra user:', e);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // AUTH STATE
+        // ============================================================
+        auth.onAuthStateChanged(async (user) => {
+            await loadAdminList();
+            loadingState.style.display = 'none';
+
+            if (user) {
+                const twoFactor = await getUserTwoFactorData(user.uid);
+                if (twoFactor?.enabled && twoFactor.secret && !isTwoFactorVerifiedForUser(user.uid)) {
+                    await auth.signOut();
+                    window.location.href = 'login.html';
+                    return;
+                }
+                currentUser = user;
+                authStatus.style.display = 'flex';
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+                userAvatar.src = user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user
+                    .displayName || user.email);
+                userName.textContent = user.displayName || user.email;
+
+                await ensureUserInFirestore(user);
+
+                isAdmin = isUserAdmin(user.email);
+                updateAdminHeader();
+
+                loginRequired.style.display = 'none';
+                profileContent.style.display = 'block';
+
+                const targetUid = getUserIdFromURL() || user.uid;
+                viewingUserId = targetUid;
+                isViewingSelf = targetUid === user.uid;
+
+                await loadUserData(targetUid);
+            } else {
+                authStatus.style.display = 'none';
+                loginBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+
+                loginRequired.style.display = 'block';
+                profileContent.style.display = 'none';
+            }
+        });
+
+        // ============================================================
+        // LOAD USER DATA
+        // ============================================================
+        async function loadUserData(uid) {
+            try {
+                const doc = await db.collection('users').doc(uid).get();
+
+                if (!doc.exists) {
+                    if (uid === currentUser?.uid) {
+                        await ensureUserInFirestore(currentUser);
+                        const newDoc = await db.collection('users').doc(uid).get();
+                        if (newDoc.exists) {
+                            const data = newDoc.data();
+                            displayUserData(data);
+                            return;
+                        }
+                    }
+                    showToast('❌ Không tìm thấy người dùng!', true);
+                    return;
+                }
+
+                const data = doc.data();
+                displayUserData(data);
+
+            } catch (e) {
+                console.error('Lỗi tải dữ liệu:', e);
+                showToast('❌ Lỗi tải dữ liệu: ' + e.message, true);
+            }
+        }
+
+        // ============================================================
+        // HIỂN THỊ DỮ LIỆU USER
+        // ============================================================
+        function displayUserData(data) {
+            const displayName = data.displayName || data.email?.split('@')[0] || 'Người dùng';
+            const email = data.email || '';
+
+            profileAvatar.src = data.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(displayName) +
+                '&background=1a73e8&color=fff&size=120';
+            profileNameText.textContent = displayName;
+            profileEmail.textContent = email;
+            profileBio.textContent = data.bio || '⭐ Thành viên của Doraemon Fansub VN';
+
+            if (isUserAdmin(data.email)) {
+                profileBadge.style.display = 'inline-block';
+            } else {
+                profileBadge.style.display = 'none';
+            }
+
+            if (isViewingSelf) {
+                ownerBadge.style.display = 'inline-block';
+            } else {
+                ownerBadge.style.display = 'none';
+            }
+
+            if (isViewingSelf) {
+                editSection.style.display = 'block';
+                avatarOverlay.style.display = 'block';
+                editName.value = displayName;
+                editBio.value = data.bio || '';
+
+                if (currentUser.providerData.some(p => p.providerId === 'password')) {
+                    passwordSection.style.display = 'block';
+                } else {
+                    passwordSection.style.display = 'none';
+                }
+
+                if (data.twoFactor && data.twoFactor.enabled) {
+                    twoFactorStatus.textContent = '2 lớp: đã kích hoạt';
+                    toggle2faBtn.textContent = '🛡️ 2FA đã bật';
+                    tfaSecret.value = data.twoFactor.secret || '';
+                    twoFactorSetup.style.display = 'none';
+                } else {
+                    twoFactorStatus.textContent = '2 lớp: chưa kích hoạt';
+                    toggle2faBtn.textContent = '🛡️ Bật Google Authenticator';
+                    tfaSecret.value = '';
+                }
+            } else {
+                editSection.style.display = 'none';
+                avatarOverlay.style.display = 'none';
+                passwordSection.style.display = 'none';
+            }
+
+            if (viewingUserId) {
+                loadStats(viewingUserId);
+            }
+        }
+
+        // ============================================================
+        // LOAD STATS
+        // ============================================================
+        async function loadStats(uid) {
+            try {
+                const postsSnapshot = await db.collection('posts')
+                    .where('userId', '==', uid)
+                    .get();
+
+                let totalLikes = 0;
+                let totalComments = 0;
+
+                postsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    totalLikes += data.likes || 0;
+                    totalComments += (data.comments || []).length;
+                });
+
+                statPosts.textContent = postsSnapshot.size;
+                statLikes.textContent = totalLikes;
+                statComments.textContent = totalComments;
+
+            } catch (e) {
+                console.error('Lỗi tải thống kê:', e);
+                statPosts.textContent = '?';
+                statLikes.textContent = '?';
+                statComments.textContent = '?';
+            }
+        }
+
+        // ============================================================
+        // SAVE PROFILE
+        // ============================================================
+        document.getElementById('profileForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!currentUser || !isViewingSelf) {
+                showToast('⚠️ Bạn không có quyền chỉnh sửa!', true);
+                return;
+            }
+
+            const displayName = editName.value.trim();
+            const bio = editBio.value.trim();
+
+            if (!displayName) {
+                showToast('⚠️ Vui lòng nhập tên hiển thị!', true);
+                return;
+            }
+
+            saveBtn.disabled = true;
+            saveBtn.textContent = '⏳ Đang lưu...';
+
+            try {
+                await currentUser.updateProfile({ displayName });
+
+                await db.collection('users').doc(currentUser.uid).update({
+                    displayName: displayName,
+                    bio: bio || '⭐ Thành viên của Doraemon Fansub VN',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                profileNameText.textContent = displayName;
+                profileBio.textContent = bio || '⭐ Thành viên của Doraemon Fansub VN';
+                userName.textContent = displayName;
+                userAvatar.src = currentUser.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(
+                displayName);
+
+                showToast('✅ Cập nhật thông tin thành công!');
+
+            } catch (e) {
+                console.error('Lỗi lưu:', e);
+                showToast('❌ Lỗi lưu: ' + e.message, true);
+            }
+
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 Lưu thay đổi';
+        });
+
+        // ============================================================
+        // CHANGE PASSWORD
+        // ============================================================
+        changePasswordBtn?.addEventListener('click', async function() {
+            if (!currentUser || !isViewingSelf) {
+                showToast('⚠️ Bạn không có quyền đổi mật khẩu!', true);
+                return;
+            }
+
+            const currentPassword = currentPasswordInput.value.trim();
+            const newPassword = newPasswordInput.value.trim();
+            const confirmPassword = confirmNewPasswordInput.value.trim();
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showToast('⚠️ Vui lòng điền đủ các trường mật khẩu!', true);
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showToast('⚠️ Mật khẩu mới và xác nhận không khớp!', true);
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showToast('⚠️ Mật khẩu mới phải ít nhất 6 ký tự.', true);
+                return;
+            }
+
+            changePasswordBtn.disabled = true;
+            changePasswordBtn.textContent = '⏳ Đang đổi mật khẩu...';
+
+            try {
+                const credential = firebase.auth.EmailAuthProvider.credential(
+                    currentUser.email,
+                    currentPassword
+                );
+
+                await currentUser.reauthenticateWithCredential(credential);
+                await currentUser.updatePassword(newPassword);
+
+                showToast('✅ Đổi mật khẩu thành công!');
+                currentPasswordInput.value = '';
+                newPasswordInput.value = '';
+                confirmNewPasswordInput.value = '';
+            } catch (e) {
+                console.error('Lỗi đổi mật khẩu:', e);
+                if (e.code === 'auth/wrong-password') {
+                    showToast('❌ Mật khẩu hiện tại không đúng.', true);
+                } else if (e.code === 'auth/weak-password') {
+                    showToast('❌ Mật khẩu quá yếu, hãy dùng ít nhất 6 ký tự.', true);
+                } else if (e.code === 'auth/requires-recent-login') {
+                    showToast('❌ Vui lòng đăng nhập lại để đổi mật khẩu.', true);
+                } else if (e.code === 'auth/invalid-credential') {
+                    showToast('❌ Thông tin xác thực không hợp lệ. Vui lòng thử lại.', true);
+                } else {
+                    showToast('❌ Đổi mật khẩu thất bại. Vui lòng thử lại sau.', true);
+                }
+            } finally {
+                changePasswordBtn.disabled = false;
+                changePasswordBtn.textContent = '🔒 Đổi mật khẩu';
+            }
+        });
+
+        showPasswordBoxBtn?.addEventListener('click', function() {
+            if (!currentUser || !isViewingSelf) return;
+            passwordSection.style.display = passwordSection.style.display === 'block' ? 'none' : 'block';
+        });
+
+        toggle2faBtn?.addEventListener('click', async function() {
+            if (!currentUser || !isViewingSelf) return;
+
+            const doc = await db.collection('users').doc(currentUser.uid).get();
+            const userData = doc.exists ? doc.data() : {};
+            const enabled = userData?.twoFactor?.enabled;
+
+            if (enabled) {
+                showConfirmToast('Bạn có chắc muốn tắt xác thực 2 lớp?', async () => {
+                    await db.collection('users').doc(currentUser.uid).update({
+                        twoFactor: firebase.firestore.FieldValue.delete(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    twoFactorStatus.textContent = '2 lớp: chưa kích hoạt';
+                    toggle2faBtn.textContent = '🛡️ Bật Google Authenticator';
+                    tfaSecret.value = '';
+                    twoFactorSetup.style.display = 'none';
+                    showToast('✅ Đã tắt 2FA.');
+                });
+                return;
+            }
+
+            const secret = generateSecretBase32();
+            tfaSecret.value = secret;
+            updateTfaQrCode(secret, currentUser.email || currentUser.uid);
+            twoFactorSetup.style.display = 'block';
+            toggle2faBtn.textContent = '🛡️ Hoàn tất kích hoạt 2FA';
+        });
+
+        document.getElementById('copyTfaSecretBtn')?.addEventListener('click', copyTfaSecret);
+
+        verify2faBtn?.addEventListener('click', async function() {
+            if (!currentUser || !isViewingSelf) {
+                showToast('⚠️ Bạn không có quyền thực hiện thao tác này!', true);
+                return;
+            }
+
+            const secret = tfaSecret.value.trim();
+            const code = tfaCode.value.trim();
+
+            if (!secret) {
+                showToast('⚠️ Vui lòng tạo secret 2FA trước khi xác thực.', true);
+                return;
+            }
+            if (!code) {
+                showToast('⚠️ Vui lòng nhập mã 2FA.', true);
+                return;
+            }
+
+            verify2faBtn.disabled = true;
+            verify2faBtn.textContent = '⏳ Đang kiểm tra...';
+
+            const valid = await verifyTOTP(secret, code);
+            if (valid) {
+                await db.collection('users').doc(currentUser.uid).update({
+                    twoFactor: {
+                        enabled: true,
+                        secret: secret
+                    },
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                twoFactorStatus.textContent = '2 lớp: đã kích hoạt';
+                toggle2faBtn.textContent = '🛡️ 2FA đã bật';
+                twoFactorSetup.style.display = 'none';
+                tfaCode.value = '';
+                showToast('✅ 2FA đã được kích hoạt!');
+            } else {
+                showToast('❌ Mã 2FA không đúng. Thử lại.', true);
+            }
+
+            verify2faBtn.disabled = false;
+            verify2faBtn.textContent = '✅ Xác thực 2 lớp';
+        });
+
+        // ============================================================
+        // UPLOAD AVATAR
+        // ============================================================
+        function openAvatarUpload() {
+            if (!currentUser || !isViewingSelf) {
+                showToast('⚠️ Bạn không có quyền chỉnh sửa!', true);
+                return;
+            }
+
+            if (typeof cloudinary === 'undefined') {
+                showToast('⚠️ Cloudinary đang tải, vui lòng thử lại sau!', true);
+                return;
+            }
+
+            const widget = cloudinary.createUploadWidget({
+                cloudName: CLOUDINARY_CONFIG.cloudName,
+                uploadPreset: CLOUDINARY_CONFIG.uploadPreset,
+                folder: CLOUDINARY_CONFIG.folder,
+                sources: ['local', 'url', 'camera', 'google_drive'],
+                multiple: false,
+                maxFileSize: 10000000,
+                resourceType: 'image',
+                clientAllowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'],
+                cropping: true,
+                croppingAspectRatio: 1,
+                showAdvancedOptions: false,
+                styles: {
+                    palette: {
+                        window: '#FFFFFF',
+                        sourceBg: '#f0f2f5',
+                        windowBorder: '#e4e6eb',
+                        tabIcon: '#1a73e8',
+                        inactiveTabIcon: '#65676b',
+                        menuIcons: '#1a73e8',
+                        link: '#1a73e8',
+                        action: '#1a73e8',
+                        inProgress: '#1a73e8',
+                        complete: '#34a853',
+                        error: '#e94560',
+                        textDark: '#1a1a2e',
+                        textLight: '#65676b'
+                    }
+                }
+            }, async (error, result) => {
+                if (error) {
+                    console.error('Lỗi Cloudinary:', error);
+                    showToast('❌ Upload thất bại: ' + (error.message || 'Lỗi không xác định'), true);
+                    uploadProgress.style.display = 'none';
+                    return;
+                }
+
+                if (result.event === 'success') {
+                    const avatarUrl = result.info.secure_url;
+
+                    profileAvatar.src = avatarUrl;
+                    userAvatar.src = avatarUrl;
+
+                    try {
+                        await db.collection('users').doc(currentUser.uid).update({
+                            photoURL: avatarUrl,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    } catch (e) {
+                        console.warn('Không thể update Firestore:', e);
+                    }
+
+                    try {
+                        await currentUser.updateProfile({ photoURL: avatarUrl });
+                    } catch (e) {
+                        console.warn('Không thể update Auth profile:', e);
+                    }
+
+                    uploadStatus.textContent = '✅ Đã tải ảnh lên Cloudinary thành công!';
+                    progressFill.style.width = '100%';
+                    setTimeout(() => {
+                        uploadProgress.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 2000);
+
+                    showToast('✅ Đổi avatar thành công!');
+                    userAvatar.src = avatarUrl;
+
+                } else if (result.event === 'progress') {
+                    uploadProgress.style.display = 'block';
+                    const progress = Math.round((result.info.bytesUploaded / result.info.totalBytes) * 100);
+                    progressFill.style.width = progress + '%';
+                    uploadStatus.textContent = `📤 Đang tải ảnh lên Cloudinary... ${progress}%`;
+
+                } else if (result.event === 'close') {
+                    uploadProgress.style.display = 'none';
+
+                } else if (result.event === 'error') {
+                    showToast('❌ Upload thất bại: ' + (result.info.message || 'Lỗi không xác định'), true);
+                    uploadProgress.style.display = 'none';
+                }
+            });
+            widget.open();
+        }
+
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        window.logoutUser = async function() {
+            try {
+                clearTwoFactorVerifiedUid();
+                await auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                showToast('❌ Đăng xuất thất bại!', true);
+            }
+        };
+
+        console.log('👤 Trang cá nhân đã sẵn sàng!');
+        console.log('✅ Đã sửa lỗi hiển thị tên người dùng!');
+        console.log('📝 Sử dụng ?uid=USER_ID để xem trang của người khác');
+        console.log('🔗 Đường dẫn đã sửa cho GitHub Pages!');
+    </script>
+</body>
+</html>
