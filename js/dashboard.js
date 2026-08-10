@@ -1217,16 +1217,37 @@ onAuthStateChanged(auth, async (user) => {
   let userRole = "dtv";
   let userName = user.displayName || user.email.split("@")[0];
   let userStatus = "active";
+  let foundInTransactors = false;
   try {
     const transSnap = await getDocs(collection(db, "Transactors"));
     transSnap.forEach((docSnap) => {
       const d = docSnap.data();
       if (d.email && d.email.toLowerCase() === user.email.toLowerCase()) {
+        foundInTransactors = true;
         if (d.role) userRole = d.role;
         if (d.name) userName = d.name;
         if (d.status) userStatus = d.status;
       }
     });
+    if (!foundInTransactors && user.email) {
+      try {
+        await setDoc(
+          doc(db, "Transactors", user.uid),
+          {
+            uid: user.uid,
+            name: userName,
+            email: user.email.toLowerCase(),
+            role: userRole,
+            status: "active",
+            createdAt: new Date().toISOString(),
+          },
+          { merge: true }
+        );
+        invalidateCollection("Transactors");
+      } catch (autoErr) {
+        console.warn("Tự động khôi phục hồ sơ Transactors thất bại:", autoErr);
+      }
+    }
     const isDTV =
       (userRole && userRole.toLowerCase() === "dtv") ||
       (!userRole && !user.email.includes("bqt"));
@@ -1750,12 +1771,77 @@ document.getElementById("saveTransactorBtn").onclick = async () => {
     if (signUpData.error) {
       const errMsg = signUpData.error.message;
       if (errMsg === "EMAIL_EXISTS") {
-        return Swal.fire({
-          icon: "error",
-          title: "Email đã tồn tại!",
-          text: "Email này đã có tài khoản. Hãy dùng email khác hoặc xóa tài khoản cũ trên Firebase Console.",
-          confirmButtonColor: "#ff3366",
-        });
+        const normalizedEmail = email.toLowerCase();
+        let existingDoc = null;
+        try {
+          const transSnap = await getDocs(collection(db, "Transactors"));
+          transSnap.forEach((docSnap) => {
+            const d = docSnap.data();
+            if (d.email && String(d.email).trim().toLowerCase() === normalizedEmail) {
+              existingDoc = d;
+            }
+          });
+        } catch (err) {
+          console.error("Lỗi kiểm tra DTV trong Firestore:", err);
+        }
+
+        if (existingDoc) {
+          return Swal.fire({
+            icon: "warning",
+            title: "Email đã có trong danh sách!",
+            text: `Email "${email}" đã tồn tại trong Danh sách DTV (${existingDoc.name || "N/A"}). Bạn có thể tìm thấy trong bảng bên dưới.`,
+            confirmButtonColor: "#ff3366",
+          });
+        } else {
+          // Email tồn tại trên Auth nhưng CHƯA có trong danh sách DTV (Transactors)!
+          let targetUid = null;
+          try {
+            const signInUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseConfig.apiKey}`;
+            const signInRes = await fetch(signInUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: email,
+                password: password,
+                returnSecureToken: false,
+              }),
+            });
+            const signInData = await signInRes.json();
+            if (signInData.localId) {
+              targetUid = signInData.localId;
+            }
+          } catch (signInErr) {
+            console.warn("Lỗi xác thực lấy UID:", signInErr);
+          }
+
+          if (!targetUid) {
+            targetUid = getSanitizedEmailDocId(email);
+          }
+
+          await setDoc(doc(db, "Transactors", targetUid), {
+            uid: targetUid,
+            name,
+            email: normalizedEmail,
+            password,
+            role: role || "dtv",
+            note: note ? `${note} (Tự động đồng bộ từ Auth)` : "Tự động đồng bộ từ Auth",
+            status: status || "active",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          });
+
+          logActivity("Thêm/Đồng bộ DTV", note ? `${name} - ${note}` : name);
+          closeModals();
+          invalidateCollection("Transactors");
+          await loadTranslators(true);
+
+          return Swal.fire({
+            icon: "success",
+            title: "Thành công!",
+            text: `✅ Email "${email}" đã có tài khoản và hiện đã được bổ sung thành công vào Danh sách DTV!`,
+            confirmButtonColor: "#00c853",
+          });
+        }
       } else if (errMsg === "WEAK_PASSWORD") {
         return Swal.fire({
           icon: "error",
@@ -1776,7 +1862,7 @@ document.getElementById("saveTransactorBtn").onclick = async () => {
     await setDoc(doc(db, "Transactors", uid), {
       uid,
       name,
-      email,
+      email: email.toLowerCase(),
       password,
       role,
       note,
