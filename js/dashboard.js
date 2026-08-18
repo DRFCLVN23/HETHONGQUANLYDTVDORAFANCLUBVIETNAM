@@ -2682,6 +2682,7 @@ window.exportPersonalSalaryToWord = async function () {
     }
 
     const records = [];
+    const seenIds = new Set();
     snapshot.forEach((docSnap) => {
       const d = docSnap.data();
       const recordEmail = (d.email || "").toLowerCase().trim();
@@ -2694,11 +2695,9 @@ window.exportPersonalSalaryToWord = async function () {
         recordName === targetName ||
         recordName.includes(targetName)
       ) {
-        // Avoid duplicates by title
-        const exists = records.some(
-          (r) => r.title === (d.title || "Không có tiêu đề")
-        );
-        if (!exists) {
+        // Tránh trùng lặp cùng một document (dedup theo Firestore ID)
+        if (!seenIds.has(docSnap.id)) {
+          seenIds.add(docSnap.id);
           records.push({
             title: d.title || "Không có tiêu đề",
             base: Number(d.baseSalary) || 0,
